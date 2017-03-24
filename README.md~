@@ -1,6 +1,6 @@
 # MP
 
-The Music Project is a project that allows users to listen to a variety of music (in this case, just sample pieces of music that are royalty free) and upload their own music.  This project was created by David Trinh and Hector Lovo to help us improve our development skills, while learning new technologies. It utilizes the latest cutting edge technologies.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
 
 ## Development server
 
