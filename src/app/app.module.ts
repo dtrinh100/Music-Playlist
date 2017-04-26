@@ -7,10 +7,15 @@ import { RouterModule } from "@angular/router";
 import { appRoutes } from "./app.routing";
 
 import { AppComponent } from './app.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { NavbarComponent } from './navbar/navbar.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomepageComponent,
+    NavbarComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
