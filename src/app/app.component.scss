@@ -1,0 +1,12 @@
+@import "../styles/colors";
+
+
+.MP_Footer {
+  background-color: $NC_Gray;
+  color: $NC_White;
+
+  li > a {
+    color: $NC_White;
+    font-weight: bold;
+  }
+}
