@@ -1,0 +1,63 @@
+@import "../../styles/colors";
+
+
+div {
+  font-family: Titillium, sans-serif;
+}
+
+.MP_TopBody {
+  height: 400px;
+
+  padding: 90px 0 0 0;
+  background: linear-gradient(0deg, $I1OC_Orange_O41, $I1OC_Orange_O41), url('../../assets/img/record_store.jpg') center 0 no-repeat;
+  background-size: cover;
+}
+
+.MP_BottomBody {
+  padding: 40px 0 70px 0;
+  background: linear-gradient(0deg, $I2OC_Blue_O71, $I2OC_Blue_O71), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
+  background-size: cover;
+}
+
+.MP_MainHeader {
+  font-size: 24pt;
+  color: white;
+  font-weight: bold;
+}
+
+.MP_Subheader {
+  color: $AC_LighterOrange;
+  font-family: Pridi, sans-serif;
+  font-weight: bold;
+  font-size: 18pt;
+  margin: 15px 0 15px 0;
+}
+
+.MP_BodyText {
+  color: $NC_White;
+  font-family: Titillium, sans-serif;
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+@media all and (max-width: 500px) { /* screen size until 500px */
+  .MP_MainHeader {
+    font-size: 18pt;
+  }
+  .MP_Subheader {
+    font-size: 14pt;
+  }
+  .MP_BodyText {
+    font-size: 12pt;
+  }
+}
+
+.MP_AlbumArt {
+  margin-bottom: 25px;
+
+  img {
+    background-color: black;  /* TODO: Temporary. Delete later. */
+    width: 160px;
+    height: 140px;
+  }
+}
