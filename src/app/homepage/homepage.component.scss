@@ -1,59 +1,60 @@
-@import "../../styles/colors";
+@import '../../styles/_variables';
 
 
 div {
   font-family: Titillium, sans-serif;
 }
 
-.MP_TopBody {
+.mp-top-body {
   height: 400px;
 
   padding: 90px 0 0 0;
-  background: linear-gradient(0deg, $I1OC_Orange_O41, $I1OC_Orange_O41), url('../../assets/img/record_store.jpg') center 0 no-repeat;
+  background: linear-gradient(0deg, $i1Oc-orange-o41, $i1Oc-orange-o41), url('../../assets/img/record_store.jpg') center 0 no-repeat;
   background-size: cover;
 }
 
-.MP_BottomBody {
+.mp-bottom-body {
   padding: 40px 0 70px 0;
-  background: linear-gradient(0deg, $I2OC_Blue_O71, $I2OC_Blue_O71), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
+  background: linear-gradient(0deg, $i2Oc-blue-o71, $i2Oc-blue-o71), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
   background-size: cover;
 }
 
-.MP_MainHeader {
+.mp-main-header {
   font-size: 24pt;
   color: white;
   font-weight: bold;
 }
 
-.MP_Subheader {
-  color: $AC_LighterOrange;
+.mp-subheader {
+  color: $ac-lighter-orange;
   font-family: Pridi, sans-serif;
   font-weight: bold;
   font-size: 18pt;
   margin: 15px 0 15px 0;
 }
 
-.MP_BodyText {
-  color: $NC_White;
+.mp-body-text {
+  color: $nc-white;
   font-family: Titillium, sans-serif;
   font-weight: bold;
   font-size: 12pt;
 }
 
 @media all and (max-width: 500px) { /* screen size until 500px */
-  .MP_MainHeader {
+  .mp-main-header {
     font-size: 18pt;
   }
-  .MP_Subheader {
+  .mp-subheader {
     font-size: 14pt;
   }
-  .MP_BodyText {
+  .mp-body-text {
     font-size: 12pt;
   }
 }
 
-.MP_AlbumArt {
+.mp-album-art {
   margin-bottom: 25px;
+  text-align: center;
 
   img {
     background-color: black;  /* TODO: Temporary. Delete later. */
