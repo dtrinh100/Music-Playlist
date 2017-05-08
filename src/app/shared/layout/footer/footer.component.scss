@@ -1,0 +1,12 @@
+@import '../../../../styles/_variables';
+
+
+.mp-footer {
+  background-color: $nc-gray;
+  color: $nc-white;
+
+  li > a {
+    color: $nc-white;
+    font-weight: bold;
+  }
+}
