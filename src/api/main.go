@@ -11,16 +11,19 @@ import (
 func main() {
 
 	// using Gorilla mux router instead of default one because it offers more flexibity
-	mx := mux.NewRouter()
+	r := mux.NewRouter()
 
 	// place middleware codes here
 	commonHandlers := alice.New()
 
+	// adds the api prefix to all subroutes
+	s := r.PathPrefix("/api/").Subrouter()
+
 	// route handlers
-	mx.Handle("/api/register", commonHandlers.ThenFunc())
+	s.Handle("/users", commonHandlers.ThenFunc()).Methods("POST")
 
 	// start server on port 3000
-	err := http.ListenAndServe(":3000", mx)
+	err := http.ListenAndServe(":3000", r)
 	if err != nil {
 		log.Fatal(err)
 	}
