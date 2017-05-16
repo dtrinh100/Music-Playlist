@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 
-let SCROLL_DELIM: Number = 100;
+const SCROLL_DELIM: Number = 100;
 
 @Component({
   selector: 'app-navbar',
