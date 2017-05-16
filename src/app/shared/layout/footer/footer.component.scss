@@ -1,12 +1,33 @@
 @import '../../../../styles/_variables';
+@import '../../../../styles/_utils';
 
+
+$footer-bg-color: $nc-gray;
 
 .mp-footer {
-  background-color: $nc-gray;
-  color: $nc-white;
+  background-color: $footer-bg-color;
+  color: get-font-color--using-bg-color($footer-bg-color);
+  font-size: $font-size-normal;
+  font-family: Pridi, sans-serif;
 
   li > a {
     color: $nc-white;
-    font-weight: bold;
   }
+
+  li > a:hover {
+    color: $mc-orange;
+    background-color: inherit;
+  }
+
+  .row {
+    margin: 1.0em 0 0 0;
+  }
+
+  @media all and (max-width: $screen-sm) {
+      text-align: center;
+  }
+}
+
+.mp-copyright {
+  font-size: 1.3rem;
 }
