@@ -16,12 +16,12 @@ export class NavbarComponent implements OnInit {
   isScrolled: boolean;
 
 
-  constructor() {
+  constructor() { }
+
+  ngOnInit() {
     this.isMenuOpen = false;
     this.isScrolled = false;
   }
-
-  ngOnInit() { }
 
   toggleState() {
     this.isMenuOpen = (this.isMenuOpen === false);
