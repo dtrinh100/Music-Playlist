@@ -1,10 +1,65 @@
 @import '../../../../styles/_variables';
+@import '../../../../styles/_utils';
 
 
 .navbar {
-  margin-bottom: 0;
+  font-size: $font-size-normal;
+}
+
+.navbar-brand {
+  font-size: $font-size-normal;
+}
+
+.navbar-logo {
+  margin: -0.3em 0 0 0;
+  height: 1.4em;
+  width: 1.6em;
+}
+
+.page-scroll-header {
+  background-color: $mc-navy-blue !important;
+  opacity: 0.92;
+
+  $nav-link-color: get-font-color--using-bg-color($mc-navy-blue);
   a {
-    color: $mc-navy-blue;
+    color: $nav-link-color !important;
     font-weight: bold;
+  }
+
+  a:hover {
+    color: $mc-orange !important;
+    background-color: inherit;
+  }
+
+  .active > a {
+    background-color: lighten($mc-navy-blue, 15.0%);
+  }
+
+  .navbar-toggle {
+    border-color: $nav-link-color;
+  }
+
+  .navbar-toggle:hover, .navbar-toggle:focus {
+    background-color: lighten($mc-navy-blue, 10.0%) !important;
+  }
+
+  .icon-bar {
+    background-color: $nav-link-color;
+  }
+}
+
+.nav-header {
+  transition: background-color 2s ease-out;
+  background-color: $navbar-default-bg;
+
+  $nav-link-color: get-font-color--using-bg-color($navbar-default-bg);
+  a {
+    color: $nav-link-color;
+    font-weight: bold;
+  }
+
+  a:hover {
+    color: $mc-orange;
+    background-color: inherit;
   }
 }

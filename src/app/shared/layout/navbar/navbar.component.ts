@@ -1,18 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 
+
+let SCROLL_DELIM: Number = 100;
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  host: {
+    '(window:scroll)': 'updateHeader($event)'
+  }
 })
 export class NavbarComponent implements OnInit {
-  isMenuOpen = false;
+  isMenuOpen: boolean;
+  isScrolled: boolean;
 
-  constructor() { }
+
+  constructor() {
+    this.isMenuOpen = false;
+    this.isScrolled = false;
+  }
 
   ngOnInit() { }
 
   toggleState() {
     this.isMenuOpen = (this.isMenuOpen === false);
   }
+
+  updateHeader(evt) {
+    let currPos = (window.pageYOffset || evt.target.scrollTop) - (evt.target.clientTop || 0);
+    this.isScrolled = (currPos > SCROLL_DELIM);
+  }
+
 }
