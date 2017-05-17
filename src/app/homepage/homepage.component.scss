@@ -17,6 +17,11 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
     max-width: 14em;
     font-size: $font-size-normal;
   }
+
+  .mp-title {
+    color: white;
+    font-weight: bold;
+  }
 }
 
 .mp-bottom-body {
@@ -78,4 +83,8 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 .mp-search-input {
   width: 60vw;
   margin: auto;
+}
+
+.mp-trending-header {
+  font-weight: bold;
 }
