@@ -1,3 +1,6 @@
+@import "_variables";
+
+
 @font-face {
   font-family: 'Pridi'; src: url('../assets/font/Pridi-Regular.ttf');
 }
@@ -17,4 +20,8 @@
 
 body {
   font-family: Titillium, sans-serif;
+}
+
+.mp-body-container {
+  margin-top: $navbar-height;
 }
