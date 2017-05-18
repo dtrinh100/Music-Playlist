@@ -22,10 +22,6 @@ $footer-bg-color: $neutral-gray;
   .row {
     margin: 1.0em 0 0 0;
   }
-
-  @media all and (max-width: $screen-sm) {
-      text-align: center;
-  }
 }
 
 .mp-copyright {
