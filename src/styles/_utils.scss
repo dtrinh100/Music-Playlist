@@ -8,12 +8,3 @@
     @return $neutral-white;
   }
 }
-
-@function get-hover-font-color--using-bg-color($bg-color) {
-  @if (lightness($bg-color) > 50) {
-    @return lighten($nc-black, 50%);
-  } @else {
-    @return darken($nc-white, 50%);
-  }
-}
-

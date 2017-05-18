@@ -2,18 +2,14 @@
 @import '../../../../styles/_utils';
 
 
-.navbar {
-  font-size: $font-size-normal;
-}
-
-.navbar-brand {
+.navbar, .navbar-brand {
   font-size: $font-size-normal;
 }
 
 .mp-navbar-logo-img {
-  margin: -0.3em 0 0 0;
-  height: 1.4em;
-  width: 1.6em;
+  margin: -0.8rem 0 0 0;
+  height: 2.8rem;
+  width: 3.2rem;
 }
 
 .mp-nav-header-scrolled {
