@@ -12,8 +12,8 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
   background-size: cover;
 
   button {
-    width: 40vw;
-    max-width: 14em;
+    width: 15%;
+    min-width: $screen-xs * 0.3;  // 30% of the smallest screen
     font-size: $font-size-normal;
   }
 
@@ -80,7 +80,8 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 }
 
 .mp-search-input {
-  width: 60vw;
+  width: 40%;
+  min-width: $screen-xs * 0.6;  // 60% of the smallest screen
   margin: auto;
 }
 
