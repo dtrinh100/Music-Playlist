@@ -16,11 +16,13 @@
   width: 1.6em;
 }
 
-.page-scroll-header {
+.mp-nav-header-scrolled {
   background-color: $main-navy-blue !important;
   opacity: 0.92;
 
+
   $nav-link-color: get-font-color--using-bg-color($main-navy-blue);
+
   a {
     color: $nav-link-color !important;
     font-weight: bold;
@@ -48,11 +50,13 @@
   }
 }
 
-.nav-header {
+.mp-nav-header-default {
   transition: background-color 0.4s ease-out;
   background-color: $navbar-default-bg;
 
+
   $nav-link-color: get-font-color--using-bg-color($navbar-default-bg);
+
   a {
     color: $nav-link-color;
     font-weight: bold;
