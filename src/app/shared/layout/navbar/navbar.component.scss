@@ -17,22 +17,22 @@
 }
 
 .page-scroll-header {
-  background-color: $mc-navy-blue !important;
+  background-color: $main-navy-blue !important;
   opacity: 0.92;
 
-  $nav-link-color: get-font-color--using-bg-color($mc-navy-blue);
+  $nav-link-color: get-font-color--using-bg-color($main-navy-blue);
   a {
     color: $nav-link-color !important;
     font-weight: bold;
   }
 
   a:hover {
-    color: $mc-orange !important;
+    color: $main-orange !important;
     background-color: inherit;
   }
 
   .active > a {
-    background-color: lighten($mc-navy-blue, 15.0%);
+    background-color: lighten($main-navy-blue, 15.0%);
   }
 
   .navbar-toggle {
@@ -40,7 +40,7 @@
   }
 
   .navbar-toggle:hover, .navbar-toggle:focus {
-    background-color: lighten($mc-navy-blue, 10.0%) !important;
+    background-color: lighten($main-navy-blue, 10.0%) !important;
   }
 
   .icon-bar {
@@ -59,7 +59,7 @@
   }
 
   a:hover {
-    color: $mc-orange;
+    color: $main-orange;
     background-color: inherit;
   }
 }

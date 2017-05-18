@@ -9,7 +9,7 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 
   margin: $navbar-height 0 0 0;
   padding: 8.0rem 0 0 0;
-  background: linear-gradient(0deg, $i1oc-orange-o41, $i1oc-orange-o41), url('../../assets/img/record_store.jpg') center 0 no-repeat;
+  background: linear-gradient(0deg, $overlay-orange, $overlay-orange), url('../../assets/img/record_store.jpg') center 0 no-repeat;
   background-size: cover;
 
   button {
@@ -26,19 +26,19 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 
 .mp-bottom-body {
   padding: 2.0em 0 4.5em 0;
-  background: linear-gradient(0deg, $i2oc-blue-o71, $i2oc-blue-o71), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
+  background: linear-gradient(0deg, $overlay-blue, $overlay-blue), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
   background-size: cover;
 }
 
 .mp-main-header {
-  color: $nc-white;
+  color: $neutral-white;
   font-family: Pridi, sans-serif;
   font-weight: bold;
   font-size: $font-size-main-header;
 }
 
 .mp-subheader {
-  color: $ac-lighter-orange;
+  color: $accent-lighter-orange;
   font-family: Pridi, sans-serif;
   font-weight: bold;
   font-size: $font-size-sub-header;
@@ -46,7 +46,7 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 }
 
 .mp-body-text {
-  color: $nc-white;
+  color: $neutral-white;
   font-family: Titillium, sans-serif;
   font-size: $font-size-normal;
 }

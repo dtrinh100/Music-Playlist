@@ -3,9 +3,9 @@
 
 @function get-font-color--using-bg-color($bg-color) {
   @if (lightness($bg-color) > 50) {
-    @return $nc-black;
+    @return $neutral-black;
   } @else {
-    @return $nc-white;
+    @return $neutral-white;
   }
 }
 

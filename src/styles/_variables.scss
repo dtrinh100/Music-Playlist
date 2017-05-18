@@ -2,18 +2,18 @@
 // ------------------------ MP CUSTOM ------------------------ //
 // ----------------------------------------------------------- //
 
-$mc-navy-blue: #002f6c;
-$mc-orange: #E57200;
+$main-navy-blue: #002f6c;
+$main-orange: #E57200;
 
-$ac-lighter-blue: #4a7dbd;
-$ac-lighter-orange: #Fd8505;
+$accent-lighter-blue: #4a7dbd;
+$accent-lighter-orange: #Fd8505;
 
-$nc-white: #fff;
-$nc-black: #000;
-$nc-gray: #191919;
+$neutral-white: #fff;
+$neutral-black: #000;
+$neutral-gray: #191919;
 
-$i1oc-orange-o41: rgba(255,83,13,0.41);
-$i2oc-blue-o71: rgba(31,47,76,0.71);
+$overlay-orange: rgba(255,83,13,0.41);
+$overlay-blue: rgba(31,47,76,0.71);
 
 $font-size-normal: 1.89rem;
 $font-size-sub-header: 2.38rem;
@@ -59,7 +59,7 @@ $text-color:            $gray-dark !default;
 //** Global textual link color.
 $link-color:            $brand-primary !default;
 //** Link hover color set via `darken()` function.
-$link-hover-color:      $mc-orange !default;
+$link-hover-color:      $main-orange !default;
 //** Link hover decoration.
 $link-hover-decoration: underline !default;
 

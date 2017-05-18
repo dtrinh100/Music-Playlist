@@ -2,7 +2,7 @@
 @import '../../../../styles/_utils';
 
 
-$footer-bg-color: $nc-gray;
+$footer-bg-color: $neutral-gray;
 
 .mp-footer {
   background-color: $footer-bg-color;
@@ -11,11 +11,11 @@ $footer-bg-color: $nc-gray;
   font-family: Pridi, sans-serif;
 
   li > a {
-    color: $nc-white;
+    color: $neutral-white;
   }
 
   li > a:hover {
-    color: $mc-orange;
+    color: $main-orange;
     background-color: inherit;
   }
 
