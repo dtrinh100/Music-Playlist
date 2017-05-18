@@ -5,9 +5,9 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 
 
 .mp-top-body {
-  height: 40.0rem;
+  height: 54.0rem;
 
-  padding: 8.0rem 0 0 0;
+  padding-top: 12.0rem;
   background: linear-gradient(0deg, $overlay-orange, $overlay-orange), url('../../assets/img/record_store.jpg') center 0 no-repeat;
   background-size: cover;
 
@@ -24,7 +24,9 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 }
 
 .mp-bottom-body {
-  padding: 2.0em 0 4.5em 0;
+  height: 34.0em;
+
+  padding: 2.6em 0 4.5em 0;
   background: linear-gradient(0deg, $overlay-blue, $overlay-blue), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
   background-size: cover;
 }
