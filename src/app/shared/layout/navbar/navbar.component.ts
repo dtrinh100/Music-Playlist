@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 
-
 const SCROLL_DELIM: Number = 100;
 
 
