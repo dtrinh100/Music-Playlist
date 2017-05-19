@@ -57,18 +57,27 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <img class="pull-right mp-musical-note" src="src/assets/img/music_note.png">
+    <img class="pull-right mp-musical-note" src="src/assets/img/music_note.png"
+         [@musicalNoteVisibleState]="elementDict.musicalNote.isVisible" #musicalNote>
   </div>
 </div>
 
 <div class="row mp-bottom-body">
   <div class="col-xs-12">
-    <h2 class="mp-main-header">Things to do on MP</h2>
+    <div class="row" [@searchVisibleState]="elementDict.searchText.isVisible" #searchText>
+      <div class="col-xs-12">
+        <h2 class="mp-main-header">Things to do on MP</h2>
+      </div>
+      <div class="col-xs-12 mp-subheader">Search</div>
+      <div class="col-xs-12 mp-body-text">Search for your favorite songs</div>
+    </div>
+    <div class="row" [@listenVisibleState]="elementDict.listenText.isVisible" #listenText>
+      <div class="col-xs-12 mp-subheader">Listen</div>
+      <div class="col-xs-12 mp-body-text">Listen to some of the best music the web has to offer</div>
+    </div>
+    <div class="row" [@uploadVisibleState]="elementDict.uploadText.isVisible" #uploadText>
+      <div class="col-xs-12 mp-subheader">Upload</div>
+      <div class="col-xs-12 mp-body-text">Upload your own songs as an artist</div>
+    </div>
   </div>
-  <div class="col-xs-12 mp-subheader">Search</div>
-  <div class="col-xs-12 mp-body-text">Search for your favorite songs</div>
-  <div class="col-xs-12 mp-subheader">Listen</div>
-  <div class="col-xs-12 mp-body-text">Listen to some of the best music the web has to offer</div>
-  <div class="col-xs-12 mp-subheader">Upload</div>
-  <div class="col-xs-12 mp-body-text">Upload your own songs as an artist</div>
 </div>
