@@ -75,11 +75,7 @@ export class HomepageComponent implements OnInit {
    **/
   updateElementsBasedOnScrollEvent(evt) {
     for (let eleKey in this.elementDict) {
-      if (this.elementDict.hasOwnProperty(eleKey)) {
-        if (this.elementDict[eleKey].isVisible == "true") {
-          continue;
-        }
-
+      if (this.elementDict.hasOwnProperty(eleKey) && this.elementDict[eleKey].isVisible != "true") {
         this.elementDict[eleKey].isVisible = this.isVisible(this.elementDict[eleKey].viewChild);
       }
     }
