@@ -18,17 +18,25 @@ export class NavbarComponent implements OnInit {
   isScrolledDown: boolean;
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     this.isMenuOpen = false;
     this.isScrolledDown = false;
   }
 
+  /**
+   Helps toggle open the navbar-menu. This method is hooked into the navbar-button.
+   **/
   toggleMenuButton() {
     this.isMenuOpen = (this.isMenuOpen === false);
   }
 
+  /**
+   This function is called When the user scrolls around. If the user is
+   scrolled to the top, the navbar is gray. Otherwise, it's blue.
+   **/
   updateNavbarBasedOnScrollEvent(evt) {
     let currPos = (window.pageYOffset || evt.target.scrollTop) - (evt.target.clientTop || 0);
     this.isScrolledDown = (currPos > SCROLL_DELIM);
