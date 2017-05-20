@@ -20,6 +20,10 @@ $footer-bg-color: $neutral-gray;
     background-color: inherit;
   }
 
+  li > a:focus {
+    background-color: inherit;
+  }
+
   .mp-footer-sub-header {
     color: $text-muted;
     font-size: $font-size-sub-header;
