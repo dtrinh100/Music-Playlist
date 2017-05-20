@@ -7,7 +7,7 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 .mp-top-body {
   height: 54.0rem;
 
-  padding-top: 12.0rem;
+  padding-top: 14.0rem;
   background: linear-gradient(0deg, $overlay-orange, $overlay-orange), url('../../assets/img/record_store.jpg') center 0 no-repeat;
   background-size: cover;
 
@@ -15,11 +15,13 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
     width: 15%;
     min-width: $screen-xs * 0.3;  // 30% of the smallest screen
     font-size: $font-size-normal;
+    margin-top: 2.0rem;
   }
 
   .mp-title {
     color: white;
     font-weight: bold;
+    margin-bottom: 5.0rem;
   }
 }
 
@@ -78,7 +80,7 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 .mp-musical-note {
   width: 14.0rem;
   height: 16.0rem;
-  margin: 0 -1.4rem -11.0rem 0;
+  margin: 3.0rem -1.4rem -11.0rem 0;
 }
 
 .mp-search-input {
@@ -89,4 +91,5 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
 
 .mp-trending-header {
   font-weight: bold;
+  margin: 4.0rem 0 5.0rem 0;
 }

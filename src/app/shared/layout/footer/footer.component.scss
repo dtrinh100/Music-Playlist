@@ -9,6 +9,7 @@ $footer-bg-color: $neutral-gray;
   color: get-font-color--using-bg-color($footer-bg-color);
   font-size: $font-size-normal;
   font-family: Pridi, sans-serif;
+  padding-bottom: 3.0rem;
 
   li > a {
     color: $neutral-white;
@@ -26,4 +27,5 @@ $footer-bg-color: $neutral-gray;
 
 .mp-copyright {
   font-size: 1.3rem;
+  margin-top: 2.0rem;
 }
