@@ -9,6 +9,7 @@ $footer-bg-color: $neutral-gray;
   color: get-font-color--using-bg-color($footer-bg-color);
   font-size: $font-size-normal;
   font-family: Pridi, sans-serif;
+  padding: 2.0rem 0 3.0rem 0;
 
   li > a {
     color: $neutral-white;
@@ -19,11 +20,17 @@ $footer-bg-color: $neutral-gray;
     background-color: inherit;
   }
 
-  .row {
-    margin: 1.0em 0 0 0;
+  li > a:focus {
+    background-color: inherit;
+  }
+
+  .mp-footer-sub-header {
+    color: $text-muted;
+    font-size: $font-size-sub-header;
   }
 }
 
 .mp-copyright {
-  font-size: 1.3rem;
+  font-size: 1.8rem;
+  margin-top: 2.0rem;
 }

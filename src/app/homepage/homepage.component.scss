@@ -1,67 +1,66 @@
 @import '../../styles/_variables';
 
-
-$bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-windows
-
-
 .mp-top-body {
-  height: 54.0rem;
-
-  padding-top: 12.0rem;
+  padding-top: 17vh;
   background: linear-gradient(0deg, $overlay-orange, $overlay-orange), url('../../assets/img/record_store.jpg') center 0 no-repeat;
   background-size: cover;
 
-  button {
-    width: 15%;
-    min-width: $screen-xs * 0.3;  // 30% of the smallest screen
-    font-size: $font-size-normal;
-  }
-
   .mp-title {
+    $font-xs-mult: 1.3;
+
     color: white;
     font-weight: bold;
+    font-size: $font-size-main-header * $font-xs-mult;
+    margin-bottom: 6.0rem;
+  }
+
+  .mp-search-input {
+    width: 60%;
+    min-width: $screen-xs * 0.70;
+    margin: 0 auto 3.5rem auto;
+
+    input {
+      height: 5.3rem;
+    }
+  }
+
+  button {
+    width: 30%;
+    min-width: $screen-xs * 0.40;
+    font-size: $font-size-normal;
   }
 }
 
 .mp-bottom-body {
-  height: 34.0em;
-
-  padding: 2.6em 0 4.5em 0;
+  padding: 6.0rem 0 4.0rem 0;
   background: linear-gradient(0deg, $overlay-blue, $overlay-blue), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
   background-size: cover;
-}
 
-.mp-main-header {
-  color: $neutral-white;
-  font-family: Pridi, sans-serif;
-  font-weight: bold;
-  font-size: $font-size-main-header;
-}
-
-.mp-subheader {
-  color: $accent-lighter-orange;
-  font-family: Pridi, sans-serif;
-  font-weight: bold;
-  font-size: $font-size-sub-header;
-  margin: 1.0rem 0 1.0rem 0;
-}
-
-.mp-body-text {
-  color: $neutral-white;
-  font-family: Titillium, sans-serif;
-  font-size: $font-size-normal;
-}
-
-@media all and (max-width: $screen-xs) { /* screen size until 480px */
   .mp-main-header {
-    font-size: $font-size-main-header * $bottom-section-font-size-mult;
+    color: $neutral-white;
+    font-family: Pridi, sans-serif;
+    font-weight: bold;
+    font-size: $font-size-main-header;
   }
+
   .mp-subheader {
-    font-size: $font-size-sub-header * $bottom-section-font-size-mult;
+    color: $accent-lighter-orange;
+    font-family: Pridi, sans-serif;
+    font-weight: bold;
+    font-size: $font-size-sub-header;
+    margin: 1.0rem 0 1.0rem 0;
   }
+
   .mp-body-text {
-    font-size: $font-size-normal * $bottom-section-font-size-mult;
+    color: $neutral-white;
+    font-family: Titillium, sans-serif;
+    font-size: $font-size-normal;
   }
+}
+
+.mp-top-body, .mp-bottom-body {
+  height: 60vh;
+  min-height: 56.0rem;
 }
 
 .mp-album-art {
@@ -69,24 +68,115 @@ $bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-wind
   text-align: center;
 
   img {
-    background-color: black;  /* TODO: Temporary. Delete later. */
+    background-color: black; /* TODO: Temporary. Delete later. */
     width: 160px;
     height: 140px;
   }
 }
 
+.mp-trending-header {
+  font-weight: bold;
+  font-size: $font-size-main-header;
+  margin: 6.0rem 0 5.0rem 0;
+}
+
 .mp-musical-note {
   width: 14.0rem;
   height: 16.0rem;
-  margin: 0 -1.4rem -11.0rem 0;
+  margin: 3.0rem -1.4rem -8.0rem 0;
 }
 
-.mp-search-input {
-  width: 40%;
-  min-width: $screen-xs * 0.6;  // 60% of the smallest screen
-  margin: auto;
+@media all and (min-width: $screen-xs) {
+  .mp-top-body {
+    .mp-title {
+      font-size: $font-size-main-header * 1.6;
+    }
+  }
+
+  .mp-musical-note {
+    $font-sm-mult: 1.2;
+
+    width: 14.0rem * $font-sm-mult;
+    height: 16.0rem * $font-sm-mult;
+    margin: 3.0rem -1.4rem -10.0rem 0;
+  }
+
+  .mp-bottom-body {
+    padding: 5.0rem 0 4.0rem 0;
+  }
 }
 
-.mp-trending-header {
-  font-weight: bold;
+@media all and (min-width: $screen-sm) {
+  .mp-top-body {
+    .mp-title {
+      font-size: $font-size-main-header * 1.9;
+    }
+  }
+
+  .mp-trending-header {
+    font-size: $font-size-main-header * 1.5;
+  }
+
+  .mp-bottom-body {
+    $font-md-mult: 1.13;
+
+    padding: 4.0rem 0 4.0rem 0;
+
+    .mp-main-header {
+      font-size: $font-size-main-header * 1.4;
+    }
+
+    .mp-subheader {
+      font-size: $font-size-sub-header * $font-md-mult;
+    }
+
+    .mp-body-text {
+      font-size: $font-size-normal * $font-md-mult;
+    }
+  }
+}
+
+@media all and (min-width: $screen-md) {
+  .mp-top-body {
+    padding-top: 21vh;
+
+    .mp-title {
+      font-size: $font-size-main-header * 2.5;
+    }
+  }
+
+  .mp-trending-header {
+    font-size: $font-size-main-header * 1.8;
+  }
+
+  .mp-bottom-body {
+    $font-md-mult: 1.4;
+
+    padding: 7.0rem 0 4.0rem 0;
+
+    .mp-main-header {
+      font-size: $font-size-main-header * 1.7;
+    }
+
+    .mp-subheader {
+      font-size: $font-size-sub-header * $font-md-mult;
+    }
+
+    .mp-body-text {
+      font-size: $font-size-normal * $font-md-mult;
+    }
+  }
+
+  .mp-top-body, .mp-bottom-body {
+    height: 80vh;
+    min-height: 64.0rem;
+  }
+
+  .mp-musical-note {
+    $font-md-mult: 1.6;
+
+    width: 14.0rem * $font-md-mult;
+    height: 16.0rem * $font-md-mult;
+    margin: 3.0rem -1.4rem -16.0rem 0;
+  }
 }
