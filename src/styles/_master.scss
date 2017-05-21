@@ -1,0 +1,27 @@
+@import "_variables";
+
+
+@font-face {
+  font-family: 'Pridi'; src: url('../assets/font/Pridi-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Pridi'; font-weight: bold; src: url('../assets/font/Pridi-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Titillium'; src: url('../assets/font/TitilliumWeb-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Titillium'; font-weight: bold; src: url('../assets/font/TitilliumWeb-Bold.ttf');
+}
+
+
+body {
+  font-family: Titillium, sans-serif;
+}
+
+.mp-body-container {
+  margin-top: $navbar-height;
+}

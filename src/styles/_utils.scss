@@ -1,0 +1,11 @@
+@import '_variables';
+
+
+// returns the font-color based on the font's background-color
+@function get-font-color--using-bg-color($bg-color) {
+  @if (lightness($bg-color) > 50) {
+    @return $neutral-black;
+  } @else {
+    @return $neutral-white;
+  }
+}

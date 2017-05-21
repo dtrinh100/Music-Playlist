@@ -1,0 +1,29 @@
+@import '../../../../styles/_variables';
+@import '../../../../styles/_utils';
+
+
+$footer-bg-color: $neutral-gray;
+
+.mp-footer {
+  background-color: $footer-bg-color;
+  color: get-font-color--using-bg-color($footer-bg-color);
+  font-size: $font-size-normal;
+  font-family: Pridi, sans-serif;
+
+  li > a {
+    color: $neutral-white;
+  }
+
+  li > a:hover {
+    color: $main-orange;
+    background-color: inherit;
+  }
+
+  .row {
+    margin: 1.0em 0 0 0;
+  }
+}
+
+.mp-copyright {
+  font-size: 1.3rem;
+}

@@ -1,0 +1,92 @@
+@import '../../styles/_variables';
+
+
+$bottom-section-font-size-mult: 0.88;   // font-size multiplier for smaller-windows
+
+
+.mp-top-body {
+  height: 54.0rem;
+
+  padding-top: 12.0rem;
+  background: linear-gradient(0deg, $overlay-orange, $overlay-orange), url('../../assets/img/record_store.jpg') center 0 no-repeat;
+  background-size: cover;
+
+  button {
+    width: 15%;
+    min-width: $screen-xs * 0.3;  // 30% of the smallest screen
+    font-size: $font-size-normal;
+  }
+
+  .mp-title {
+    color: white;
+    font-weight: bold;
+  }
+}
+
+.mp-bottom-body {
+  height: 34.0em;
+
+  padding: 2.6em 0 4.5em 0;
+  background: linear-gradient(0deg, $overlay-blue, $overlay-blue), url('../../assets/img/bookshelf_headphones.jpg') center center no-repeat;
+  background-size: cover;
+}
+
+.mp-main-header {
+  color: $neutral-white;
+  font-family: Pridi, sans-serif;
+  font-weight: bold;
+  font-size: $font-size-main-header;
+}
+
+.mp-subheader {
+  color: $accent-lighter-orange;
+  font-family: Pridi, sans-serif;
+  font-weight: bold;
+  font-size: $font-size-sub-header;
+  margin: 1.0rem 0 1.0rem 0;
+}
+
+.mp-body-text {
+  color: $neutral-white;
+  font-family: Titillium, sans-serif;
+  font-size: $font-size-normal;
+}
+
+@media all and (max-width: $screen-xs) { /* screen size until 480px */
+  .mp-main-header {
+    font-size: $font-size-main-header * $bottom-section-font-size-mult;
+  }
+  .mp-subheader {
+    font-size: $font-size-sub-header * $bottom-section-font-size-mult;
+  }
+  .mp-body-text {
+    font-size: $font-size-normal * $bottom-section-font-size-mult;
+  }
+}
+
+.mp-album-art {
+  margin-bottom: 2.0rem;
+  text-align: center;
+
+  img {
+    background-color: black;  /* TODO: Temporary. Delete later. */
+    width: 160px;
+    height: 140px;
+  }
+}
+
+.mp-musical-note {
+  width: 14.0rem;
+  height: 16.0rem;
+  margin: 0 -1.4rem -11.0rem 0;
+}
+
+.mp-search-input {
+  width: 40%;
+  min-width: $screen-xs * 0.6;  // 60% of the smallest screen
+  margin: auto;
+}
+
+.mp-trending-header {
+  font-weight: bold;
+}

@@ -1,0 +1,65 @@
+@import '../../../../styles/_variables';
+@import '../../../../styles/_utils';
+
+
+.navbar, .navbar-brand {
+  font-size: $font-size-normal;
+}
+
+.mp-navbar-logo-img {
+  margin: -0.8rem 0 0 0;
+  height: 2.8rem;
+  width: 3.2rem;
+}
+
+.mp-nav-header-scrolled {
+  background-color: $main-navy-blue !important;
+  opacity: 0.92;
+
+
+  $nav-link-color: get-font-color--using-bg-color($main-navy-blue);
+
+  a {
+    color: $nav-link-color !important;
+    font-weight: bold;
+  }
+
+  a:hover {
+    color: $main-orange !important;
+    background-color: inherit;
+  }
+
+  .active > a {
+    background-color: lighten($main-navy-blue, 15.0%);
+  }
+
+  .navbar-toggle {
+    border-color: $nav-link-color;
+  }
+
+  .navbar-toggle:hover, .navbar-toggle:focus {
+    background-color: lighten($main-navy-blue, 10.0%) !important;
+  }
+
+  .icon-bar {
+    background-color: $nav-link-color;
+  }
+}
+
+.mp-nav-header-default {
+  transition: background-color 0.4s ease-out;
+  background-color: $navbar-default-bg;
+
+
+  $nav-link-color: get-font-color--using-bg-color($navbar-default-bg);
+
+  a {
+    color: $nav-link-color;
+    font-weight: bold;
+  }
+
+  a:hover {
+    color: $main-orange;
+    background-color: inherit;
+  }
+}
