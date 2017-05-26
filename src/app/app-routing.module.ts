@@ -1,11 +1,16 @@
 import { NgModule }              from '@angular/core';
 import { RouterModule, Routes }  from '@angular/router';
+//import { SharedModule } from '../shared';
 
 import { RegistrationComponent }   from './registration/registration.component';
+import { HomepageComponent } from './homepage/homepage.component';
+
 
 
 const appRoutes: Routes = [
-   { path: 'register', component: RegistrationComponent }
+
+   { path: 'register', component: RegistrationComponent },
+   { path: '', component: HomepageComponent }
 ];
 @NgModule({
   imports: [

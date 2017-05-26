@@ -1,0 +1,37 @@
+@import '../../../../styles/_variables';
+@import '../../../../styles/_utils';
+
+
+$footer-bg-color: $neutral-gray;
+
+.mp-footer {
+  background-color: $footer-bg-color;
+  color: get-font-color--using-bg-color($footer-bg-color);
+  font-size: $font-size-normal;
+  font-family: Pridi, sans-serif;
+  padding: 2.0rem 0 3.0rem 0;
+
+  li > a {
+    color: $neutral-white;
+    padding: 0 0 1.0rem 0;
+  }
+
+  li > a:hover {
+    color: $main-orange;
+    background-color: inherit;
+  }
+
+  li > a:focus {
+    background-color: inherit;
+  }
+
+  .mp-footer-sub-header {
+    color: $text-muted;
+    font-size: $font-size-sub-header;
+  }
+}
+
+.mp-copyright {
+  font-size: 1.8rem;
+  margin-top: 2.0rem;
+}

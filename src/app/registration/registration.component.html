@@ -1,3 +1,37 @@
-<p>
-  registration works!
-</p>
+<h1>Join the Music Project</h1>
+<div class="row">
+<div class="col-md-4-offset">
+  <form novalidate (ngSubmit)="onSubmit(user)" [formGroup]="user">
+    <label>
+      <span>Username</span>
+      <input
+        type="text"
+        name="name"
+        placeholder="Username">
+    </label>
+      <label>
+        <span>Email</span>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address">
+      </label>
+      <label>
+        <span>Password</span>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password">
+      </label>
+      <label>
+        <span>Confirm Password</span>
+        <input
+          type="password"
+          name="confirm"
+          placeholder="Confirm Password">
+      </label>
+
+    <button type="submit">Sign up</button>
+  </form>
+</div>
+</div>
