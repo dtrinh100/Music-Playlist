@@ -7,31 +7,62 @@
       <input
         type="text"
         name="name"
-        placeholder="Username">
+        placeholder="Username"
+        formControlName="username"
+        >
     </label>
+    <div class="error" *ngIf="user.get('username').hasError('required') && user.get('username').touched">
+        A username is required
+      </div>
+      <div class="error" *ngIf="user.get('username').hasError('minlength') && user.get('username').touched">
+        Minimum of 2 characters
+      </div>
+      <div class="error" *ngIf="user.get('username').hasError('maxlength') && user.get('username').touched">
+        Maximum of 30 characters
+      </div>
       <label>
         <span>Email</span>
         <input
           type="email"
           name="email"
-          placeholder="Email Address">
+          placeholder="Email Address"
+          formControlName="email"
+          >
       </label>
+      <div class="error" *ngIf="user.get('email').hasError('required') && user.get('email').touched">
+          A username is required
+        </div>
+         <div formGroupName="account">
       <label>
         <span>Password</span>
         <input
           type="password"
           name="password"
-          placeholder="Password">
+          placeholder="Password"
+          formControlName="password"
+          >
       </label>
+      <div class="error" *ngIf="user.get('account').get('password').hasError('required') && user.get('account').get('password').touched">
+        Email is required
+      </div>
+      <div class="error" *ngIf="user.get('account').get('password').hasError('minlength') && user.get('account').get('password').touched">
+        At least 8 characters is required
+      </div>
       <label>
         <span>Confirm Password</span>
         <input
           type="password"
           name="confirm"
-          placeholder="Confirm Password">
+          placeholder="Confirm Password"
+          formControlName="confirm"
+          >
       </label>
+      <div class="error" *ngIf="user.get('account').get('confirm').hasError('required') && user.get('account').get('confirm').touched">
+        Please confirm your password
+      </div>
+    </div>
 
-    <button type="submit">Sign up</button>
+    <button type="submit" [disabled]="user.invalid">SIGN UP</button>
   </form>
 </div>
 </div>

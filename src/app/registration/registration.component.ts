@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { User } from '../shared/interface/user.interface';
+
+// TODO check for actual email address and possibly write a validator to confirm that the "confirm"
+// field actually matches up with the password field
 
 @Component({
   selector: 'app-registration',
@@ -12,21 +15,21 @@ export class RegistrationComponent implements OnInit {
   user: FormGroup;
   User: User;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.user = new FormGroup({
-     username: new FormControl(''),
-     email: new FormControl(''),
-     account: new FormGroup({
-       password: new FormControl(''),
-       confirm: new FormControl('')
+    this.user = this.fb.group({
+     username: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
+     email: ['', [Validators.required]],
+     account: this.fb.group({
+       password: ['',  [Validators.required, Validators.minLength(8)]],
+       confirm: ['',  [Validators.required]]
      })
    });
   }
 
   onSubmit({ value, valid }: { value: User, valid: boolean }) {
     console.log(value, valid);
-  } 
+  }
 
 }
