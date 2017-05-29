@@ -3,8 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { User } from '../shared/interface/user.interface';
 
-// TODO check for actual email address and possibly write a validator to confirm that the "confirm"
-// field actually matches up with the password field
+// TODO trigger only 1 error at a time
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +19,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
     this.user = this.fb.group({
      username: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
-     email: ['', [Validators.required]],
+     email: ['', [Validators.required, Validators.email]],
      account: this.fb.group({
        password: ['',  [Validators.required, Validators.minLength(8)]],
        confirm: ['',  [Validators.required]]

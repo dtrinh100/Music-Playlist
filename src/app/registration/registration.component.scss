@@ -1,0 +1,40 @@
+@import '../../styles/variables';
+
+.mp-registration-header {
+  margin-bottom: 1vh;
+
+  & h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    @media all and (min-width: $screen-sm) {
+     font-size: 3.968rem;
+    }
+
+  }
+}
+
+.mp-form-registration  {
+  margin-left: 2vw;
+  @media all and (min-width: $screen-sm) {
+  margin-left: 1vw;
+}
+
+  & label {
+    font-size: 2rem;
+      @media all and (min-width: $screen-sm) {
+    font-size: 3rem;
+  }
+  }
+
+  & input {
+    width: 50vw;
+    @media all and (min-width: $screen-sm) {
+     width: 25vw;
+    }
+  }
+
+  & button {
+    min-width: 8vw;
+    font-size: 2rem;
+  }
+}

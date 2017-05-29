@@ -1,17 +1,13 @@
-<h1>Join the Music Project</h1>
 <div class="row">
-<div class="col-md-4-offset">
-  <form novalidate (ngSubmit)="onSubmit(user)" [formGroup]="user">
-    <label>
-      <span>Username</span>
-      <input
-        type="text"
-        name="name"
-        placeholder="Username"
-        formControlName="username"
-        >
-    </label>
-    <div class="error" *ngIf="user.get('username').hasError('required') && user.get('username').touched">
+  <div class="mp-registration-header col-xs-12">
+    <h1>Join the Music Project</h1>
+  </div>
+</div>
+<div class="row">
+  <form class="mp-form-registration" novalidate (ngSubmit)="onSubmit(user)" [formGroup]="user">
+
+    <div class="form-group">
+      <div class="error" *ngIf="user.get('username').hasError('required') && user.get('username').touched">
         A username is required
       </div>
       <div class="error" *ngIf="user.get('username').hasError('minlength') && user.get('username').touched">
@@ -21,48 +17,55 @@
         Maximum of 30 characters
       </div>
       <label>
-        <span>Email</span>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          formControlName="email"
-          >
+        <span>Username</span>
       </label>
+      <input type="text" class="form-control" name="name" placeholder="Username" formControlName="username">
+    </div>
+
+    <div class="form-group">
       <div class="error" *ngIf="user.get('email').hasError('required') && user.get('email').touched">
-          A username is required
-        </div>
-         <div formGroupName="account">
+        An email address is required
+      </div>
+      <div class="error" *ngIf="user.get('email').hasError('email') && user.get('email').touched">
+        Invalid email address
+      </div>
       <label>
-        <span>Password</span>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          formControlName="password"
-          >
+        <span>Email</span>
       </label>
+
+      <input type="email" name="email" class="form-control" placeholder="Email Address" formControlName="email">
+
+    </div>
+
+    <div formGroupName="account">
       <div class="error" *ngIf="user.get('account').get('password').hasError('required') && user.get('account').get('password').touched">
-        Email is required
+        Password is required
       </div>
       <div class="error" *ngIf="user.get('account').get('password').hasError('minlength') && user.get('account').get('password').touched">
         At least 8 characters is required
       </div>
-      <label>
-        <span>Confirm Password</span>
-        <input
-          type="password"
-          name="confirm"
-          placeholder="Confirm Password"
-          formControlName="confirm"
-          >
-      </label>
-      <div class="error" *ngIf="user.get('account').get('confirm').hasError('required') && user.get('account').get('confirm').touched">
-        Please confirm your password
+      <div class="form-group">
+        <label>
+          <span>Password</span>
+        </label>
+
+        <input type="password" name="password" class="form-control" placeholder="Password" formControlName="password">
+      </div>
+
+      <div class="form-group">
+        <div class="error" *ngIf="user.get('account').get('confirm').hasError('required') && user.get('account').get('confirm').touched">
+          Please confirm your password
+        </div>
+        <label>
+          <span>Confirm Password</span>
+        </label>
+
+        <input type="password" name="confirm" class="form-control" placeholder="Confirm Password" formControlName="confirm">
+
       </div>
     </div>
-
-    <button type="submit" [disabled]="user.invalid">SIGN UP</button>
+    <div class="form-group">
+      <button class="btn btn-primary" type="submit" [disabled]="user.invalid">SIGN UP</button>
+    </div>
   </form>
-</div>
 </div>
