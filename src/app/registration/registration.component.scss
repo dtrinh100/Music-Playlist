@@ -1,40 +1,91 @@
 @import '../../styles/variables';
-
 .mp-registration-header {
   margin-bottom: 1vh;
-
   & h1 {
     font-size: 3rem;
     font-weight: bold;
     @media all and (min-width: $screen-sm) {
-     font-size: 3.968rem;
+      font-size: 3.968rem;
     }
-
   }
 }
-
-.mp-form-registration  {
-  margin-left: 2vw;
+.mp-form-registration {
+  margin-left: 10vw;
   @media all and (min-width: $screen-sm) {
-  margin-left: 1vw;
-}
-
+    margin-left: 1vw;
+  }
   & label {
     font-size: 2rem;
-      @media all and (min-width: $screen-sm) {
-    font-size: 3rem;
-  }
-  }
-
-  & input {
-    width: 50vw;
     @media all and (min-width: $screen-sm) {
-     width: 25vw;
+      font-size: 3rem;
     }
   }
-
+  & input {
+    width: 70vw;
+    @media all and (min-width: $screen-sm) {
+      width: 30vw;
+    }
+    @media all and (min-width: $screen-lg) {
+      width: 25vw;
+    }
+  }
   & button {
     min-width: 8vw;
     font-size: 2rem;
   }
+}
+.mp-form-error {
+  margin-left: 5vw;
+  position: relative;
+  width: 70vw;
+  @media all and (min-width: $screen-sm) {
+    width: 30vw;
+  }
+  /*@media all and (min-width: $screen-lg) {
+    width: 25vw;
+    margin-left: 0
+  } */
+  color: rgba(255,0,51, 1);
+  border: 1px solid rgba(255,0,51, 1);
+  border-top-left-radius: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 0;
+  padding: 1em;
+  margin-bottom: 1em;
+  &::before {
+    content: ' ';
+    position: absolute;
+    height: 0;
+    width: 0;
+    left: -29px;
+    top: 10px;
+    border: 15px solid;
+    border-color: transparent rgba(255,0,51, 1) transparent transparent;
+  }
+  &::after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -28px;
+    top: 10px;
+    border: 15px solid;
+    border-color: transparent #fff transparent transparent;
+  }
+
+  & .fa-exclamation-circle {
+    position: absolute;
+    top: 14px;
+    left: -36px;
+    font-size: 1.5em;
+    @media all and (min-width: $screen-sm) {
+      top: 10px;
+      left: -42px;
+      font-size: 2em;
+    }
+  }
+}
+.mp-form-error-message {
+  font-weight: bold;
 }

@@ -7,14 +7,17 @@
   <form class="mp-form-registration" novalidate (ngSubmit)="onSubmit(user)" [formGroup]="user">
 
     <div class="form-group">
-      <div class="error" *ngIf="user.get('username').hasError('required') && user.get('username').touched">
-        A username is required
+      <div class="mp-form-error" *ngIf="user.get('username').hasError('required') && user.get('username').touched">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span class="mp-form-error-message">A username is required</span>
       </div>
-      <div class="error" *ngIf="user.get('username').hasError('minlength') && user.get('username').touched">
-        Minimum of 2 characters
+      <div class="mp-form-error" *ngIf="user.get('username').hasError('minlength') && user.get('username').touched">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span class="mp-form-error-message">Must have a minimum of 2 characters</span>
       </div>
-      <div class="error" *ngIf="user.get('username').hasError('maxlength') && user.get('username').touched">
-        Maximum of 30 characters
+      <div class="mp-form-error" *ngIf="user.get('username').hasError('maxlength') && user.get('username').touched">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span class="mp-form-error-message">Username can only have a maximum of 30 characters</span>
       </div>
       <label>
         <span>Username</span>
@@ -23,11 +26,13 @@
     </div>
 
     <div class="form-group">
-      <div class="error" *ngIf="user.get('email').hasError('required') && user.get('email').touched">
-        An email address is required
+      <div class="mp-form-error" *ngIf="user.get('email').hasError('required') && user.get('email').touched">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span class="mp-form-error-message">An email address is required</span>
       </div>
-      <div class="error" *ngIf="user.get('email').hasError('email') && user.get('email').touched">
-        Invalid email address
+      <div class="mp-form-error" *ngIf="user.get('email').hasError('email') && user.get('email').touched">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span class="mp-form-error-message">Invalid email address</span>
       </div>
       <label>
         <span>Email</span>
@@ -38,11 +43,13 @@
     </div>
 
     <div formGroupName="account">
-      <div class="error" *ngIf="user.get('account').get('password').hasError('required') && user.get('account').get('password').touched">
-        Password is required
+      <div class="mp-form-error" *ngIf="user.get('account').get('password').hasError('required') && user.get('account').get('password').touched">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span class="mp-form-error-message">Password is required</span>
       </div>
-      <div class="error" *ngIf="user.get('account').get('password').hasError('minlength') && user.get('account').get('password').touched">
-        At least 8 characters is required
+      <div class="mp-form-error" *ngIf="user.get('account').get('password').hasError('minlength') && user.get('account').get('password').touched">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span class="mp-form-error-message">Must have a minimum of 8 characters</span>
       </div>
       <div class="form-group">
         <label>
@@ -53,8 +60,9 @@
       </div>
 
       <div class="form-group">
-        <div class="error" *ngIf="user.get('account').get('confirm').hasError('required') && user.get('account').get('confirm').touched">
-          Please confirm your password
+        <div class="mp-form-error" *ngIf="user.get('account').get('confirm').hasError('required') && user.get('account').get('confirm').touched">
+          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+          <span class="mp-form-error-message">Please confirm your password</span>
         </div>
         <label>
           <span>Confirm Password</span>
