@@ -3,7 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { User } from '../shared/interface/user.interface';
 
-// TODO trigger only 1 error at a time
+import { RegistrationDirective } from './registration.directive';
+
+// TODO trigger only 1 error at a time, implement sessionStorage to save fields of current sessions, implement input field highlights,
+// implment a custom validator for confirms field
 
 @Component({
   selector: 'app-registration',

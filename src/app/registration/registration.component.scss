@@ -15,11 +15,10 @@
     margin-left: 1vw;
   }
   & label {
+    position: relative;
     font-size: 2rem;
-    @media all and (min-width: $screen-sm) {
-      font-size: 3rem;
-    }
   }
+
   & input {
     width: 70vw;
     @media all and (min-width: $screen-sm) {
@@ -41,12 +40,11 @@
   @media all and (min-width: $screen-sm) {
     width: 30vw;
   }
-  /*@media all and (min-width: $screen-lg) {
-    width: 25vw;
-    margin-left: 0
-  } */
-  color: rgba(255,0,51, 1);
-  border: 1px solid rgba(255,0,51, 1);
+  @media all and (min-width: $screen-lg) {
+    margin-left: 0;
+  }
+  color: $form-error;
+  border: 1px solid $form-error;
   border-top-left-radius: 0;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -61,7 +59,7 @@
     left: -29px;
     top: 10px;
     border: 15px solid;
-    border-color: transparent rgba(255,0,51, 1) transparent transparent;
+    border-color: transparent $form-error transparent transparent;
   }
   &::after {
     content: ' ';
@@ -80,12 +78,39 @@
     left: -36px;
     font-size: 1.5em;
     @media all and (min-width: $screen-sm) {
+      font-size: 2em;
       top: 10px;
       left: -42px;
-      font-size: 2em;
     }
   }
+
 }
+
 .mp-form-error-message {
   font-weight: bold;
+}
+
+.mp-input-block {
+  display: inline-block;
+}
+
+.mp-input-wrapper {
+  position: relative;
+
+  & .fa-exclamation-circle  {
+    position: absolute;
+    font-size: 1.2em;
+    color: $form-error;
+    top: -.5em;
+    right: -0.3em;
+}
+
+& .fa-check-circle  {
+  position: absolute;
+  font-size: 1.2em;
+  color: $form-valid;
+  top: -.5em;
+  right: -0.3em;
+}
+
 }

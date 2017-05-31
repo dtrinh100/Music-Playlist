@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HomepageComponent } from './homepage/homepage.component';
 
+import { RegistrationDirective } from './registration/registration.directive';
+
 import {
   SharedModule,
   NavbarComponent,
@@ -24,7 +26,8 @@ import {
     RegistrationComponent,
     NavbarComponent,
     FooterComponent,
-    HomepageComponent
+    HomepageComponent,
+    RegistrationDirective
   ],
 
   imports: [
