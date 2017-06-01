@@ -114,3 +114,13 @@
 }
 
 }
+
+.mp-form-outline-red {
+   outline: none;
+   border-color: $form-error;
+}
+
+.mp-form-outline-green {
+  outline: none;
+  border-color: $form-valid;
+}

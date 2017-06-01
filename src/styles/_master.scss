@@ -25,3 +25,12 @@ body {
 .mp-body-container {
   margin-top: $navbar-height;
 }
+
+/* Removes Chrome outline defaults */
+*:focus {
+  outline: none;
+}
+
+.input-override:focus {
+  box-shadow: none !important;
+}

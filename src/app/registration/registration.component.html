@@ -26,7 +26,7 @@
         <div class="mp-input-wrapper">
           <i *ngIf="user.get('username').status === 'INVALID' && user.get('username').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
           <i *ngIf="user.get('username').status === 'VALID' && user.get('username').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-          <input type="text" class="form-control" name="name" placeholder="Username"  validateOnBlur [validateFormControl]="user.get('username')" formControlName="username">
+          <input type="text" [ngClass]="{'mp-form-outline-green': user.get('username').status === 'VALID' && user.get('username').dirty, 'mp-form-outline-red': user.get('username').status === 'INVALID' && user.get('username').dirty}" class="form-control input-override" name="name" placeholder="Username"  validateOnBlur [validateFormControl]="user.get('username')" formControlName="username">
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
           <div class="mp-input-wrapper">
             <i *ngIf="user.get('email').status === 'INVALID' && user.get('email').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
             <i *ngIf="user.get('email').status === 'VALID' && user.get('email').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-            <input type="email" name="email" class="form-control" validateOnBlur [validateFormControl]="user.get('email')" placeholder="Email Address" formControlName="email">
+            <input type="email" name="email" [ngClass]="{'mp-form-outline-green': user.get('email').status === 'VALID' && user.get('email').dirty, 'mp-form-outline-red': user.get('email').status === 'INVALID' && user.get('email').dirty}" class="form-control input-override" validateOnBlur [validateFormControl]="user.get('email')" placeholder="Email Address" formControlName="email">
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <div class="mp-input-wrapper">
             <i *ngIf="user.get('account').get('password').status === 'INVALID' && user.get('account').get('password').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
             <i *ngIf="user.get('account').get('password').status === 'VALID' && user.get('account').get('password').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-            <input type="password" name="password" class="form-control" placeholder="Password" validateOnBlur [validateFormControl]="user.get('account').get('password')" formControlName="password">
+            <input type="password" name="password" [ngClass]="{'mp-form-outline-green': user.get('account').get('password').status === 'VALID' && user.get('account').get('password').dirty, 'mp-form-outline-red': user.get('account').get('password').status === 'INVALID' && user.get('account').get('password').dirty}" class="form-control input-override" placeholder="Password" validateOnBlur [validateFormControl]="user.get('account').get('password')" formControlName="password">
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@
           <div class="mp-input-wrapper">
             <i *ngIf="user.get('account').get('confirm').status === 'INVALID' && user.get('account').get('confirm').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
             <i *ngIf="user.get('account').get('confirm').status === 'VALID' && user.get('account').get('confirm').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-            <input type="password" name="confirm" class="form-control" placeholder="Confirm Password" validateOnBlur [validateFormControl]="user.get('account').get('confirm')" formControlName="confirm">
+            <input type="password" name="confirm" [ngClass]="{'mp-form-outline-green': user.get('account').get('confirm').status === 'VALID' && user.get('account').get('confirm').dirty, 'mp-form-outline-red': user.get('account').get('confirm').status === 'INVALID' && user.get('account').get('confirm').dirty}" class="form-control input-override" placeholder="Confirm Password" validateOnBlur [validateFormControl]="user.get('account').get('confirm')" formControlName="confirm">
           </div>
        </div>
       </div>
