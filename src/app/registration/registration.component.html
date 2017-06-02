@@ -7,18 +7,11 @@
   <form class="mp-form-registration" novalidate (ngSubmit)="onSubmit(user)" [formGroup]="user">
 
     <div class="form-group">
-      <div class="mp-form-error" *ngIf="user.get('username').hasError('required') && user.get('username').touched">
+      <div class="mp-form-error" *ngIf="formErrors.username">
         <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-        <span class="mp-form-error-message">A username is required</span>
+        <span class="mp-form-error-message">{{formErrors.username}}</span>
       </div>
-      <div class="mp-form-error" *ngIf="user.get('username').hasError('minlength') && user.get('username').touched">
-        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-        <span class="mp-form-error-message">Must have a minimum of 2 characters</span>
-      </div>
-      <div class="mp-form-error" *ngIf="user.get('username').hasError('maxlength') && user.get('username').touched">
-        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-        <span class="mp-form-error-message">Username can only have a maximum of 30 characters</span>
-      </div>
+
       <div class="mp-input-block">
         <label>
           <span>Username</span>
@@ -26,41 +19,35 @@
         <div class="mp-input-wrapper">
           <i *ngIf="user.get('username').status === 'INVALID' && user.get('username').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
           <i *ngIf="user.get('username').status === 'VALID' && user.get('username').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-          <input type="text" [ngClass]="{'mp-form-outline-green': user.get('username').status === 'VALID' && user.get('username').dirty, 'mp-form-outline-red': user.get('username').status === 'INVALID' && user.get('username').dirty}" class="form-control input-override" name="name" placeholder="Username"  validateOnBlur [validateFormControl]="user.get('username')" formControlName="username">
+          <input type="text" [ngClass]="{'mp-form-outline-green': user.get('username').status === 'VALID' && user.get('username').dirty, 'mp-form-outline-red': user.get('username').status === 'INVALID' && user.get('username').dirty}" class="form-control input-override"
+              name="name" placeholder="Username" validateOnBlur [validateFormControl]="user.get('username')" formControlName="username">
         </div>
       </div>
     </div>
 
     <div class="form-group">
-      <div class="mp-form-error" *ngIf="user.get('email').hasError('required') && user.get('email').touched">
+      <div class="mp-form-error" *ngIf="formErrors.email">
         <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-        <span class="mp-form-error-message">An email address is required</span>
-      </div>
-      <div class="mp-form-error" *ngIf="user.get('email').hasError('email') && user.get('email').touched">
-        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-        <span class="mp-form-error-message">Invalid email address</span>
+        <span class="mp-form-error-message">{{formErrors.email}}</span>
       </div>
       <div class="mp-input-block">
         <label>
           <span>Email</span>
         </label>
-          <div class="mp-input-wrapper">
-            <i *ngIf="user.get('email').status === 'INVALID' && user.get('email').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
-            <i *ngIf="user.get('email').status === 'VALID' && user.get('email').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-            <input type="email" name="email" [ngClass]="{'mp-form-outline-green': user.get('email').status === 'VALID' && user.get('email').dirty, 'mp-form-outline-red': user.get('email').status === 'INVALID' && user.get('email').dirty}" class="form-control input-override" validateOnBlur [validateFormControl]="user.get('email')" placeholder="Email Address" formControlName="email">
-          </div>
+        <div class="mp-input-wrapper">
+          <i *ngIf="user.get('email').status === 'INVALID' && user.get('email').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+          <i *ngIf="user.get('email').status === 'VALID' && user.get('email').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
+          <input type="email" name="email" [ngClass]="{'mp-form-outline-green': user.get('email').status === 'VALID' && user.get('email').dirty, 'mp-form-outline-red': user.get('email').status === 'INVALID' && user.get('email').dirty}" class="form-control input-override"
+              validateOnBlur [validateFormControl]="user.get('email')" placeholder="Email Address" formControlName="email">
         </div>
       </div>
+    </div>
 
 
     <div formGroupName="account">
-      <div class="mp-form-error" *ngIf="user.get('account').get('password').hasError('required') && user.get('account').get('password').touched">
+      <div class="mp-form-error" *ngIf="formErrors.password">
         <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-        <span class="mp-form-error-message">Password is required</span>
-      </div>
-      <div class="mp-form-error" *ngIf="user.get('account').get('password').hasError('minlength') && user.get('account').get('password').touched">
-        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-        <span class="mp-form-error-message">Must have a minimum of 8 characters</span>
+        <span class="mp-form-error-message">{{formErrors.password}}</span>
       </div>
       <div class="form-group">
         <div class="mp-input-block">
@@ -70,15 +57,16 @@
           <div class="mp-input-wrapper">
             <i *ngIf="user.get('account').get('password').status === 'INVALID' && user.get('account').get('password').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
             <i *ngIf="user.get('account').get('password').status === 'VALID' && user.get('account').get('password').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-            <input type="password" name="password" [ngClass]="{'mp-form-outline-green': user.get('account').get('password').status === 'VALID' && user.get('account').get('password').dirty, 'mp-form-outline-red': user.get('account').get('password').status === 'INVALID' && user.get('account').get('password').dirty}" class="form-control input-override" placeholder="Password" validateOnBlur [validateFormControl]="user.get('account').get('password')" formControlName="password">
+            <input type="password" name="password" [ngClass]="{'mp-form-outline-green': user.get('account').get('password').status === 'VALID' && user.get('account').get('password').dirty, 'mp-form-outline-red': user.get('account').get('password').status === 'INVALID' && user.get('account').get('password').dirty}"
+                class="form-control input-override" placeholder="Password" validateOnBlur [validateFormControl]="user.get('account').get('password')" formControlName="password">
           </div>
         </div>
       </div>
 
       <div class="form-group">
-        <div class="mp-form-error" *ngIf="user.get('account').get('confirm').hasError('required') && user.get('account').get('confirm').touched">
+        <div class="mp-form-error" *ngIf="formErrors.confirm">
           <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-          <span class="mp-form-error-message">Please confirm your password</span>
+          <span class="mp-form-error-message">{{formErrors.confirm}}</span>
         </div>
 
         <div class="mp-input-block">
@@ -88,9 +76,10 @@
           <div class="mp-input-wrapper">
             <i *ngIf="user.get('account').get('confirm').status === 'INVALID' && user.get('account').get('confirm').dirty" class="fa fa-exclamation-circle" aria-hidden="true"></i>
             <i *ngIf="user.get('account').get('confirm').status === 'VALID' && user.get('account').get('confirm').dirty" class="fa fa-check-circle" aria-hidden="true"></i>
-            <input type="password" name="confirm" [ngClass]="{'mp-form-outline-green': user.get('account').get('confirm').status === 'VALID' && user.get('account').get('confirm').dirty, 'mp-form-outline-red': user.get('account').get('confirm').status === 'INVALID' && user.get('account').get('confirm').dirty}" class="form-control input-override" placeholder="Confirm Password" validateOnBlur [validateFormControl]="user.get('account').get('confirm')" formControlName="confirm">
+            <input type="password" name="confirm" [ngClass]="{'mp-form-outline-green': user.get('account').get('confirm').status === 'VALID' && user.get('account').get('confirm').dirty, 'mp-form-outline-red': user.get('account').get('confirm').status === 'INVALID' && user.get('account').get('confirm').dirty}"
+                class="form-control input-override" placeholder="Confirm Password" validateOnBlur [validateFormControl]="user.get('account').get('confirm')" formControlName="confirm">
           </div>
-       </div>
+        </div>
       </div>
     </div>
     <div class="form-group">
