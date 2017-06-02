@@ -31,6 +31,7 @@ body {
   outline: none;
 }
 
+/* Removes the bootstrap default box shadows on input boxes */
 .input-override:focus {
   box-shadow: none !important;
 }
