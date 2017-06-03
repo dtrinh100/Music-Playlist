@@ -11,10 +11,14 @@ import { HomepageComponent } from './homepage/homepage.component';
 
 import { RegistrationDirective } from './registration/registration.directive';
 
+
+
 import {
   SharedModule,
   NavbarComponent,
-  FooterComponent
+  FooterComponent,
+  UserService,
+  User
 } from './shared'
 
 

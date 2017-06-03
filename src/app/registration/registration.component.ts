@@ -1,26 +1,36 @@
 import { Component, OnInit } from '@angular/core';
+import { Router }            from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
-import { User } from '../shared/interface/user.interface';
+import { UserInterface } from '../shared/interface/userinterface.interface';
+import { User } from '../shared/models/user';
 
 import { RegistrationDirective } from './registration.directive';
+
+import { UserService } from '../shared/services';
 
 // TODO write unit tests
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  styleUrls: ['./registration.component.scss'],
+  providers: [UserService]
 })
 export class RegistrationComponent implements OnInit {
   user: FormGroup;
-  User: User;
+  User: UserInterface;
+  UserModel: User;
   initialUsername: string; // either an empty initial username or get one from the session storage
   inititalEmail: string;
   initialPassword: string;
   initialConfirm: string;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
 
@@ -74,8 +84,10 @@ export class RegistrationComponent implements OnInit {
   }
    }
 
-  onSubmit({ value, valid }: { value: User, valid: boolean }) {
-    console.log(value, valid);
+  onSubmit({ value, valid }: { value: UserInterface, valid: boolean }) {
+    this.userService.create(value.username, value.email, value.account.password, value.account.confirm).then(user => {
+      console.log(user);
+    }); 
   }
 
   onValueChanged(data?: any) {
