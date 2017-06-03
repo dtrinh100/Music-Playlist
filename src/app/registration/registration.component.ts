@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { User } from '../shared/interface/user.interface';
 
 import { RegistrationDirective } from './registration.directive';
 
-// TODO trigger only 1 error at a time, implment a custom validator for confirms field
+// TODO write unit tests
 
 @Component({
   selector: 'app-registration',
@@ -44,15 +44,18 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.initialConfirm = sessionStorage.getItem("formConfirm");
     }
+
+
     this.user = this.fb.group({
       username: [this.initialUsername, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
       email: [this.inititalEmail, [Validators.required, Validators.email]],
       account: this.fb.group({
         password: [this.initialPassword, [Validators.required, Validators.minLength(8)]],
-        confirm: [this.initialConfirm, [Validators.required]]
+        confirm: [this.initialConfirm, [Validators.required, this.validatePasswordConfirmation.bind(this)]]
       })
 
     });
+
 
     this.user.valueChanges.subscribe(value => {
       sessionStorage.setItem("formUsername", value.username);
@@ -64,6 +67,12 @@ export class RegistrationComponent implements OnInit {
 
     this.onValueChanged();
   }
+
+  validatePasswordConfirmation(control: FormControl): any {
+  if(this.user) {
+    return control.value === this.user.get('account').get('password').value ? null : { notsame: true}
+  }
+   }
 
   onSubmit({ value, valid }: { value: User, valid: boolean }) {
     console.log(value, valid);
@@ -81,10 +90,6 @@ export class RegistrationComponent implements OnInit {
         control = form.get("account").get(field); // takes into account the nested fields
       }
 
-      //if (control.value === "account") {
-      //  console.log("Hello world");
-      //}
-
       if (control && control.dirty && !control.valid) {
         const messages = this.validationMessages[field];
         for (const key in control.errors) {
@@ -93,6 +98,8 @@ export class RegistrationComponent implements OnInit {
       }
     }
   }
+
+
 
   formErrors = {
     'username': '',
@@ -118,7 +125,8 @@ export class RegistrationComponent implements OnInit {
       'minlength': 'Must have a minimum of 8 characters'
     },
     'confirm': {
-      'required': 'Please confirm your password'
+      'required': 'Please confirm your password',
+      'notsame': 'Confirm does not match with password'
     }
 
   }
