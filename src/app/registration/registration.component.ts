@@ -9,7 +9,7 @@ import { RegistrationDirective } from './registration.directive';
 
 import { UserService } from '../shared/services';
 
-// TODO write unit tests
+// TODO tests form submission, mock the service
 
 @Component({
   selector: 'app-registration',
@@ -19,12 +19,13 @@ import { UserService } from '../shared/services';
 })
 export class RegistrationComponent implements OnInit {
   user: FormGroup;
-  User: UserInterface;
-  UserModel: User;
+  User: UserInterface; // The UserInterface is an interface used specifcally only for forms
+  UserModel: User; // The User type is used as a model for REST API calls, not to be confused with the type UserInterface
   initialUsername: string; // either an empty initial username or get one from the session storage
   inititalEmail: string;
   initialPassword: string;
   initialConfirm: string;
+  payload: object;
 
   constructor(
     private fb: FormBuilder,
@@ -85,9 +86,16 @@ export class RegistrationComponent implements OnInit {
    }
 
   onSubmit({ value, valid }: { value: UserInterface, valid: boolean }) {
-    this.userService.create(value.username, value.email, value.account.password, value.account.confirm).then(user => {
-      console.log(user);
-    }); 
+    this.payload = {};
+    this.payload["username"] = value.username;
+    this.payload["email"] = value.email;
+    this.payload["password"] = value.account.password;
+    this.payload["confirm"] = value.account.confirm;
+    this.userService.create(this.payload["username"], this.payload["email"], this.payload["password"], this.payload["confirm"]).then(data => {
+      
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   onValueChanged(data?: any) {
