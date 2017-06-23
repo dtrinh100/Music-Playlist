@@ -26,7 +26,15 @@ export class UserService {
     const url = `${this.usersUrl}/${id}`;
     return this.http.get(url)
       .toPromise()
-      .then(response => response.json().data as User)
+      .then(response => response.json().data)
+      .catch(this.handleError);
+  }
+
+  create(username: string, email: string, password: string, confirm: string): Promise<Response> {
+    return this.http
+      .post(this.usersUrl, JSON.stringify({username: username, email: email, password: password, confirm: confirm }), {headers: this.headers})
+      .toPromise()
+      .then(res => res.json().data as Response)
       .catch(this.handleError);
   }
 
@@ -38,20 +46,12 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  create(username: string, email: string, password: string, confirm: string): Promise<User> {
-    return this.http
-      .post(this.usersUrl, JSON.stringify({username: username, email: email, password: password, confirm: confirm }), {headers: this.headers})
-      .toPromise()
-      .then(res => res.json().data as User)
-      .catch(this.handleError);
-  }
-
-  update(user: User): Promise<User> {
+ update(user: User): Promise<Response> {
     const url = `${this.usersUrl}/${user.id}`;
     return this.http
       .put(url, JSON.stringify(user), {headers: this.headers})
       .toPromise()
-      .then(() => user)
+      .then(res => res.json().data as Response)
       .catch(this.handleError);
   }
 
