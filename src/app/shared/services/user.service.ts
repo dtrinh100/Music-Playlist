@@ -26,7 +26,7 @@ export class UserService {
     const url = `${this.usersUrl}/${id}`;
     return this.http.get(url)
       .toPromise()
-      .then(response => response.json().data)
+      .then(response => response.json().data as User)
       .catch(this.handleError);
   }
 
