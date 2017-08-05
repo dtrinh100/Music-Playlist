@@ -1,8 +1,11 @@
 package handler
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/dtrinh100/Music-Playlist/src/api/model"
 
 	"gopkg.in/mgo.v2"
 )
@@ -55,9 +58,23 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Post User creates the user account
-func PostUser(env *Env, w http.ResponseWriter, r *http.Request) error {
-	log.Print("Hello World!")
+// PostUser creates the user account
+func PostUser(env *Env, w http.ResponseWriter, req *http.Request) error {
+
+	decoder := json.NewDecoder(req.Body) // reads in request body
+	var user model.User
+	err := decoder.Decode(&user) // puts the JSON data into the user structure defined in the model package
+
+	userData, err := json.Marshal(user)
+
+	defer req.Body.Close()
+	if err != nil {
+		log.Print(err) // In real life, we would store this data remotely
+		//	w.Write()      // TODO: figure out how to check types seperately
+		return StatusError{500, err}
+	}
+
+	w.Write(userData)
 
 	return nil
 }
