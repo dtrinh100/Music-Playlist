@@ -1,13 +1,8 @@
 package handler
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
-
-	"github.com/dtrinh100/Music-Playlist/src/api/model"
-
-	"gopkg.in/mgo.v2"
 )
 
 // Error represents a handler error. It provides methods for a HTTP status
@@ -31,11 +26,6 @@ func (se StatusError) Status() int {
 	return se.Code
 }
 
-// Move this into own file later on
-type Env struct {
-	DB *mgo.Session
-}
-
 // The Handler struct that takes a configured Env and a function matching
 // our useful signature.
 type Handler struct {
@@ -56,25 +46,4 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				http.StatusInternalServerError)
 		}
 	}
-}
-
-// PostUser creates the user account
-func PostUser(env *Env, w http.ResponseWriter, req *http.Request) error {
-
-	decoder := json.NewDecoder(req.Body) // reads in request body
-	var user model.User
-	err := decoder.Decode(&user) // puts the JSON data into the user structure defined in the model package
-
-	userData, err := json.Marshal(user)
-
-	defer req.Body.Close()
-	if err != nil {
-		log.Print(err) // In real life, we would store this data remotely
-		//	w.Write()      // TODO: figure out how to check types seperately
-		return StatusError{500, err}
-	}
-
-	w.Write(userData)
-
-	return nil
 }

@@ -16,7 +16,7 @@ func main() {
 	// using Gorilla mux router instead of default one because it offers more flexibity
 	r := mux.NewRouter()
 
-	//	session, err := mgo.Dial("server1.example.com,server2.example.com")
+	//	session, err := mgo.Dial(os.Getenv("DB_CONTAINER_NAME"))
 	//	if err != nil {
 	//		panic(err)
 	//	}
@@ -35,7 +35,7 @@ func main() {
 	// route handlers
 	// ignore vet errors for unkeyed fields
 	s.Handle("/users", commonHandlers.Then(handler.Handler{env, handler.PostUser})).Methods("POST")
-
+	// TODO: remove CORS after integration with Caddy
 	handlers := cors.Default().Handler(r)
 
 	// start server on port 3000
