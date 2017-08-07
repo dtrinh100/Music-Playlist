@@ -1,5 +1,3 @@
-// TODO: Possibly come back to this test and see what is causing the second test to keep return undefined
-
 import { TestBed, getTestBed, async, inject } from '@angular/core/testing';
 import {
   HttpModule,
@@ -68,7 +66,7 @@ describe('UserService', () => {
 
 
       userService.getUsers().then((users) => {
-       expect(users.length).toBe(2);
+        expect(users.length).toBe(2);
         expect(users[0].username).toEqual('dtrinh100');
         expect(users[1].username).toEqual('hlovo');
 
@@ -96,9 +94,9 @@ describe('UserService', () => {
   });
 
 
-it('should fetch a single user by an id key', done => {
-      let userService: UserService;
-      const mockResponse = {
+  it('should fetch a single user by an id key', done => {
+    let userService: UserService;
+    const mockResponse = {
       data: {
         id: 1,
         username: "dtrinh100",
@@ -110,19 +108,19 @@ it('should fetch a single user by an id key', done => {
       }
     };
 
-      getTestBed().compileComponents().then(() => {
+    getTestBed().compileComponents().then(() => {
 
 
 
-        mockBackend.connections.subscribe(
-          (connection: MockConnection) => {
-            expect(connection.request.url).toBe('http://localhost:3000/api/users/1');
-            connection.mockRespond(new Response(
-              new ResponseOptions({
-                body: JSON.stringify(mockResponse)
-              }
-              )));
-          });
+      mockBackend.connections.subscribe(
+        (connection: MockConnection) => {
+          expect(connection.request.url).toBe('http://localhost:3000/api/users/1');
+          connection.mockRespond(new Response(
+            new ResponseOptions({
+              body: JSON.stringify(mockResponse)
+            }
+            )));
+        });
 
 
       userService = getTestBed().get(UserService);
@@ -132,92 +130,92 @@ it('should fetch a single user by an id key', done => {
         done();
       });
 
-        });
+    });
 
-});
+  });
 
 
-it('should insert a new user', done => {
+  it('should insert a new user', done => {
 
     let userService: UserService;
     const mockResponse = {
-    data: {
-      status: 201
-    }
-  };
+      data: {
+        status: 201
+      }
+    };
 
-     getTestBed().compileComponents().then(() => {
+    getTestBed().compileComponents().then(() => {
 
-    mockBackend.connections.subscribe((connection: MockConnection) => {
-      expect(connection.request.method).toBe(RequestMethod.Post);
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.method).toBe(RequestMethod.Post);
 
-      connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
-    });
+        connection.mockRespond(new Response(new ResponseOptions({ body: mockResponse })));
+      });
 
 
-    userService = getTestBed().get(UserService);
-    userService.create("dtrinh100", "email@email.com", "password", "password").then((data) => {
+      userService = getTestBed().get(UserService);
+      userService.create("dtrinh100", "email@email.com", "password", "password").then((data) => {
         expect(data).toBeDefined();
         expect(data.status).toBe(201);
         done();
       });
 
 
-        });
-});
-
-it('should update the user information',
-  async(inject([UserService], (userService) => {
-
-    const mockResponse = {
-    data: {
-      status: 204
-    }
-  };
-
-     getTestBed().compileComponents().then(() => {
-    mockBackend.connections.subscribe((connection: MockConnection) => {
-      expect(connection.request.method).toBe(RequestMethod.Put);
-
-      connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
     });
+  });
 
-
-    const userObj = {
-      username: "dtrinh100",
-      email: "test@email.com",
-      password: "password",
-      confirm: "password"
-    }
-
-    userService.update(userObj).then(
-      (data) => {
-        expect(data).toBeDefined();
-        expect(data.status).toBe(204);
-      });
-
-    });
-
-})));
-
-it('should delete an existing user',
+  it('should update the user information',
     async(inject([UserService], (userService) => {
+
       const mockResponse = {
-      data: null
-    };
+        data: {
+          status: 204
+        }
+      };
 
       getTestBed().compileComponents().then(() => {
-      mockBackend.connections.subscribe(connection => {
-        expect(connection.request.method).toBe(RequestMethod.Delete);
-        connection.mockRespond(new ResponseOptions({body: mockResponse}));
-      });
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.method).toBe(RequestMethod.Put);
 
-      userService.delete(2).then(
-        (data) => {
-          expect(data).toEqual(null);
+          connection.mockRespond(new Response(new ResponseOptions({ body: mockResponse })));
         });
 
+
+        const userObj = {
+          username: "dtrinh100",
+          email: "test@email.com",
+          password: "password",
+          confirm: "password"
+        }
+
+        userService.update(userObj).then(
+          (data) => {
+            expect(data).toBeDefined();
+            expect(data.status).toBe(204);
+          });
+
       });
-})));
+
+    })));
+
+  it('should delete an existing user',
+    async(inject([UserService], (userService) => {
+      const mockResponse = {
+        data: null
+      };
+
+      getTestBed().compileComponents().then(() => {
+        mockBackend.connections.subscribe(connection => {
+          expect(connection.request.method).toBe(RequestMethod.Delete);
+          connection.mockRespond(new ResponseOptions({ body: mockResponse }));
+        });
+
+        userService.delete(2).then(
+          (data) => {
+            expect(data).toEqual(null);
+          });
+
+      });
+    })));
 
 });

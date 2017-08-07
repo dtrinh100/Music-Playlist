@@ -1,6 +1,7 @@
 # MP
 
-The Music Project is a project that allows users to listen to a variety of music (in this case, just sample pieces of music that are royalty free) and upload their own music.  This project was created by David Trinh and Hector Lovo to help us improve our development skills, while learning new technologies. It utilizes the latest cutting edge technologies.
+The Music Project is a project that allows users to listen to a variety of music (in this case, just sample pieces of music that are royalty free) and upload their own music.  This project was created by David Trinh and Hector Lovo to help us improve our development skills, while learning new technologies. It utilizes the latest cutting edge technologies. Codes in this project may not have top quality,
+since we were limited on time, but we did strive to do our best with a small timeframe.
 
 ## Development server
 

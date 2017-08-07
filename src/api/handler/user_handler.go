@@ -27,7 +27,11 @@ func PostUser(env *Env, w http.ResponseWriter, req *http.Request) error {
 		return StatusError{500, err}
 	}
 
-	env.DB.InsertUser(user.Username, hashedPassword, user.Email)
+	err = env.DB.InsertUser(user.Username, hashedPassword, user.Email)
+	if err != nil {
+		log.Print(err)
+		return StatusError{500, err}
+	}
 
 	userData, err := json.Marshal(user)
 	if err != nil {
