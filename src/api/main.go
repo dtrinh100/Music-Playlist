@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/alice"
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
+	"github.com/justinas/alice"
 	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"
