@@ -8,7 +8,7 @@ import (
 
 // InsertUser inserts a user into the database
 func (d *DB) InsertUser(username string, password []byte, email string) error {
-	conn := d.session.DB("mp").C("users")
+	conn := d.Session.DB("mp").C("users")
 	err := conn.Insert(&model.User{username, password, email})
 	if err != nil {
 		log.Print(err)
