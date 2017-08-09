@@ -16,6 +16,4 @@ COPY . ${app_dir}
 RUN go-wrapper download
 RUN go-wrapper install
 
-EXPOSE 3000
-
 CMD ["go-wrapper", "run"]
