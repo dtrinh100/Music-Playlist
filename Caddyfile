@@ -1,0 +1,4 @@
+0.0.0.0 {
+  root /srv
+  proxy /api goapi:3000
+}
