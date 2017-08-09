@@ -11,7 +11,7 @@ services:
         - goapi
       volumes:
         - $HOME/.caddy:/root/.caddy
-    # =-=-=-=-= WEBSERVER =-=-=-=-=
+    # =-=-=-=-= GOAPI =-=-=-=-=
     goapi:
       build: ./src/api/
       container_name: MPGoapi
