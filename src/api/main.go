@@ -9,7 +9,6 @@ import (
 
   "github.com/justinas/alice"
 	"github.com/gorilla/mux"
-  "github.com/rs/cors"
   "gopkg.in/mgo.v2"
 )
 
