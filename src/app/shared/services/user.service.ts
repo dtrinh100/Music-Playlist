@@ -10,7 +10,7 @@ import { User } from '../models/user'
 export class UserService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
-  private usersUrl = 'http://localhost:3000/api/users';
+  private usersUrl = 'http://0.0.0.0:3000/api/users';
 
   constructor(private http: Http) { }
 

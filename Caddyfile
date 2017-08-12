@@ -1,4 +1,10 @@
 0.0.0.0 {
   root /srv
+
   proxy /api goapi:3000
+
+  rewrite {
+    if {path} not_match ^/api
+    to {path} {path}/ /
+  }
 }
