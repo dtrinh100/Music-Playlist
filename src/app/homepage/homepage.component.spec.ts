@@ -41,12 +41,12 @@ describe('HomepageComponent', () => {
   // The bottom point of an element is 99 units from the window's top-point
   // Note that the window is 100 units tall.
   it('should test isVisible', () => {
-    expect(component.isVisible(99, 100)).toBeTruthy();
+    expect(component.isVisible(99, 100)).toEqual('true');
   });
 
   it('should test NOT isVisible', () => {
     // The window is 100 units tall & the element's bottom point is
     // 200 units from the window's current top point.
-    expect(component.isVisible(300, 100)).toBeTruthy();
+    expect(component.isVisible(300, 100)).toEqual('false');
   });
 });
