@@ -1,0 +1,30 @@
+@import '../../styles/_variables';
+
+.mp-login-header {
+  margin-bottom: 2.0rem;
+  font-size: $font-size-main-header;
+  font-weight: bold;
+}
+
+.mp-login-container {
+  margin: 0 0 1.5rem 5.5vw;
+
+  label {
+    font-size: $font-size-normal * 0.9;
+  }
+
+  input {
+    width: 44%;
+    min-width: $screen-xs * 0.70;
+  }
+}
+
+@media all and (min-width: $screen-sm) {
+  .mp-login-header {
+    font-size: $font-size-main-header;
+  }
+
+  .mp-login-container {
+    margin-left: 1.0vw;
+  }
+}
