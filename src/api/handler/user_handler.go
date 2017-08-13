@@ -2,8 +2,10 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
+	"regexp"
 
 	"github.com/dtrinh100/Music-Playlist/src/api/model"
 	"golang.org/x/crypto/bcrypt"
@@ -16,9 +18,19 @@ func PostUser(env *Env, w http.ResponseWriter, req *http.Request) error {
 	var user model.User
 	err := decoder.Decode(&user) // puts the JSON data into the user structure defined in the model package
 	if err != nil {
-		log.Print(err)
 		return StatusError{500, err}
 	}
+	if len(user.Username) < 2 || len(user.Username) > 30 {
+		return StatusError{400, errors.New("usernames need to be more than 2 characters and less than 30 characters")}
+	}
+	emailRe := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`) // Regular expression to check for valid email, this is more strict than the Angular built-in validation
+	if !emailRe.MatchString(user.Email) {
+		return StatusError{400, errors.New("invalid email address")}
+	}
+	if len(user.Password) < 8 {
+		return StatusError{400, errors.New("passwords need to be more at least 8 characters")}
+	}
+
 	// encrypts the password of the user before storing it in the db
 	// recommended use a cost of 12 or more
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
@@ -42,7 +54,6 @@ func PostUser(env *Env, w http.ResponseWriter, req *http.Request) error {
 	defer req.Body.Close()
 	if err != nil {
 		log.Print(err) // In real life, we would store this data remotely
-		//	w.Write()      // TODO: figure out how to check types seperately
 		return StatusError{500, err}
 	}
 
