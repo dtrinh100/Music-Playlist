@@ -5,10 +5,11 @@ import (
 	"net/http"
 
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
-	"github.com/justinas/alice"
-	"github.com/rs/cors"
+  "github.com/dtrinh100/Music-Playlist/src/api/db"
 
+  "github.com/justinas/alice"
 	"github.com/gorilla/mux"
+  "gopkg.in/mgo.v2"
 )
 
 func main() {
@@ -16,14 +17,14 @@ func main() {
 	// using Gorilla mux router instead of default one because it offers more flexibity
 	r := mux.NewRouter()
 
-	//	session, err := mgo.Dial(os.Getenv("DB_CONTAINER_NAME"))
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//defer session.Close()
+  session, err := mgo.Dial("MPDatabase")
+  if err != nil {
+    panic(err)
+  }
+	defer session.Close()
 
 	env := &handler.Env{
-		DB: nil, // TODO: REMEMBER TO REPLACE THIS WITH THE MONGODB SESSION
+		DB: &db.DB{Session: session},
 	}
 
 	// place middleware codes here, things like auth
@@ -35,12 +36,10 @@ func main() {
 	// route handlers
 	// ignore vet errors for unkeyed fields
 	s.Handle("/users", commonHandlers.Then(handler.Handler{env, handler.PostUser})).Methods("POST")
-	// TODO: remove CORS after integration with Caddy
-	handlers := cors.Default().Handler(r)
 
 	// start server on port 3000
-	err := http.ListenAndServe(":3000", handlers)
-	if err != nil {
-		log.Fatal(err)
+	err2 := http.ListenAndServe(":3000", r)
+	if err2 != nil {
+		log.Fatal(err2)
 	}
 }

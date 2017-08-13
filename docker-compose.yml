@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+    # =-=-=-=-= CADDY =-=-=-=-=
+    caddy:
+      build: .
+      container_name: MPCaddy
+      ports:
+        - "2015:2015"
+      links:
+        - goapi
+      volumes:
+        - $HOME/.caddy:/root/.caddy
+    # =-=-=-=-= GOAPI =-=-=-=-=
+    goapi:
+      build: ./src/api/
+      container_name: MPGoapi
+      links:
+        - database
+    # =-=-=-=-= DATABASE =-=-=-=-=
+    database:
+        image: mongo
+        container_name: MPDatabase

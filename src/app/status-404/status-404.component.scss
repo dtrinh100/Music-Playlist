@@ -1,0 +1,22 @@
+@import '../../styles/_variables';
+
+
+.container-404 {
+  margin: 10.0rem 0 14.0rem 0;
+  text-align: center;
+}
+
+.header-404 {
+  font-weight: bold;
+  font-size: $font-size-sub-header;
+}
+
+.status-404 {
+  font-weight: bold;
+  font-size: 16.0rem;
+  color: $main-navy-blue;
+}
+
+.bottom-404 {
+  font-size: $font-size-normal;
+}

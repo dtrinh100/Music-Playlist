@@ -1,0 +1,11 @@
+node_modules/
+**/*.spec.ts
+src/api
+docker-compose.yml
+Dockerfile
+.dockerignore
+.editorconfig
+.gitignore
+.git
+ .idea
+.DS_Store
