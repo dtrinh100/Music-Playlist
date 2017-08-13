@@ -75,17 +75,19 @@ export class HomepageComponent implements OnInit {
    **/
   updateElementsBasedOnScrollEvent(evt) {
     for (let eleKey in this.elementDict) {
-      if (this.elementDict.hasOwnProperty(eleKey) && this.elementDict[eleKey].isVisible != "true") {
-        this.elementDict[eleKey].isVisible = this.isVisible(this.elementDict[eleKey].viewChild);
+      let ele = this.elementDict[eleKey];
+      if (this.elementDict.hasOwnProperty(eleKey) && ele.isVisible != "true") {
+        let rect = ele.viewChild.nativeElement.getBoundingClientRect();
+        ele.isVisible = this.isVisible(rect.bottom, window.innerHeight || document.documentElement.clientHeight);
       }
     }
   }
 
   /**
-   Helper function determines if an HTML-element is visible on-screen.
+   Helper function determines if the bottom point of an element is visible
+   within the window's height.
    **/
-  isVisible(ele: ElementRef): string {
-    let rect = ele.nativeElement.getBoundingClientRect();
-    return String(rect.top + rect.height - (window.innerHeight || document.documentElement.clientHeight) < 0);
+  isVisible(elementBottomPosition: number, windowHeight: number): string {
+    return String((elementBottomPosition - windowHeight) < 0);
   }
 }
