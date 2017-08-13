@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
-
 import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -13,17 +12,13 @@ import { Status404Component } from './status-404/status-404.component';
 
 import { RegistrationDirective } from './registration/registration.directive';
 
-
-
 import {
   SharedModule,
   NavbarComponent,
   FooterComponent,
   UserService,
   User
-} from './shared'
-
-
+} from './shared';
 
 
 @NgModule({

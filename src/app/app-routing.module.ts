@@ -3,7 +3,6 @@ import { RouterModule, Routes }  from '@angular/router';
 
 import { RegistrationComponent }   from './registration/registration.component';
 import { HomepageComponent } from './homepage/homepage.component';
-
 import { Status404Component } from './status-404/status-404.component';
 
 
