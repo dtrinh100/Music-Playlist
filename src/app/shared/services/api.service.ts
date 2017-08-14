@@ -23,7 +23,8 @@ export class ApiService {
   }
 
   private static formatErrors(error: any) {
-    return Observable.throw(error.json());
+    // TODO: Ensure JSON errors are returned by the server
+    return Observable.throw({error: "A server error occurred."});
   }
 
   get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {

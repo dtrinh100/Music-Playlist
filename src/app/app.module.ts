@@ -18,6 +18,7 @@ import {
   NavbarComponent,
   FooterComponent,
   UserService,
+  AuthService,
   ApiService,
   User
 } from './shared';
