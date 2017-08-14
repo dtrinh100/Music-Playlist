@@ -18,6 +18,7 @@ import {
   NavbarComponent,
   FooterComponent,
   UserService,
+  ApiService,
   User
 } from './shared';
 
@@ -33,12 +34,14 @@ import {
     RegistrationDirective,
     LoginComponent
   ],
-
   imports: [
     AppRoutingModule,
     SharedModule
   ],
-  providers: [],
+  providers: [
+    ApiService,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
