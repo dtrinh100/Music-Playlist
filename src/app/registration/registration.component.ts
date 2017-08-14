@@ -85,16 +85,20 @@ export class RegistrationComponent implements OnInit {
   }
    }
 
-  onSubmit({ value, valid }: { value: UserInterface, valid: boolean }) {
+  onSubmit({value, valid}: { value: UserInterface, valid: boolean }) {
     this.payload = {};
     this.payload["username"] = value.username;
     this.payload["email"] = value.email;
     this.payload["password"] = value.account.password;
     this.payload["confirm"] = value.account.confirm;
-    this.userService.create(this.payload["username"], this.payload["email"], this.payload["password"], this.payload["confirm"]).then(data => {
-      
-    }).catch(error => {
-      console.log(error);
+    this.userService.createUser(
+      this.payload["username"],
+      this.payload["email"],
+      this.payload["password"],
+      this.payload["confirm"]).subscribe(data => {
+      // console.log(data);
+    }, err => {
+      // console.log(err);
     });
   }
 

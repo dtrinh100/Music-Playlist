@@ -10,6 +10,7 @@ import {
 } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { UserService } from './user.service';
+import { ApiService } from './api.service';
 import { User } from '../models/user'
 
 describe('UserService', () => {
@@ -21,6 +22,7 @@ describe('UserService', () => {
       imports: [HttpModule],
       providers: [
         UserService,
+        ApiService,
         MockBackend,
         BaseRequestOptions,
         {
@@ -65,7 +67,7 @@ describe('UserService', () => {
 
 
 
-      userService.getUsers().then((users) => {
+      userService.getUsers().subscribe((users) => {
         expect(users.length).toBe(2);
         expect(users[0].username).toEqual('dtrinh100');
         expect(users[1].username).toEqual('hlovo');
@@ -114,7 +116,7 @@ describe('UserService', () => {
 
       mockBackend.connections.subscribe(
         (connection: MockConnection) => {
-          expect(connection.request.url).toBe('http://localhost:3000/api/users/1');
+          expect(connection.request.url).toBe('/api/users/1');
           connection.mockRespond(new Response(
             new ResponseOptions({
               body: JSON.stringify(mockResponse)
@@ -125,7 +127,7 @@ describe('UserService', () => {
 
       userService = getTestBed().get(UserService);
 
-      userService.getUser(1).then(function(user) {
+      userService.getUser(1).subscribe(function (user) {
         expect(user.id).toBe(1);
         done();
       });
@@ -149,12 +151,12 @@ describe('UserService', () => {
       mockBackend.connections.subscribe((connection: MockConnection) => {
         expect(connection.request.method).toBe(RequestMethod.Post);
 
-        connection.mockRespond(new Response(new ResponseOptions({ body: mockResponse })));
+        connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
       });
 
 
       userService = getTestBed().get(UserService);
-      userService.create("dtrinh100", "email@email.com", "password", "password").then((data) => {
+      userService.createUser("dtrinh100", "email@email.com", "password", "password").subscribe((data) => {
         expect(data).toBeDefined();
         expect(data.status).toBe(201);
         done();
@@ -188,7 +190,7 @@ describe('UserService', () => {
           confirm: "password"
         }
 
-        userService.update(userObj).then(
+        userService.updateUser(userObj).subscribe(
           (data) => {
             expect(data).toBeDefined();
             expect(data.status).toBe(204);
@@ -207,10 +209,10 @@ describe('UserService', () => {
       getTestBed().compileComponents().then(() => {
         mockBackend.connections.subscribe(connection => {
           expect(connection.request.method).toBe(RequestMethod.Delete);
-          connection.mockRespond(new ResponseOptions({ body: mockResponse }));
+          connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
         });
 
-        userService.delete(2).then(
+        userService.deleteUser(2).subscribe(
           (data) => {
             expect(data).toEqual(null);
           });
