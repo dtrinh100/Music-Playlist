@@ -1,13 +1,13 @@
 import {TestBed, inject, async, fakeAsync} from '@angular/core/testing';
+import {MockBackend} from '@angular/http/testing';
+import {Subscription} from "rxjs/Subscription";
 import {
   BaseRequestOptions, Http, HttpModule, RequestMethod,
   Response, ResponseOptions, ResponseType
 } from '@angular/http';
-import {MockBackend} from '@angular/http/testing';
 
 import {AuthService} from './auth.service';
 import {ApiService} from './api.service';
-import {Subscription} from "rxjs/Subscription";
 import {User} from "../models/user";
 
 
@@ -195,7 +195,6 @@ describe('AuthService', () => {
 
   fit('should register & authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
-
       service.register().subscribe();
       testUserValidity(service, true);
     })
@@ -203,7 +202,6 @@ describe('AuthService', () => {
 
   fit('should NOT register & NOT authenticate user upon server error', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
-
       service.register().subscribe(ignore, ignore);
       testUserValidity(service, false);
     })
@@ -224,7 +222,6 @@ describe('AuthService', () => {
 
   fit('should login & authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
-
       service.login().subscribe();
       testUserValidity(service, true);
     })
@@ -232,7 +229,6 @@ describe('AuthService', () => {
 
   fit('should NOT login & NOT authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
-
       service.login().subscribe(ignore, ignore);
       testUserValidity(service, false);
     })
@@ -254,7 +250,6 @@ describe('AuthService', () => {
   fit('should logout if successfully logged out of server', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
       service.logout();
-
       testUserValidity(service, false);
     })
   );
@@ -262,7 +257,6 @@ describe('AuthService', () => {
   fit('should still logout if failed to logout of server', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
       service.login();
-
       testUserValidity(service, false);
     })
   );
