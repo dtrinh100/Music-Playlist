@@ -40,7 +40,7 @@
         </div>
         <div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
       </fieldset>
-      <button class="btn btn-lg btn-primary" type="submit" [disabled]="false">LOGIN</button>
+      <button class="btn btn-lg btn-primary" type="submit" [disabled]="loginForm.invalid">LOGIN</button>
     </form>
   </div>
 </div>
