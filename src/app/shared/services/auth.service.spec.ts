@@ -105,7 +105,8 @@ describe('AuthService', () => {
   }
 
   // This var-type should be used in params that need to be ignored
-  let ignore = () => {};
+  let ignore = () => {
+  };
 
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=- populate() =-=-=-=-=-=-=-=-=-=-=
@@ -125,7 +126,7 @@ describe('AuthService', () => {
 
       mockBackendHelper(backend, userResponse_valid);
       service.populate();
-      expect(setAuthSpy.calls.count()).toBe(1, 'setAuthSpy was not called');
+      expect(setAuthSpy.calls.count()).toBe(1, 'setAuth was not called');
     })
   );
 
@@ -168,15 +169,8 @@ describe('AuthService', () => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
       service.populate();
 
-      // Ensure invalid user
-      service.currentUser.subscribe(userData => {
-        expect(userData).toEqual(new User());
-      });
-      // Ensure invalid authentication
-      service.isAuthenticated.subscribe(isAuthed => {
-        expect(isAuthed).toBeFalsy();
-      });
-
+      // Ensure invalid user & invalid authentication
+      testUserValidity(service, false);
     })
   );
 
