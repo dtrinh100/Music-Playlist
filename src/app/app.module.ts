@@ -41,6 +41,7 @@ import {
   ],
   providers: [
     ApiService,
+    AuthService,
     UserService
   ],
   bootstrap: [AppComponent]

@@ -13,10 +13,43 @@
     font-size: $font-size-normal * 0.9;
   }
 
+  i {
+    transform: translateX(-2.0rem) translateY(-1.4rem);
+    display: inline-block;
+    font-size: 1.6rem;
+  }
+
   input {
+    display: inline-block;
+  }
+
+  input, .alert-danger {
     width: 44%;
     min-width: $screen-xs * 0.70;
   }
+
+  .fa-exclamation-circle {
+    color: $state-danger-text;
+  }
+
+  .fa-check-circle {
+    color: $state-success-text;
+  }
+
+  .mp-outline-red {
+    //outline: none;
+    border-color: $state-danger-border;
+  }
+
+  .mp-outline-green {
+    //outline: none;
+    border-color: $state-success-border;
+  }
+
+  .alert-danger {
+    margin: 0;
+  }
+
 }
 
 @media all and (min-width: $screen-sm) {
@@ -27,4 +60,5 @@
   .mp-login-container {
     margin-left: 1.0vw;
   }
+
 }
