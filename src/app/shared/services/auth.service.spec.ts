@@ -104,6 +104,9 @@ describe('AuthService', () => {
     });
   }
 
+  // This var-type should be used in params that need to be ignored
+  let ignore = () => {};
+
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=- populate() =-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -186,22 +189,22 @@ describe('AuthService', () => {
         expect(connection.request.url).toBe('/api/auth/register');
         expect(connection.request.method).toBe(RequestMethod.Post);
       });
-      service.register();
+      service.register().subscribe();
     })
   );
 
   fit('should register & authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
-      service.register();
 
+      service.register().subscribe();
       testUserValidity(service, true);
     })
   );
 
   fit('should NOT register & NOT authenticate user upon server error', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
-      service.register();
 
+      service.register().subscribe(ignore, ignore);
       testUserValidity(service, false);
     })
   );
@@ -215,22 +218,22 @@ describe('AuthService', () => {
         expect(connection.request.url).toBe('/api/auth/login');
         expect(connection.request.method).toBe(RequestMethod.Post);
       });
-      service.login();
+      service.login().subscribe();
     })
   );
 
   fit('should login & authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
-      service.login();
 
+      service.login().subscribe();
       testUserValidity(service, true);
     })
   );
 
   fit('should NOT login & NOT authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
-      service.login();
 
+      service.login().subscribe(ignore, ignore);
       testUserValidity(service, false);
     })
   );

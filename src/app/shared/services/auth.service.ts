@@ -39,22 +39,26 @@ export class AuthService {
       })
   }
 
-  register(body: Object = {}) {
-    this.apiService.post(`${this.authUrl}/register`, body)
-      .subscribe((res: any) => {
+  register(body: Object = {}): Observable<any> {
+    return this.apiService.post(`${this.authUrl}/register`, body)
+      .map((res: any) => {
         this.setAuth(this.getValidUserFromJson(res.data.user));
-      }, (err: any) => {
+      })
+      .catch(err => {
         this.purgeAuth();
-      });
+        return Observable.throw(err);
+      })
   }
 
-  login(body: Object = {}) {
-    this.apiService.post(`${this.authUrl}/login`, body)
-      .subscribe((res: any) => {
+  login(body: Object = {}): Observable<any> {
+    return this.apiService.post(`${this.authUrl}/login`, body)
+      .map((res: any) => {
         this.setAuth(this.getValidUserFromJson(res.data.user));
-      }, (err: any) => {
+      })
+      .catch(err => {
         this.purgeAuth();
-      });
+        return Observable.throw(err);
+      })
   }
 
   logout() {
