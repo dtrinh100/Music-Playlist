@@ -42,6 +42,7 @@ export class AuthService {
     return this.apiService.post(`${this.authUrl}/register`, body)
       .map((res: any) => {
         this.setAuth(this.getValidUserFromJson(res.data.user));
+        return res;
       })
       .catch(err => {
         this.purgeAuth();
@@ -53,6 +54,7 @@ export class AuthService {
     return this.apiService.post(`${this.authUrl}/login`, body)
       .map((res: any) => {
         this.setAuth(this.getValidUserFromJson(res.data.user));
+        return res;
       })
       .catch(err => {
         this.purgeAuth();
