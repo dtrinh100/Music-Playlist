@@ -50,11 +50,11 @@ describe('AuthService', () => {
   // =-=-=-=-=-=-=-=-=-=- Constructors =-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-  fit('should be created', inject([AuthService], (service: AuthService) => {
+  it('should be created', inject([AuthService], (service: AuthService) => {
     expect(service).toBeTruthy();
   }));
 
-  fit('should construct', async(inject([AuthService, MockBackend], (service, _) => {
+  it('should construct', async(inject([AuthService, MockBackend], (service, _) => {
     expect(service).toBeDefined();
   })));
 
@@ -112,7 +112,7 @@ describe('AuthService', () => {
   // =-=-=-=-=-=-=-=-=-=-=- populate() =-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-  fit('should try to make a GET request to /api/auth/verify', mockInjectAsync((service, backend) => {
+  it('should try to make a GET request to /api/auth/verify', mockInjectAsync((service, backend) => {
       backend.connections.subscribe((connection) => {
         expect(connection.request.url).toBe('/api/auth/verify');
         expect(connection.request.method).toBe(RequestMethod.Get);
@@ -121,7 +121,7 @@ describe('AuthService', () => {
     })
   );
 
-  fit('should have called setAuth', mockInjectAsync((service, backend) => {
+  it('should have called setAuth', mockInjectAsync((service, backend) => {
       let setAuthSpy = spyOn(service, 'setAuth');
 
       mockBackendHelper(backend, userResponse_valid);
@@ -130,7 +130,7 @@ describe('AuthService', () => {
     })
   );
 
-  fit('should set authenticated user', mockInjectAsync((service, backend) => {
+  it('should set authenticated user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
       service.populate();
 
@@ -138,7 +138,7 @@ describe('AuthService', () => {
     })
   );
 
-  fit('should have called purgeAuth', mockInjectAsync((service, backend) => {
+  it('should have called purgeAuth', mockInjectAsync((service, backend) => {
       let purgeAuthSpy = spyOn(service, 'purgeAuth');
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
       service.populate();
@@ -147,7 +147,7 @@ describe('AuthService', () => {
   );
 
   // NOTE: JWT is stored as a cookie so it's not demo'ed here
-  fit('should de-authenticate an authenticated user with expired JWT', mockInjectAsync((service, backend) => {
+  it('should de-authenticate an authenticated user with expired JWT', mockInjectAsync((service, backend) => {
       let mockConnectionSub = mockBackendHelper(backend, userResponse_valid);
       service.populate();
 
@@ -178,7 +178,7 @@ describe('AuthService', () => {
   // =-=-=-=-=-=-=-=-=-=-=- register() =-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-  fit('should try to make a POST request to /api/auth/register', mockInjectAsync((service, backend) => {
+  it('should try to make a POST request to /api/auth/register', mockInjectAsync((service, backend) => {
       backend.connections.subscribe((connection) => {
         expect(connection.request.url).toBe('/api/auth/register');
         expect(connection.request.method).toBe(RequestMethod.Post);
@@ -187,14 +187,14 @@ describe('AuthService', () => {
     })
   );
 
-  fit('should register & authenticate user', mockInjectAsync((service, backend) => {
+  it('should register & authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
       service.register().subscribe();
       testUserValidity(service, true);
     })
   );
 
-  fit('should NOT register & NOT authenticate user upon server error', mockInjectAsync((service, backend) => {
+  it('should NOT register & NOT authenticate user upon server error', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
       service.register().subscribe(ignore, ignore);
       testUserValidity(service, false);
@@ -205,7 +205,7 @@ describe('AuthService', () => {
   // =-=-=-=-=-=-=-=-=-=-=-= login() =-=-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-  fit('should try to make a POST request to /api/auth/login', mockInjectAsync((service, backend) => {
+  it('should try to make a POST request to /api/auth/login', mockInjectAsync((service, backend) => {
       backend.connections.subscribe((connection) => {
         expect(connection.request.url).toBe('/api/auth/login');
         expect(connection.request.method).toBe(RequestMethod.Post);
@@ -214,14 +214,14 @@ describe('AuthService', () => {
     })
   );
 
-  fit('should login & authenticate user', mockInjectAsync((service, backend) => {
+  it('should login & authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
       service.login().subscribe();
       testUserValidity(service, true);
     })
   );
 
-  fit('should NOT login & NOT authenticate user', mockInjectAsync((service, backend) => {
+  it('should NOT login & NOT authenticate user', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
       service.login().subscribe(ignore, ignore);
       testUserValidity(service, false);
@@ -232,7 +232,7 @@ describe('AuthService', () => {
   // =-=-=-=-=-=-=-=-=-=-=- logout() =-=-=-=-=-=-=-=-=-=-=-=
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-  fit('should try to make a POST request to /api/auth/logout', mockInjectAsync((service, backend) => {
+  it('should try to make a POST request to /api/auth/logout', mockInjectAsync((service, backend) => {
       backend.connections.subscribe((connection) => {
         expect(connection.request.url).toBe('/api/auth/logout');
         expect(connection.request.method).toBe(RequestMethod.Get);
@@ -241,14 +241,14 @@ describe('AuthService', () => {
     })
   );
 
-  fit('should logout if successfully logged out of server', mockInjectAsync((service, backend) => {
+  it('should logout if successfully logged out of server', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, userResponse_valid);
       service.logout();
       testUserValidity(service, false);
     })
   );
 
-  fit('should still logout if failed to logout of server', mockInjectAsync((service, backend) => {
+  it('should still logout if failed to logout of server', mockInjectAsync((service, backend) => {
       mockBackendHelper(backend, {}, 404, ResponseType.Error);
       service.login();
       testUserValidity(service, false);
