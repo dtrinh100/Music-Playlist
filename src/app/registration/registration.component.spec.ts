@@ -16,7 +16,8 @@ import { RegistrationComponent } from './registration.component';
 import { RegistrationDirective } from './registration.directive';
 
 import { UserService } from '../shared/services';
-
+import { ApiService } from '../shared/services';
+import { Observable } from "rxjs/Observable";
 
 describe('RegistrationComponent', () => {
   let component: RegistrationComponent;
@@ -32,7 +33,7 @@ describe('RegistrationComponent', () => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpModule, RouterTestingModule],
       declarations: [ RegistrationComponent, RegistrationDirective ],
-      providers: [UserService]
+      providers: [ ApiService, UserService ]
     }).compileComponents();
  }));
 
@@ -41,7 +42,7 @@ describe('RegistrationComponent', () => {
     component = fixture.componentInstance;
     userService = fixture.debugElement.injector.get(UserService);
     testResponse = {errors: "", success: false};
-    spy = spyOn(userService, 'create').and.returnValue(Promise.resolve(testResponse));
+    spy = spyOn(userService, 'createUser').and.returnValue(Observable.of(testResponse));
     fixture.detectChanges();
   });
 

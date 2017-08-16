@@ -1,62 +1,56 @@
 import { Injectable }    from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
+import { Observable } from "rxjs/Observable";
 
+import { ApiService } from './api.service';
 import { User } from '../models/user'
 
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UserService {
+  private usersUrl = '/users';
 
-  private headers = new Headers({'Content-Type': 'application/json'});
-  private usersUrl = 'http://0.0.0.0:3000/api/users';
-
-  constructor(private http: Http) { }
-
-  getUsers(): Promise<User[]> {
-    return this.http.get(this.usersUrl)
-               .toPromise()
-               .then(response => response.json().data as User[])
-               .catch(this.handleError);
+  constructor(private apiService: ApiService) {
   }
 
+  // TODO: Take special note: All of the following funcs have been adapted to use Observable
 
-  getUser(id: number): Promise<User> {
-    const url = `${this.usersUrl}/${id}`;
-    return this.http.get(url)
-      .toPromise()
-      .then(response => response.json().data as User)
-      .catch(this.handleError);
+  getUsers(): Observable<User[]> {
+    return this.apiService.get(`${this.usersUrl}`)
+      .map((res: any) => res.data as User[]);
   }
 
-  create(username: string, email: string, password: string, confirm: string): Promise<Response> {
-    return this.http
-      .post(this.usersUrl, JSON.stringify({username: username, email: email, password: password, confirm: confirm }), {headers: this.headers})
-      .toPromise()
-      .then(res => res.json().data as Response)
-      .catch(this.handleError);
+  getUser(id: number): Observable<User> {
+    return this.apiService.get(`${this.usersUrl}/${id}`)
+      .map((res: any) => res.data as User);
   }
 
-  delete(id: number): Promise<void> {
-    const url = `${this.usersUrl}/${id}`;
-    return this.http.delete(url, {headers: this.headers})
-      .toPromise()
-      .then(() => null)
-      .catch(this.handleError);
+  createUser(username: string, email: string, password: string, confirm: string): Observable<Response> {
+    return this.apiService.post(
+      this.usersUrl,
+      JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+        confirm: confirm
+      })
+    ).map((res: any) => res.data as Response);
   }
 
- update(user: User): Promise<Response> {
-    const url = `${this.usersUrl}/${user.id}`;
-    return this.http
-      .put(url, JSON.stringify(user), {headers: this.headers})
-      .toPromise()
-      .then(res => res.json().data as Response)
-      .catch(this.handleError);
+  deleteUser(id: number): Observable<void> {
+    return this.apiService.delete(`${this.usersUrl}\${id}`)
+      .map(_ => null);
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // we won't be really handling errors in this app
-    return Promise.reject(error.message || error);
+  updateUser(user: User): Observable<Response> {
+    return this.apiService.put(`${this.usersUrl}/${user.id}`, JSON.stringify(user))
+      .map((res: any) => res.data as Response);
   }
+
+ //  private handleError(error: any): Promise<any> {
+ //    console.error('An error occurred', error); // we won't be really handling errors in this app
+ //    return Promise.reject(error.message || error);
+ //  }
 }

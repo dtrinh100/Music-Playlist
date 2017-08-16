@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
+import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -17,6 +18,8 @@ import {
   NavbarComponent,
   FooterComponent,
   UserService,
+  AuthService,
+  ApiService,
   User
 } from './shared';
 
@@ -29,14 +32,18 @@ import {
     FooterComponent,
     HomepageComponent,
     Status404Component,
-    RegistrationDirective
+    RegistrationDirective,
+    LoginComponent
   ],
-
   imports: [
     AppRoutingModule,
     SharedModule
   ],
-  providers: [],
+  providers: [
+    ApiService,
+    AuthService,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
