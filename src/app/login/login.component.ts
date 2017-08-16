@@ -104,12 +104,11 @@ export class LoginComponent implements OnInit {
 
     let credentials = this.loginForm.value;
     this.authService.login(credentials).subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
       this.router.navigateByUrl('/');
     }, (res: any) => {
-      // TODO: modify this according to server error response
       this.loginForm.get('password').setValue('');
-      this.formErrors.password = "Invalid Credentials";
+      this.formErrors.password = res.json().data.errors.credentials;
     });
   }
 
