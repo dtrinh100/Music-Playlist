@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 	"regexp"
 
@@ -35,27 +34,20 @@ func PostUser(env *Env, w http.ResponseWriter, req *http.Request) error {
 	// recommended use a cost of 12 or more
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
 	if err != nil {
-		log.Print(err)
 		return StatusError{500, err}
 	}
 
 	err = env.DB.InsertUser(user.Username, hashedPassword, user.Email)
 	if err != nil {
-		log.Print(err)
 		return StatusError{500, err}
 	}
 
 	userData, err := json.Marshal(user)
 	if err != nil {
-		log.Print(err)
 		return StatusError{500, err}
 	}
 
 	defer req.Body.Close()
-	if err != nil {
-		log.Print(err) // In real life, we would store this data remotely
-		return StatusError{500, err}
-	}
 
 	w.Write(userData)
 

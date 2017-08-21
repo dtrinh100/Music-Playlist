@@ -18,10 +18,12 @@ type StatusError struct {
 	Err  error
 }
 
+// Error gets the error string of the error
 func (se StatusError) Error() string {
 	return se.Err.Error()
 }
 
+// Status gets the status code of the error
 func (se StatusError) Status() int {
 	return se.Code
 }
