@@ -1,8 +1,25 @@
-FROM abiosoft/caddy
-LABEL maintainer "Hector Lovo <lovohh@gmail.com>"
+FROM node:alpine
+LABEL maintainer = "Hector Lovo <lovohh@gmail.com>"
 
-# Copies the "production" version of the app into /srv.
-# Note: This assumes that the directory ./dist exists locally.
-COPY ./dist/ /srv/
+# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# =-=-=-=-=-=-=-=-= ANGULAR2 CONFIG =-=-=-=-=-=-=-=-=-=-=-=
+# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-COPY ./Caddyfile /etc/Caddyfile
+ENV USER app
+ENV HOME /home/${USER}
+ENV APP mp_app
+
+RUN npm install -g @angular/cli
+
+COPY package.json ${HOME}/${APP}/
+# TODO: it may be necessary to use/copy => "npm-shrinkwrap.json" in production
+
+WORKDIR ${HOME}/${APP}
+
+RUN npm install
+
+COPY . ${HOME}/${APP}
+
+EXPOSE 4200
+
+CMD ["npm", "start"]

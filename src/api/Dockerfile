@@ -1,5 +1,5 @@
 FROM golang:alpine
-LABEL maintainer "Hector Lovo <lovohh@gmail.com>"
+LABEL maintainer = "Hector Lovo <lovohh@gmail.com>"
 
 # Needed to download Go-packages
 RUN apk add --no-cache --virtual git
@@ -12,8 +12,14 @@ WORKDIR ${app_dir}
 # Adding Go files
 COPY . ${app_dir}
 
+# Download live-reloading
+RUN go get github.com/pilu/fresh
+
 # Download & install Go-dependencies
 RUN go-wrapper download
 RUN go-wrapper install
 
-CMD ["go-wrapper", "run"]
+EXPOSE 3000
+
+CMD ["fresh"]
+
