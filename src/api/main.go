@@ -6,14 +6,18 @@ import (
 
 	"github.com/dtrinh100/Music-Playlist/src/api/db"
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
 
 	gmux "github.com/gorilla/mux"
 	"github.com/codegangsta/negroni"
 	"gopkg.in/mgo.v2"
 )
 
-func main() {
+func init() {
+	common.InitServer()
+}
 
+func main() {
 	// using Gorilla mux router instead of default one because it offers more flexibity
 	r := gmux.NewRouter()
 
@@ -39,13 +43,13 @@ func main() {
 	// route handlers
 	// ignore vet errors for unkeyed fields
 	s.Handle("/users", handler.Handler{env, handler.PostUser}).Methods("POST")
-	
+
 	server := &http.Server{
-		Addr: ":3000",
+		Addr:    common.AppConfig.Server,
 		Handler: commonHandlers,
 	}
 
-	if server_err := server.ListenAndServe(); server_err {
+	if server_err := server.ListenAndServe(); server_err != nil {
 		log.Fatal("Server failed to start:", server_err)
 	}
 }
