@@ -29,13 +29,13 @@ func main() {
 		DB: &db.DB{Session: session},
 	}
 
-	router := router.InitializeRoutes(env)
+	r := router.InitializeRoutes(env)
 
 	// place middleware codes here, things like auth
 	// TODO: replace .Classic() with .New() later.
 	//		 For now, leave as .Classic() to benefit from logging.
 	commonHandlers := negroni.Classic()
-	commonHandlers.UseHandler(router)
+	commonHandlers.UseHandler(r)
 
 	server := &http.Server{
 		Addr:    common.AppConfig.Server,
