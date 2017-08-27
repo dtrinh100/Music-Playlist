@@ -7,8 +7,8 @@ import (
 	"github.com/dtrinh100/Music-Playlist/src/api/db"
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
+	"github.com/dtrinh100/Music-Playlist/src/api/router"
 
-	gmux "github.com/gorilla/mux"
 	"github.com/codegangsta/negroni"
 	"gopkg.in/mgo.v2"
 )
@@ -18,9 +18,7 @@ func init() {
 }
 
 func main() {
-	// using Gorilla mux router instead of default one because it offers more flexibity
-	r := gmux.NewRouter()
-
+	// TODO: initialize handler.Env & DB in common.InitServer() later
 	session, err := mgo.Dial("MPDatabase")
 	if err != nil {
 		panic(err)
@@ -31,18 +29,13 @@ func main() {
 		DB: &db.DB{Session: session},
 	}
 
+	router := router.InitializeRoutes(env)
+
 	// place middleware codes here, things like auth
 	// TODO: replace .Classic() with .New() later.
 	//		 For now, leave as .Classic() to benefit from logging.
 	commonHandlers := negroni.Classic()
-	commonHandlers.UseHandler(r)
-
-	// adds the api prefix to all subroutes
-	s := r.PathPrefix("/api/").Subrouter()
-
-	// route handlers
-	// ignore vet errors for unkeyed fields
-	s.Handle("/users", handler.Handler{env, handler.PostUser}).Methods("POST")
+	commonHandlers.UseHandler(router)
 
 	server := &http.Server{
 		Addr:    common.AppConfig.Server,
