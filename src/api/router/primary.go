@@ -18,5 +18,9 @@ func InitializeRoutes(env *handler.Env) *gmux.Router {
 	userRouter := apiRouter.PathPrefix("/users").Subrouter()
 	userRouter = SetUserRoutes(env, userRouter)
 
+	// Auth sub-router & routes
+	authRouter := apiRouter.PathPrefix("/auth").Subrouter()
+	authRouter = SetAuthRoutes(authRouter)
+
 	return router
 }
