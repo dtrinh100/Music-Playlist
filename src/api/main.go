@@ -38,7 +38,7 @@ func main() {
 	commonHandlers.UseHandler(r)
 
 	server := &http.Server{
-		Addr:    common.AppConfig.Server,
+		Addr:    common.AppConfig.Server.Address,
 		Handler: commonHandlers,
 	}
 

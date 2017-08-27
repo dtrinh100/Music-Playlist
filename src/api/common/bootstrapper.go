@@ -6,15 +6,10 @@ import (
 )
 
 const (
-	server_envkey    = "MP_SERVER_ENV"
-	database_envkey  = "MP_DB_ENV"
-	log_level_envkey = "MP_LOGLVL_ENV"
+	serveraddress_envkey = "MP_SRVRADDR_ENV"
+	dbname_envkey        = "MP_DBNAME_ENV"
+	loglevel_envkey      = "MP_LOGLVL_ENV"
 )
-
-type configuration struct {
-	Server, Database string
-	LogLevel         int
-}
 
 var AppConfig configuration
 
@@ -27,13 +22,24 @@ func InitServer() {
 }
 
 func loadAppConfig() {
-	if logLevelInt, lliErr := strconv.Atoi(os.Getenv(log_level_envkey)); lliErr == nil {
-		AppConfig = configuration{
-			Server:   os.Getenv(server_envkey),
-			Database: os.Getenv(database_envkey),
+	if logLevelInt, lliErr := strconv.Atoi(os.Getenv(loglevel_envkey)); lliErr == nil {
+		srvr := server{
+			Address:  os.Getenv(serveraddress_envkey),
 			LogLevel: logLevelInt,
 		}
+
+		db := database{
+			Name: os.Getenv(dbname_envkey),
+			UserTable: table{
+				Name: "users",
+			},
+		}
+
+		AppConfig = configuration{
+			Server: srvr,
+			DB:     db,
+		}
 	} else {
-		Fatal(lliErr, "Failed to convert "+os.Getenv(log_level_envkey)+" to int.")
+		Fatal(lliErr, "Failed to convert "+os.Getenv(loglevel_envkey)+" to int.")
 	}
 }

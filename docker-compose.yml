@@ -23,8 +23,8 @@ services:
       volumes:
         - ./src/api:/go/src/github.com/dtrinh100/Music-Playlist/src/api/
       environment:
-        - MP_SERVER_ENV=0.0.0.0:3000
-        - MP_DB_ENV=mealvalidatordb
+        - MP_SRVRADDR_ENV=0.0.0.0:3000
+        - MP_DBNAME_ENV=mealvalidatordb
         - MP_LOGLVL_ENV=4
     # =-=-=-=-= CADDY =-=-=-=-=
     caddy:
