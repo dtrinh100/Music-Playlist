@@ -1,6 +1,7 @@
 package router
 
 import (
+	mw "github.com/dtrinh100/Music-Playlist/src/api/middleware"
 	gmux "github.com/gorilla/mux"
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
 	"github.com/justinas/alice"
@@ -26,7 +27,9 @@ func InitializeRoutes(env *handler.Env) http.Handler {
 	authRouter = SetAuthRoutes(authRouter)
 
 	// Global middleware(s)
-	globalMiddlewares := []alice.Constructor{}
+	globalMiddlewares := []alice.Constructor{
+		mw.Logger,
+	}
 
 	return alice.New(globalMiddlewares...).Then(router)
 }
