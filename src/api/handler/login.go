@@ -7,6 +7,11 @@ import (
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
+/**
+	This function logs-in a user with valid credentials.
+
+	Path: [POST] '/api/auth'
+*/
 func Login(rw http.ResponseWriter, req *http.Request) {
 	var user model.User
 

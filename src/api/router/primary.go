@@ -9,6 +9,9 @@ import (
 	"net/http"
 )
 
+/**
+	This function sets-up the routes & middleware.
+*/
 func InitializeRoutes(env *handler.Env) http.Handler {
 	// Using Gorilla mux router instead of default one because it offers more flexibility
 	router := gmux.NewRouter().StrictSlash(false)

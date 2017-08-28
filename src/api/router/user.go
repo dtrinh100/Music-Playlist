@@ -6,6 +6,9 @@ import (
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
 )
 
+/**
+	This function sets up the '/users' routes
+*/
 func SetUserRoutes(env *handler.Env, router *mux.Router) *mux.Router {
 	// route handlers
 	// ignore vet errors for unkeyed fields
