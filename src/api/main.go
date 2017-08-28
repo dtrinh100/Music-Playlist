@@ -9,7 +9,6 @@ import (
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
 	"github.com/dtrinh100/Music-Playlist/src/api/router"
 
-	"github.com/codegangsta/negroni"
 	"gopkg.in/mgo.v2"
 )
 
@@ -29,17 +28,11 @@ func main() {
 		DB: &db.DB{Session: session},
 	}
 
-	r := router.InitializeRoutes(env)
-
-	// place middleware codes here, things like auth
-	// TODO: replace .Classic() with .New() later.
-	//		 For now, leave as .Classic() to benefit from logging.
-	commonHandlers := negroni.Classic()
-	commonHandlers.UseHandler(r)
+	mainHandler := router.InitializeRoutes(env)
 
 	server := &http.Server{
 		Addr:    common.AppConfig.Server.Address,
-		Handler: commonHandlers,
+		Handler: mainHandler,
 	}
 
 	if server_err := server.ListenAndServe(); server_err != nil {

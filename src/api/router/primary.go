@@ -3,9 +3,12 @@ package router
 import (
 	gmux "github.com/gorilla/mux"
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
+	"github.com/justinas/alice"
+
+	"net/http"
 )
 
-func InitializeRoutes(env *handler.Env) *gmux.Router {
+func InitializeRoutes(env *handler.Env) http.Handler {
 	// Using Gorilla mux router instead of default one because it offers more flexibility
 	router := gmux.NewRouter().StrictSlash(false)
 
@@ -22,5 +25,8 @@ func InitializeRoutes(env *handler.Env) *gmux.Router {
 	authRouter := apiRouter.PathPrefix("/auth").Subrouter()
 	authRouter = SetAuthRoutes(authRouter)
 
-	return router
+	// Global middleware(s)
+	globalMiddlewares := []alice.Constructor{}
+
+	return alice.New(globalMiddlewares...).Then(router)
 }
