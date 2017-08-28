@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+    # =-=-=-=-= CADDY =-=-=-=-=
+    caddy:
+      build:
+        context: .
+        dockerfile: Dockerfile-prod
+      container_name: MPCaddy
+      ports:
+        - "2015:2015"
+      links:
+        - goapi
+      volumes:
+        - $HOME/.caddy:/root/.caddy
+    # =-=-=-=-= GOAPI =-=-=-=-=
+    goapi:
+      build:
+        context: ./src/api
+        dockerfile: Dockerfile-prod
+      container_name: MPGoapi
+      links:
+        - database
+    # =-=-=-=-= DATABASE =-=-=-=-=
+    # TODO: Add credentials (security)
+    database:
+        image: mongo
+        container_name: MPDatabase

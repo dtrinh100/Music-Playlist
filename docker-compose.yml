@@ -1,23 +1,42 @@
 version: '2'
 
 services:
-    # =-=-=-=-= CADDY =-=-=-=-=
-    caddy:
-      build: .
-      container_name: MPCaddy
+    # =-=-=-=-= ANGULAR =-=-=-=-=
+    angular:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: MPAngular
       ports:
-        - "2015:2015"
-      links:
-        - goapi
+        - "4200:4200"
       volumes:
-        - $HOME/.caddy:/root/.caddy
+        - .:/home/app/mp_app
+        - /home/app/mp_app/node_modules
     # =-=-=-=-= GOAPI =-=-=-=-=
     goapi:
       build: ./src/api/
       container_name: MPGoapi
       links:
         - database
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./src/api:/go/src/github.com/dtrinh100/Music-Playlist/src/api/
+    # =-=-=-=-= CADDY =-=-=-=-=
+    caddy:
+      image: abiosoft/caddy
+      container_name: MPCaddy
+      ports:
+        - "2015:2015"
+      links:
+        - angular
+        - goapi
+      volumes:
+        - $HOME/.caddy:/root/.caddy
+        - ./Caddyfile:/etc/Caddyfile
     # =-=-=-=-= DATABASE =-=-=-=-=
     database:
-        image: mongo
-        container_name: MPDatabase
+      image: mongo
+      container_name: MPDatabase
+      ports:
+        - "27017:27017"

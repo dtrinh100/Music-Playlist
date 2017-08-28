@@ -1,0 +1,8 @@
+FROM abiosoft/caddy
+LABEL maintainer "Hector Lovo <lovohh@gmail.com>"
+
+# Copies the "production" version of the app into /srv.
+# NOTE: This assumes that the directory ./dist exists locally.
+COPY ./dist/ /srv/
+
+COPY ./Caddyfile-prod /etc/Caddyfile
