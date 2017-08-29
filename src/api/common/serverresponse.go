@@ -3,7 +3,7 @@ package common
 import (
 	"net/http"
 	"encoding/json"
-	"fmt"
+	"log"
 )
 
 func JsonErrorResponse(errMap map[string]string, rw http.ResponseWriter, status int) {
@@ -37,7 +37,7 @@ func HandleErrorWithMessage(rw http.ResponseWriter, err error, msg ErrMap, httpS
 
 	if errorOccurred {
 		for k, v := range msg {
-			fmt.Println(k, v, "--", err)
+			log.Println(k, v, "--", err)
 		}
 
 		JsonErrorResponse(msg, rw, httpStatus)
