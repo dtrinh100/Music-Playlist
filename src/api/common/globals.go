@@ -4,7 +4,7 @@ type Str2mapstr map[string](map[string]string)
 type ErrMap map[string]string
 
 type ErrorList struct {
-	Errors map[string]string    `json:"errors"`
+	Errors ErrMap    `json:"errors"`
 }
 
 type configuration struct {
