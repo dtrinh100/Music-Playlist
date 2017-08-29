@@ -11,6 +11,10 @@ const (
 	loglevel_envkey      = "MP_LOGLVL_ENV"
 )
 
+const (
+	usertable_name = "users"
+)
+
 var AppConfig configuration
 
 /**
@@ -31,7 +35,7 @@ func loadAppConfig() {
 		db := database{
 			Name: os.Getenv(dbname_envkey),
 			UserTable: table{
-				Name: "users",
+				Name: usertable_name,
 			},
 		}
 
