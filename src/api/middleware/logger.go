@@ -7,14 +7,14 @@ import (
 )
 
 /**
-	This function is used as the public middleware-function.
+	Logger is used as the public-facing middleware-function.
 */
 func Logger(handler http.Handler) http.Handler {
 	return aliceWrapper(loggerMiddleware)(handler)
 }
 
 /**
-	This middleware-function logs server-request information to the terminal.
+	loggerMiddleware logs server-request information to the terminal.
 */
 func loggerMiddleware(rw http.ResponseWriter, r *http.Request, next http.Handler) {
 	t1 := time.Now()

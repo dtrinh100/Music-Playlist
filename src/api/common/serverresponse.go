@@ -11,6 +11,7 @@ func JsonErrorResponse(errMap map[string]string, rw http.ResponseWriter, status 
 		Errors: errMap,
 	})
 	if err != nil {
+		// If you end up here, something really went wrong.
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
