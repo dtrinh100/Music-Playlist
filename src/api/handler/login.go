@@ -16,7 +16,7 @@ func Login(rw http.ResponseWriter, req *http.Request) {
 	var user model.User
 
 	dec_err := json.NewDecoder(req.Body).Decode(&user)
-	if common.HandleErrorWithMessage(rw, dec_err, common.ErrMap{
+	if common.HandleErrorWithMap(rw, dec_err, common.ErrMap{
 		"Internal Server Error": "Failed to decode JSON",
 	}, http.StatusInternalServerError) {
 		return

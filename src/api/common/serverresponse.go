@@ -22,8 +22,10 @@ func JsonErrorResponse(errMap map[string]string, rw http.ResponseWriter, status 
 
 func JsonStdResponse(response interface{}, rw http.ResponseWriter) {
 	json, err := json.Marshal(response)
-	if HandleErrorWithMessage(rw, err, ErrMap{
-		"JSONResponse": "Failed to parse"}, http.StatusInternalServerError) {
+
+	if HandleErrorWithMap(rw, err, ErrMap{
+		"Internal Server Error": "Failed to Marshal JSON",
+	}, http.StatusInternalServerError) {
 		return
 	}
 
@@ -32,15 +34,15 @@ func JsonStdResponse(response interface{}, rw http.ResponseWriter) {
 	rw.Write(json)
 }
 
-func HandleErrorWithMessage(rw http.ResponseWriter, err error, msg ErrMap, httpStatus int) bool {
+func HandleErrorWithMap(rw http.ResponseWriter, err error, errMap ErrMap, httpStatus int) bool {
 	errorOccurred := (err != nil)
 
 	if errorOccurred {
-		for k, v := range msg {
+		for k, v := range errMap {
 			log.Println(k, v, "--", err)
 		}
 
-		JsonErrorResponse(msg, rw, httpStatus)
+		JsonErrorResponse(errMap, rw, httpStatus)
 	}
 
 	return errorOccurred
