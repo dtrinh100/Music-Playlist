@@ -8,6 +8,7 @@ import (
 )
 
 /**
+	TODO: update to use the DB.
 	This function logs-in a user with valid credentials.
 
 	Path: [POST] '/api/auth'

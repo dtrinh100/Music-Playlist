@@ -6,6 +6,8 @@ import (
 	"log"
 )
 
+// TODO: Look into if these functions can become middleware.
+
 func JsonErrorResponse(errMap map[string]string, rw http.ResponseWriter, status int) {
 	resp, err := json.Marshal(ErrorList{
 		Errors: errMap,
