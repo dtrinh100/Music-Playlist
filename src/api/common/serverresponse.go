@@ -3,12 +3,11 @@ package common
 import (
 	"net/http"
 	"encoding/json"
-	"log"
 )
 
 // TODO: Look into if these functions can become middleware.
 
-func JsonErrorResponse(errMap map[string]string, rw http.ResponseWriter, status int) {
+func JsonErrorResponse(rw http.ResponseWriter, errMap map[string]string, status int) {
 	resp, err := json.Marshal(ErrorList{
 		Errors: errMap,
 	})
@@ -27,27 +26,14 @@ func JsonErrorResponse(errMap map[string]string, rw http.ResponseWriter, status 
 func JsonStdResponse(rw http.ResponseWriter, response interface{}) {
 	json, err := json.Marshal(response)
 
-	if HandleErrorWithMap(rw, err, ErrMap{
-		"Internal Server Error": "Failed to Marshal JSON",
-	}, http.StatusInternalServerError) {
+	if err != nil {
+		JsonErrorResponse(rw, ErrMap{
+			"Internal Server Error": "Failed to Marshal JSON",
+		}, http.StatusInternalServerError)
 		return
 	}
 
 	rw.WriteHeader(http.StatusOK)
 	rw.Header().Set("Content-Type", "application/json")
 	rw.Write(json)
-}
-
-func HandleErrorWithMap(rw http.ResponseWriter, err error, errMap ErrMap, httpStatus int) bool {
-	errorOccurred := (err != nil)
-
-	if errorOccurred {
-		for k, v := range errMap {
-			log.Println(k, v, "--", err)
-		}
-
-		JsonErrorResponse(errMap, rw, httpStatus)
-	}
-
-	return errorOccurred
 }
