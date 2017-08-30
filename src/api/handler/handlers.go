@@ -36,15 +36,15 @@ type Handler struct {
 }
 
 // ServeHTTP allows our Handler type to satisfy http.Handler.
-func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := h.H(h.Env, w, r)
+func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	err := h.H(h.Env, rw, req)
 	if err != nil {
 		switch e := err.(type) {
 		case Error:
 			log.Printf("HTTP %d - %s", e.Status(), e)
-			http.Error(w, e.Error(), e.Status())
+			http.Error(rw, e.Error(), e.Status())
 		default:
-			http.Error(w, http.StatusText(http.StatusInternalServerError),
+			http.Error(rw, http.StatusText(http.StatusInternalServerError),
 				http.StatusInternalServerError)
 		}
 	}
