@@ -24,7 +24,7 @@ func JsonErrorResponse(errMap map[string]string, rw http.ResponseWriter, status 
 	rw.Write(resp)
 }
 
-func JsonStdResponse(response interface{}, rw http.ResponseWriter) {
+func JsonStdResponse(rw http.ResponseWriter, response interface{}) {
 	json, err := json.Marshal(response)
 
 	if HandleErrorWithMap(rw, err, ErrMap{

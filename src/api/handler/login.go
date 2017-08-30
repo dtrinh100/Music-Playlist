@@ -22,6 +22,7 @@ func Login(rw http.ResponseWriter, req *http.Request, env *Env) error {
 	}
 
 	user.Password = ""
-	common.JsonStdResponse(user, rw)
+	common.JsonStdResponse(rw, user)
+
 	return nil
 }
