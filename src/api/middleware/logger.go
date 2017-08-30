@@ -14,7 +14,7 @@ func Logger(handler http.Handler) http.Handler {
 }
 
 /**
-	loggerMiddleware logs server-request information to the terminal.
+	loggerMiddleware is a private helper-function that logs server-request information to the terminal.
 */
 func loggerMiddleware(rw http.ResponseWriter, r *http.Request, next http.Handler) {
 	t1 := time.Now()
