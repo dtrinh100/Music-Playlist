@@ -16,6 +16,11 @@ func init() {
 	common.InitServer()
 }
 
+func initEnvGetHandler(session *mgo.Session) *handler.EnvHandler {
+	env := &handler.Env{ DB: &db.DB{Session: session} }
+	return &handler.EnvHandler{Env: env}
+}
+
 func main() {
 	// TODO: initialize handler.Env & DB in common.InitServer() later
 	session, err := mgo.Dial("MPDatabase")
@@ -24,11 +29,8 @@ func main() {
 	}
 	defer session.Close()
 
-	env := &handler.Env{
-		DB: &db.DB{Session: session},
-	}
-
-	mainHandler := router.InitializeRoutes(env)
+	eh := initEnvGetHandler(session)
+	mainHandler := router.InitializeRoutes(eh)
 
 	server := &http.Server{
 		Addr:    common.AppConfig.Server.Address,

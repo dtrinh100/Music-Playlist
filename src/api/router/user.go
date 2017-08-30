@@ -9,11 +9,10 @@ import (
 /**
 	This function sets up the '/users' routes
 */
-func SetUserRoutes(env *handler.Env, router *mux.Router) *mux.Router {
+func SetUserRoutes(router *mux.Router, eh *handler.EnvHandler) *mux.Router {
 	// route handlers
 	// ignore vet errors for unkeyed fields
-	router.Handle("",
-		handler.Handler{env, handler.PostUser}).Methods("POST")
+	router.Handle("", eh.Handle(handler.PostUser)).Methods("POST")
 
 	return router
 }

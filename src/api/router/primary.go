@@ -12,7 +12,7 @@ import (
 /**
 	This function sets-up the routes & middleware.
 */
-func InitializeRoutes(env *handler.Env) http.Handler {
+func InitializeRoutes(eh *handler.EnvHandler) http.Handler {
 	// Using Gorilla mux router instead of default one because it offers more flexibility
 	router := gmux.NewRouter().StrictSlash(false)
 
@@ -23,7 +23,7 @@ func InitializeRoutes(env *handler.Env) http.Handler {
 
 	// User sub-router & routes
 	userRouter := apiRouter.PathPrefix("/users").Subrouter()
-	userRouter = SetUserRoutes(env, userRouter)
+	userRouter = SetUserRoutes(userRouter, eh)
 
 	// Auth sub-router & routes
 	authRouter := apiRouter.PathPrefix("/auth").Subrouter()
