@@ -2,24 +2,22 @@ package middleware
 
 import (
 	"net/http"
-	"github.com/justinas/alice"
 	"bytes"
 	"log"
 	"os"
 )
 
-type middlewareSig func(rw http.ResponseWriter, r *http.Request, next http.Handler)
-
 /**
-	This wrapper-function is used to create clean-looking middleware-functions
-	for justinas/alice.
-*/
-func aliceWrapper(middleware middlewareSig) alice.Constructor {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-			middleware(rw, r, next)
-		})
-	}
+	AliceFunc is a signature-wrapper that will allow support for this type of signature
+	to function as justinas/alice middleware.
+**/
+type AliceFunc func(rw http.ResponseWriter, r *http.Request, next http.Handler)
+
+// Handle mimics the same signature that justina/alice's Constructor requires.
+func (afn AliceFunc) Handle(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		afn(rw, r, h)
+	})
 }
 
 /**

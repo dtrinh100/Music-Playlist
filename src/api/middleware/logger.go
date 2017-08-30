@@ -10,7 +10,7 @@ import (
 	Logger is used as the public-facing middleware-function.
 */
 func Logger(handler http.Handler) http.Handler {
-	return aliceWrapper(loggerMiddleware)(handler)
+	return AliceFunc(loggerMiddleware).Handle(handler)
 }
 
 /**
