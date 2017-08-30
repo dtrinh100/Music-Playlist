@@ -28,16 +28,32 @@ func (se StatusError) Status() int {
 	return se.Code
 }
 
+// Signature for a function that includes http.Handler + env parameters & returns an error-type
+type mp_envhandler_fn func(rw http.ResponseWriter, req *http.Request, env *Env) error
+
+// EnvHandler represents a handler of Handler-handler
+type EnvHandler struct {
+	*Env
+}
+
+// Handle allows EnvHandler to create Handler handlers while reusing the *Env variable
+func (sh EnvHandler) Handle(fn mp_envhandler_fn) Handler {
+	return Handler{
+		sh.Env,
+		fn,
+	}
+}
+
 // The Handler struct that takes a configured Env and a function matching
 // our useful signature.
 type Handler struct {
 	*Env
-	H func(e *Env, w http.ResponseWriter, r *http.Request) error
+	H mp_envhandler_fn
 }
 
 // ServeHTTP allows our Handler type to satisfy http.Handler.
 func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	err := h.H(h.Env, rw, req)
+	err := h.H(rw, req, h.Env)
 	if err != nil {
 		switch e := err.(type) {
 		case Error:
