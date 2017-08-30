@@ -18,13 +18,14 @@ func MockMethodHelper(rw http.ResponseWriter, req *http.Request) {
 	var data map[string]string
 
 	dec_err := json.NewDecoder(req.Body).Decode(&data)
-	if HandleErrorWithMap(rw, dec_err, ErrMap{
-		"Internal Server Error": "Failed to decode JSON",
-	}, http.StatusInternalServerError) {
+	if dec_err != nil {
+		JsonErrorResponse(rw, ErrMap{
+			"Internal Server Error": "Failed to decode JSON",
+		}, http.StatusInternalServerError)
 		return
 	}
 
-	JsonStdResponse(data, rw)
+	JsonStdResponse(rw, data)
 }
 
 /**

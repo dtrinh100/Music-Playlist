@@ -28,11 +28,12 @@ func TestLogin_Valid(t *testing.T) {
 	}`
 	req := httptest.NewRequest("POST", "/api/auth", strings.NewReader(credentialsJson))
 	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
+	rw := httptest.NewRecorder()
 
-	Login(w, req)
+	eh := EnvHandler{}
+	eh.Handle(Login).ServeHTTP(rw, req)
 
-	resp := w.Result()
+	resp := rw.Result()
 
 	body, body_err := ioutil.ReadAll(resp.Body)
 	assert.NoError(body_err)
@@ -41,7 +42,7 @@ func TestLogin_Valid(t *testing.T) {
 	result_status := resp.Status
 
 	expected_header := "application/json"
-	result_header := w.Header().Get("Content-Type")
+	result_header := rw.Header().Get("Content-Type")
 
 	// Testing Expections: response.Body
 	expected_body := map[string]string{"email": "user.one@email.com", "username": "user_one"}
@@ -68,11 +69,12 @@ func TestLogin_Invalid(t *testing.T) {
 	credentialsJson := ``
 	req := httptest.NewRequest("POST", "/api/auth", strings.NewReader(credentialsJson))
 	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
+	rw := httptest.NewRecorder()
 
-	Login(w, req)
+	eh := EnvHandler{}
+	eh.Handle(Login).ServeHTTP(rw, req)
 
-	resp := w.Result()
+	resp := rw.Result()
 
 	body, body_err := ioutil.ReadAll(resp.Body)
 	assert.NoError(body_err)
@@ -81,12 +83,12 @@ func TestLogin_Invalid(t *testing.T) {
 	result_status := resp.Status
 
 	expected_header := "application/json"
-	result_header := w.Header().Get("Content-Type")
+	result_header := rw.Header().Get("Content-Type")
 
 	// Testing Expections: response.Body
 	expected_body := common.Str2mapstr{
 		"errors": common.ErrMap{
-			"Internal Server Error": "Failed to decode JSON",
+			"Internal Server Error": "Failed To Decode JSON",
 		},
 	}
 
