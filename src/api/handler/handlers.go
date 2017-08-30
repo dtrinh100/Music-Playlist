@@ -37,9 +37,9 @@ type EnvHandler struct {
 }
 
 // Handle allows EnvHandler to create Handler handlers while reusing the *Env variable
-func (sh EnvHandler) Handle(fn mp_envhandler_fn) Handler {
+func (eh EnvHandler) Handle(fn mp_envhandler_fn) Handler {
 	return Handler{
-		sh.Env,
+		eh.Env,
 		fn,
 	}
 }
