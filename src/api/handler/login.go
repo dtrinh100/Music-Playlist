@@ -13,16 +13,15 @@ import (
 
 	Path: [POST] '/api/auth'
 */
-func Login(rw http.ResponseWriter, req *http.Request) {
+func Login(rw http.ResponseWriter, req *http.Request, env *Env) error {
 	var user model.User
 
 	dec_err := json.NewDecoder(req.Body).Decode(&user)
-	if common.HandleErrorWithMap(rw, dec_err, common.ErrMap{
-		"Internal Server Error": "Failed to decode JSON",
-	}, http.StatusInternalServerError) {
-		return
+	if dec_err != nil {
+		return dec_err
 	}
 
 	user.Password = ""
 	common.JsonStdResponse(user, rw)
+	return nil
 }

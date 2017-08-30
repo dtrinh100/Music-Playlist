@@ -8,7 +8,7 @@ import (
 /**
 	This function sets-up the '/api/auth' routes.
 */
-func SetAuthRoutes(router *mux.Router) *mux.Router {
-	router.HandleFunc("", handler.Login).Methods("POST")
+func SetAuthRoutes(router *mux.Router, eh *handler.EnvHandler) *mux.Router {
+	router.Handle("", eh.Handle(handler.Login)).Methods("POST")
 	return router
 }
