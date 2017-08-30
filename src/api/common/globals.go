@@ -7,21 +7,10 @@ type ErrorList struct {
 	Errors ErrMap    `json:"errors"`
 }
 
-type configuration struct {
-	Server server
-	DB     database
-}
-
-type server struct {
+type ServerConfig struct {
 	Address  string
 	LogLevel int
 }
 
-type database struct {
-	Name      string
-	UserTable table
-}
 
-type table struct {
-	Name string
-}
+

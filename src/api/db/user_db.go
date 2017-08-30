@@ -4,12 +4,11 @@ import (
 	"log"
 
 	"github.com/dtrinh100/Music-Playlist/src/api/model"
-	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
 // InsertUser inserts a user into the database
-func (d *DB) InsertUser(username string, hashedpassword []byte, email string) error {
-	conn := d.Session.DB(common.AppConfig.DB.Name).C(common.AppConfig.DB.UserTable.Name)
+func (db *DB) InsertUser(username string, hashedpassword []byte, email string) error {
+	conn := db.Session.DB(db.Name).C(db.UserTable.Name)
 	err := conn.Insert(&model.User{
 		username,
 		"",

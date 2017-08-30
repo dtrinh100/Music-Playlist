@@ -12,28 +12,26 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-func init() {
-	common.InitServer()
-}
-
-func initEnvGetHandler(session *mgo.Session) *handler.EnvHandler {
-	env := &handler.Env{ DB: &db.DB{Session: session} }
+func initEnvGetHandler(dbc *db.DB) *handler.EnvHandler {
+	env := &handler.Env{DB: dbc}
 	return &handler.EnvHandler{Env: env}
 }
 
 func main() {
-	// TODO: initialize handler.Env & DB in common.InitServer() later
+	// Note: MPDatabase name comes from docker-compose.yml
 	session, err := mgo.Dial("MPDatabase")
 	if err != nil {
 		panic(err)
 	}
 	defer session.Close()
 
-	eh := initEnvGetHandler(session)
+	dbc := db.InitDB(session)
+	eh := initEnvGetHandler(dbc)
 	mainHandler := router.InitializeRoutes(eh)
+	sc := common.InitServer()
 
 	server := &http.Server{
-		Addr:    common.AppConfig.Server.Address,
+		Addr:    sc.Address,
 		Handler: mainHandler,
 	}
 
