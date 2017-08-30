@@ -12,6 +12,7 @@ const (
 
 func InitServer() *ServerConfig {
 	logLevelInt, lli_err := strconv.Atoi(os.Getenv(loglevel_envkey))
+	// TODO: Handle this more appropriately.
 	if lli_err != nil {
 		Fatal(lli_err, "Failed to convert "+os.Getenv(loglevel_envkey)+" to int.")
 	}
