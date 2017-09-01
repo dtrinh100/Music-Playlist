@@ -30,8 +30,8 @@ func TestLogin_Valid(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	rw := httptest.NewRecorder()
 
-	eh := EnvHandler{}
-	eh.Handle(Login).ServeHTTP(rw, req)
+	loginH := Handler{nil, Login}
+	loginH.ServeHTTP(rw, req)
 
 	resp := rw.Result()
 
@@ -71,8 +71,8 @@ func TestLogin_Invalid(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	rw := httptest.NewRecorder()
 
-	eh := EnvHandler{}
-	eh.Handle(Login).ServeHTTP(rw, req)
+	loginH := Handler{nil, Login}
+	loginH.ServeHTTP(rw, req)
 
 	resp := rw.Result()
 
