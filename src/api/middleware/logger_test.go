@@ -29,11 +29,13 @@ func GetTestHandler() http.HandlerFunc {
 func TestLoggerMiddlewareSlashPath(t *testing.T) {
 	assert := assert.New(t)
 
-	ts := httptest.NewServer(Logger(GetTestHandler()))
-	defer ts.Close()
+	LoggerMiddlewareAH := AliceMiddlewareHandler{AliceFn: LoggerMiddleware}
+
+	server := httptest.NewServer(LoggerMiddlewareAH.Handle(GetTestHandler()))
+	defer server.Close()
 
 	fn := func() *http.Response {
-		res, res_err := http.Get(ts.URL)
+		res, res_err := http.Get(server.URL)
 		assert.NoError(res_err)
 		return res
 	}
@@ -52,11 +54,13 @@ func TestLoggerMiddlewareSlashPath(t *testing.T) {
 func TestLoggerMiddlewareLongPath(t *testing.T) {
 	assert := assert.New(t)
 
-	ts := httptest.NewServer(Logger(GetTestHandler()))
-	defer ts.Close()
+	LoggerMiddlewareAH := AliceMiddlewareHandler{AliceFn: LoggerMiddleware}
+
+	server := httptest.NewServer(LoggerMiddlewareAH.Handle(GetTestHandler()))
+	defer server.Close()
 
 	fn := func() *http.Response {
-		res, res_err := http.Post(ts.URL + "/api/users/1", "application/json", nil)
+		res, res_err := http.Post(server.URL + "/api/users/1", "application/json", nil)
 		assert.NoError(res_err)
 		return res
 	}
