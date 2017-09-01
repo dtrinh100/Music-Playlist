@@ -33,13 +33,13 @@ export class ApiService {
   }
 
   post(path: string, body: Object = {}): Observable<any> {
-    return this.http.post(`${this.apiUrl}${path}`, JSON.stringify(body), {headers: ApiService.setHeaders()})
+    return this.http.post(`${this.apiUrl}${path}`, body, {headers: ApiService.setHeaders()})
       .catch(ApiService.formatErrors)
       .map((res: Response) => res.json());
   }
 
   put(path: string, body: Object = {}): Observable<any> {
-    return this.http.put(`${this.apiUrl}${path}`, JSON.stringify(body), {headers: ApiService.setHeaders()})
+    return this.http.put(`${this.apiUrl}${path}`, body, {headers: ApiService.setHeaders()})
       .catch(ApiService.formatErrors)
       .map((res: Response) => res.json());
   }

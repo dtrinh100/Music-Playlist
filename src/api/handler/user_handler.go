@@ -8,10 +8,11 @@ import (
 
 	"github.com/dtrinh100/Music-Playlist/src/api/model"
 	"golang.org/x/crypto/bcrypt"
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
 // PostUser creates the user account
-func PostUser(env *Env, w http.ResponseWriter, req *http.Request) error {
+func PostUser(w http.ResponseWriter, req *http.Request, env *common.Env) error {
 
 	decoder := json.NewDecoder(req.Body) // reads in request body
 	var user model.User

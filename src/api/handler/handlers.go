@@ -3,48 +3,50 @@ package handler
 import (
 	"log"
 	"net/http"
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
-// Error represents a handler error. It provides methods for a HTTP status
-// code and embeds the built-in error interface.
-type Error interface {
-	error
-	Status() int
-}
+/**
+	Mp_env_fn is a signature for a function that includes http.Handler + env
+	parameters & returns an error-type
+ */
+type Mp_env_fn func(rw http.ResponseWriter, req *http.Request, env *common.Env) error
 
-// StatusError represents an error with an associated HTTP status code.
-type StatusError struct {
-	Code int
-	Err  error
-}
-
-// Error gets the error string of the error
-func (se StatusError) Error() string {
-	return se.Err.Error()
-}
-
-// Status gets the status code of the error
-func (se StatusError) Status() int {
-	return se.Code
-}
-
-// The Handler struct that takes a configured Env and a function matching
-// our useful signature.
+/**
+	Handler struct takes a configured Env and a function matching our
+	useful signature.
+*/
 type Handler struct {
-	*Env
-	H func(e *Env, w http.ResponseWriter, r *http.Request) error
+	*common.Env
+	H Mp_env_fn
 }
 
-// ServeHTTP allows our Handler type to satisfy http.Handler.
-func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := h.H(h.Env, w, r)
+/**
+	ServeHTTP allows our Handler type to satisfy http.Handler.
+*/
+func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	handleErrorFn := func(err error) {
+		switch e := err.(type) {
+		case JsonError:
+			common.JsonErrorResponse(rw, e.ErrMap, e.Status())
+			return
+		case StatusError:
+			http.Error(rw, e.Error(), e.Status())
+		default:
+			log.Println("Custom Error-type needs to be handled in switch-statement.")
+			status := http.StatusInternalServerError
+			http.Error(rw, http.StatusText(status), status)
+		}
+	}
+
+	err := h.H(rw, req, h.Env)
 	if err != nil {
 		switch e := err.(type) {
 		case Error:
 			log.Printf("HTTP %d - %s", e.Status(), e)
-			http.Error(w, e.Error(), e.Status())
+			handleErrorFn(err)
 		default:
-			http.Error(w, http.StatusText(http.StatusInternalServerError),
+			http.Error(rw, http.StatusText(http.StatusInternalServerError),
 				http.StatusInternalServerError)
 		}
 	}

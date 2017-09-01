@@ -5,41 +5,34 @@ import (
 	"net/http"
 
 	"github.com/dtrinh100/Music-Playlist/src/api/db"
-	"github.com/dtrinh100/Music-Playlist/src/api/handler"
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
+	"github.com/dtrinh100/Music-Playlist/src/api/router"
 
-	"github.com/gorilla/mux"
-	"github.com/justinas/alice"
 	"gopkg.in/mgo.v2"
 )
 
+/**
+	main is the entry-function of the api.
+*/
 func main() {
-
-	// using Gorilla mux router instead of default one because it offers more flexibity
-	r := mux.NewRouter()
-
+	// Note: MPDatabase name comes from docker-compose.yml
 	session, err := mgo.Dial("MPDatabase")
 	if err != nil {
 		panic(err)
 	}
 	defer session.Close()
 
-	env := &handler.Env{
-		DB: &db.DB{Session: session},
+	sc := common.InitServer()
+	dbc := db.InitDB(session)
+	env := &common.Env{DB: dbc}
+	mainHandler := router.InitializeRoutes(env)
+
+	server := &http.Server{
+		Addr:    sc.Address,
+		Handler: mainHandler,
 	}
 
-	// place middleware codes here, things like auth
-	commonHandlers := alice.New()
-
-	// adds the api prefix to all subroutes
-	s := r.PathPrefix("/api/").Subrouter()
-
-	// route handlers
-	// ignore vet errors for unkeyed fields
-	s.Handle("/users", commonHandlers.Then(handler.Handler{env, handler.PostUser})).Methods("POST")
-
-	// start server on port 3000
-	err = http.ListenAndServe(":3000", r)
-	if err != nil {
-		log.Fatal(err)
+	if server_err := server.ListenAndServe(); server_err != nil {
+		log.Fatal("Server failed to start:", server_err)
 	}
 }
