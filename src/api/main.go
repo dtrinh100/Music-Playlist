@@ -19,9 +19,8 @@ func main() {
 	}
 	defer session.Close()
 
-	dbc := db.InitDB(session)
-	mainHandler := router.InitializeRoutes(eh)
 	sc := common.InitServer()
+	dbc := db.InitDB(session)
 	env := &common.Env{DB: dbc}
 	mainHandler := router.InitializeRoutes(env)
 
