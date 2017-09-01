@@ -13,7 +13,7 @@ import (
 
 	Path: [POST] '/api/auth'
 */
-func Login(rw http.ResponseWriter, req *http.Request, env *Env) error {
+func Login(rw http.ResponseWriter, req *http.Request, env *common.Env) error {
 	var user model.User
 
 	dec_err := json.NewDecoder(req.Body).Decode(&user)

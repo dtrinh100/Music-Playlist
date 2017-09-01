@@ -2,6 +2,7 @@ package router
 
 import (
 	mw "github.com/dtrinh100/Music-Playlist/src/api/middleware"
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
 	gmux "github.com/gorilla/mux"
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
 	"github.com/justinas/alice"
@@ -9,10 +10,17 @@ import (
 	"net/http"
 )
 
+func HandleFn(fn handler.Mp_env_fn, env *common.Env) handler.Handler {
+	return handler.Handler{
+		Env: env,
+		H:   fn,
+	}
+}
+
 /**
 	This function sets-up the routes & middleware.
 */
-func InitializeRoutes(eh *handler.EnvHandler) http.Handler {
+func InitializeRoutes(env *common.Env) http.Handler {
 	// Using Gorilla mux router instead of default one because it offers more flexibility
 	router := gmux.NewRouter().StrictSlash(false)
 
@@ -23,11 +31,11 @@ func InitializeRoutes(eh *handler.EnvHandler) http.Handler {
 
 	// User sub-router & routes
 	userRouter := apiRouter.PathPrefix("/users").Subrouter()
-	userRouter = SetUserRoutes(userRouter, eh)
+	userRouter = SetUserRoutes(userRouter, env)
 
 	// Auth sub-router & routes
 	authRouter := apiRouter.PathPrefix("/auth").Subrouter()
-	authRouter = SetAuthRoutes(authRouter, eh)
+	authRouter = SetAuthRoutes(authRouter, env)
 
 	// Global middleware(s)
 	globalMiddlewares := []alice.Constructor{

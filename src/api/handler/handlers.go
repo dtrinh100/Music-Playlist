@@ -7,26 +7,13 @@ import (
 )
 
 // Signature for a function that includes http.Handler + env parameters & returns an error-type
-type mp_envhandler_fn func(rw http.ResponseWriter, req *http.Request, env *Env) error
-
-// EnvHandler represents a handler of Handler-handler
-type EnvHandler struct {
-	*Env
-}
-
-// Handle allows EnvHandler to create Handler handlers while reusing the *Env variable
-func (eh EnvHandler) Handle(fn mp_envhandler_fn) Handler {
-	return Handler{
-		eh.Env,
-		fn,
-	}
-}
+type Mp_env_fn func(rw http.ResponseWriter, req *http.Request, env *common.Env) error
 
 // The Handler struct that takes a configured Env and a function matching
 // our useful signature.
 type Handler struct {
-	*Env
-	H mp_envhandler_fn
+	*common.Env
+	H Mp_env_fn
 }
 
 // ServeHTTP allows our Handler type to satisfy http.Handler.
