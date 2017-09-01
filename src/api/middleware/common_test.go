@@ -6,7 +6,22 @@ import (
 
 	"log"
 	"net/http"
+	"bytes"
+	"os"
 )
+
+/**
+	captureOutputExpectResponse captures log's output to a buffer and returns
+	the output + an *http.Response. This will be used to test methods that
+	output to the log.
+*/
+func captureOutputExpectResponse(f (func() *http.Response)) (*http.Response, string) {
+	var buf bytes.Buffer
+	log.SetOutput(&buf)
+	res := f()
+	log.SetOutput(os.Stderr)
+	return res, buf.String()
+}
 
 /**
 	TestCaptureOutputExpectResponse tests captureOutputExpectResponse by making sure

@@ -10,6 +10,20 @@ import (
 	"net/http"
 )
 
+// Alice is a helper-function that makes middleware-functions satisfy alice.Constructor.
+func Alice(fn mw.Mp_alice_fn) mw.AliceMiddlewareHandler {
+	return mw.AliceMiddlewareHandler{AliceFn: fn}
+}
+
+/**
+	AliceEnv is a helper-function that makes middleware-functions satisfy alice.Constructor
+	and pass an Env struct.
+ */
+func AliceEnv(fn mw.Mp_aliceenv_fn, env *common.Env) mw.AliceMiddlewareEnvHandler {
+	return mw.AliceMiddlewareEnvHandler{Env: env, AliceFn: fn}
+}
+
+// HandleFn is a helper-function that makes route-functions satisfy http.Handler.
 func HandleFn(fn handler.Mp_env_fn, env *common.Env) handler.Handler {
 	return handler.Handler{
 		Env: env,
@@ -39,7 +53,7 @@ func InitializeRoutes(env *common.Env) http.Handler {
 
 	// Global middleware(s)
 	globalMiddlewares := []alice.Constructor{
-		mw.Logger,
+		Alice(mw.LoggerMiddleware).Handle,
 	}
 
 	return alice.New(globalMiddlewares...).Then(router)

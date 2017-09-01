@@ -7,17 +7,10 @@ import (
 )
 
 /**
-	Logger is used as the public-facing middleware-function.
+	LoggerMiddleware is a function that logs server-request information to the terminal.
 */
-func Logger(handler http.Handler) http.Handler {
-	return AliceFunc(loggerMiddleware).Handle(handler)
-}
-
-/**
-	loggerMiddleware is a private helper-function that logs server-request information to the terminal.
-*/
-func loggerMiddleware(rw http.ResponseWriter, r *http.Request, next http.Handler) {
+func LoggerMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler) {
 	t1 := time.Now()
-	next.ServeHTTP(rw, r)
-	log.Printf("\t%s | [%s] %q | %v\n", r.Host, r.Method, r.URL.String(), time.Now().Sub(t1))
+	next.ServeHTTP(rw, req)
+	log.Printf("\t%s | [%s] %q | %v\n", req.Host, req.Method, req.URL.String(), time.Now().Sub(t1))
 }
