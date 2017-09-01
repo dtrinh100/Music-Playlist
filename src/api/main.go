@@ -11,6 +11,9 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
+/**
+	main is the entry-function of the api.
+*/
 func main() {
 	// Note: MPDatabase name comes from docker-compose.yml
 	session, err := mgo.Dial("MPDatabase")

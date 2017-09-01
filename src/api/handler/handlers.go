@@ -6,17 +6,24 @@ import (
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
-// Signature for a function that includes http.Handler + env parameters & returns an error-type
+/**
+	Mp_env_fn is a signature for a function that includes http.Handler + env
+	parameters & returns an error-type
+ */
 type Mp_env_fn func(rw http.ResponseWriter, req *http.Request, env *common.Env) error
 
-// The Handler struct that takes a configured Env and a function matching
-// our useful signature.
+/**
+	Handler struct takes a configured Env and a function matching our
+	useful signature.
+*/
 type Handler struct {
 	*common.Env
 	H Mp_env_fn
 }
 
-// ServeHTTP allows our Handler type to satisfy http.Handler.
+/**
+	ServeHTTP allows our Handler type to satisfy http.Handler.
+*/
 func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	handleErrorFn := func(err error) {
 		switch e := err.(type) {

@@ -7,6 +7,9 @@ import (
 
 // TODO: Look into if these functions can become middleware.
 
+/**
+	JsonErrorResponse helps send json-formatted error-responses to the client.
+*/
 func JsonErrorResponse(rw http.ResponseWriter, errMap map[string]string, status int) {
 	resp, err := json.Marshal(ErrorList{
 		Errors: errMap,
@@ -23,6 +26,9 @@ func JsonErrorResponse(rw http.ResponseWriter, errMap map[string]string, status 
 	rw.Write(resp)
 }
 
+/**
+	JsonStdResponse helps send json-formated standard-responses to the client.
+*/
 func JsonStdResponse(rw http.ResponseWriter, response interface{}) {
 	json, err := json.Marshal(response)
 

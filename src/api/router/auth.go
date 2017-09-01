@@ -7,7 +7,7 @@ import (
 )
 
 /**
-	This function sets-up the '/api/auth' routes.
+	SetAuthRoutes sets-up the '/api/auth' routes.
 */
 func SetAuthRoutes(router *mux.Router, env *common.Env) *mux.Router {
 	router.Handle("", HandleFn(handler.Login, env)).Methods("POST")

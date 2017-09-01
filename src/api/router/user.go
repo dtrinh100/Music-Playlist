@@ -8,7 +8,7 @@ import (
 )
 
 /**
-	This function sets up the '/users' routes
+	SetUserRoutes sets up the '/users' routes
 */
 func SetUserRoutes(router *mux.Router, env *common.Env) *mux.Router {
 	// route handlers

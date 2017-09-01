@@ -10,6 +10,9 @@ const (
 	loglevel_envkey      = "MP_LOGLVL_ENV"
 )
 
+/**
+	InitServer helps initialize the server's configuration.
+*/
 func InitServer() *ServerConfig {
 	logLevelInt, lli_err := strconv.Atoi(os.Getenv(loglevel_envkey))
 	// TODO: Handle this more appropriately.

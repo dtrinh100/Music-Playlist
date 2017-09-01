@@ -10,6 +10,7 @@ const (
 	usertable_name = "users"
 )
 
+// table holds the DB-table's configuration.
 type table struct {
 	Name string
 }
@@ -21,6 +22,7 @@ type DB struct {
 	UserTable table
 }
 
+// InitDB helps initialize the DB struct.
 func InitDB(session *mgo.Session) *DB {
 	return &DB{
 		Name:    os.Getenv(dbname_envkey),

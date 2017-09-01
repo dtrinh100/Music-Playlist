@@ -18,7 +18,7 @@ func HandleFn(fn handler.Mp_env_fn, env *common.Env) handler.Handler {
 }
 
 /**
-	This function sets-up the routes & middleware.
+	InitializeRoutes sets-up all of the routes & middleware.
 */
 func InitializeRoutes(env *common.Env) http.Handler {
 	// Using Gorilla mux router instead of default one because it offers more flexibility
