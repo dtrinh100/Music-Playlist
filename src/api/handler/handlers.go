@@ -7,10 +7,10 @@ import (
 )
 
 /**
-	Mp_env_fn is a signature for a function that includes http.Handler + env
+	HandlerEnvFn is a signature for a function that includes http.Handler + env
 	parameters & returns an error-type
  */
-type Mp_env_fn func(rw http.ResponseWriter, req *http.Request, env *common.Env) error
+type HandlerEnvFn func(rw http.ResponseWriter, req *http.Request, env *common.Env) error
 
 /**
 	Handler struct takes a configured Env and a function matching our
@@ -18,7 +18,7 @@ type Mp_env_fn func(rw http.ResponseWriter, req *http.Request, env *common.Env) 
 */
 type Handler struct {
 	*common.Env
-	H Mp_env_fn
+	HEF HandlerEnvFn
 }
 
 /**
@@ -27,27 +27,25 @@ type Handler struct {
 func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	handleErrorFn := func(err error) {
 		switch e := err.(type) {
-		case JsonError:
-			common.JsonErrorResponse(rw, e.ErrMap, e.Status())
+		case JSONError:
+			common.JSONErrorResponse(rw, e.ErrMap, e.Status())
 			return
 		case StatusError:
 			http.Error(rw, e.Error(), e.Status())
 		default:
 			log.Println("Custom Error-type needs to be handled in switch-statement.")
-			status := http.StatusInternalServerError
-			http.Error(rw, http.StatusText(status), status)
+			common.GenericJSONErrorResponse(rw)
 		}
 	}
 
-	err := h.H(rw, req, h.Env)
-	if err != nil {
-		switch e := err.(type) {
+	handlerErr := h.HEF(rw, req, h.Env)
+	if handlerErr != nil {
+		switch e := handlerErr.(type) {
 		case Error:
 			log.Printf("HTTP %d - %s", e.Status(), e)
-			handleErrorFn(err)
+			handleErrorFn(handlerErr)
 		default:
-			http.Error(rw, http.StatusText(http.StatusInternalServerError),
-				http.StatusInternalServerError)
+			common.GenericJSONErrorResponse(rw)
 		}
 	}
 }

@@ -5,19 +5,28 @@ import (
 	"encoding/json"
 )
 
+/**
+	GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
+*/
+func GenericJSONErrorResponse(rw http.ResponseWriter) {
+	JSONErrorResponse(rw, ErrMap{
+		"Internal Server Error": "Something Went Wrong In The API",
+	}, http.StatusInternalServerError)
+}
+
 // TODO: Look into if these functions can become middleware.
 
 /**
-	JsonErrorResponse helps send json-formatted error-responses to the client.
+	JSONErrorResponse helps send json-formatted error-responses to the client.
 */
-func JsonErrorResponse(rw http.ResponseWriter, errMap map[string]string, status int) {
-	resp, err := json.Marshal(ErrorList{
+func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
+	resp, respErr := json.Marshal(ErrorList{
 		Errors: errMap,
 	})
 
-	if err != nil {
+	if respErr != nil {
 		// If you end up here, something really went wrong.
-		http.Error(rw, err.Error(), http.StatusInternalServerError)
+		http.Error(rw, respErr.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -27,13 +36,13 @@ func JsonErrorResponse(rw http.ResponseWriter, errMap map[string]string, status 
 }
 
 /**
-	JsonStdResponse helps send json-formated standard-responses to the client.
+	JSONStdResponse helps send json-formated standard-responses to the client.
 */
-func JsonStdResponse(rw http.ResponseWriter, response interface{}) {
-	json, err := json.Marshal(response)
+func JSONStdResponse(rw http.ResponseWriter, response interface{}) {
+	json, jsonErr := json.Marshal(response)
 
-	if err != nil {
-		JsonErrorResponse(rw, ErrMap{
+	if jsonErr != nil {
+		JSONErrorResponse(rw, ErrMap{
 			"Internal Server Error": "Failed to Marshal JSON",
 		}, http.StatusInternalServerError)
 		return

@@ -11,16 +11,16 @@ import (
 )
 
 /**
-	TestLogin_Valid tests Login.
+	TestLoginValid tests Login.
 	Testing for valid response, given valid input.
 
 	Testing Expectations:
 		response.Status = "200 OK"
 		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expected_body' below)
+		response.Body = (see variable 'expectedBody' below)
 */
-func TestLogin_Valid(t *testing.T) {
-	assert := assert.New(t)
+func TestLoginValid(t *testing.T) {
+	asrt := assert.New(t)
 	credentialsJson := `{
 		"email": "user.one@email.com",
 		"username": "user_one",
@@ -35,37 +35,37 @@ func TestLogin_Valid(t *testing.T) {
 
 	resp := rw.Result()
 
-	body, body_err := ioutil.ReadAll(resp.Body)
-	assert.NoError(body_err)
+	body, bodyErr := ioutil.ReadAll(resp.Body)
+	asrt.NoError(bodyErr)
 
-	expected_status := "200 OK"
-	result_status := resp.Status
+	expectedStatus := "200 OK"
+	resultStatus := resp.Status
 
-	expected_header := "application/json"
-	result_header := rw.Header().Get("Content-Type")
+	expectedHeader := "application/json"
+	resultHeader := rw.Header().Get("Content-Type")
 
 	// Testing Expections: response.Body
-	expected_body := map[string]string{"email": "user.one@email.com", "username": "user_one"}
-	result_body := map[string]string{}
-	unm_err := json.Unmarshal(body, &result_body)
+	expectedBody := map[string]string{"email": "user.one@email.com", "username": "user_one"}
+	resultBody := map[string]string{}
+	unmErr := json.Unmarshal(body, &resultBody)
 
-	assert.NoError(unm_err)
-	assert.Equal(expected_header, result_header)
-	assert.Equal(expected_status, result_status)
-	assert.Equal(expected_body, result_body)
+	asrt.NoError(unmErr)
+	asrt.Equal(expectedHeader, resultHeader)
+	asrt.Equal(expectedStatus, resultStatus)
+	asrt.Equal(expectedBody, resultBody)
 }
 
 /**
-	TestLogin_Invalid tests Login.
+	TestLoginInvalid tests Login.
 	Testing for invalid response, given invalid input.
 
 	Testing Expectations:
 		response.Status = "500 Internal Server Error"
 		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expected_body' below)
+		response.Body = (see variable 'expectedBody' below)
 */
-func TestLogin_Invalid(t *testing.T) {
-	assert := assert.New(t)
+func TestLoginInvalid(t *testing.T) {
+	asrt := assert.New(t)
 	credentialsJson := ``
 	req := httptest.NewRequest("POST", "/api/auth", strings.NewReader(credentialsJson))
 	req.Header.Set("Content-Type", "application/json")
@@ -76,28 +76,28 @@ func TestLogin_Invalid(t *testing.T) {
 
 	resp := rw.Result()
 
-	body, body_err := ioutil.ReadAll(resp.Body)
-	assert.NoError(body_err)
+	body, bodyErr := ioutil.ReadAll(resp.Body)
+	asrt.NoError(bodyErr)
 
-	expected_status := "500 Internal Server Error"
-	result_status := resp.Status
+	expectedStatus := "500 Internal Server Error"
+	resultStatus := resp.Status
 
-	expected_header := "application/json"
-	result_header := rw.Header().Get("Content-Type")
+	expectedHeader := "application/json"
+	resultHeader := rw.Header().Get("Content-Type")
 
 	// Testing Expections: response.Body
-	expected_body := common.Str2mapstr{
+	expectedBody := common.Str2MapStr{
 		"errors": common.ErrMap{
-			"Internal Server Error": "Failed To Decode JSON",
+			"Internal Server Error": "Something Went Wrong In The API",
 		},
 	}
 
-	result_body := common.Str2mapstr{}
+	resultBody := common.Str2MapStr{}
 
-	unm_err := json.Unmarshal(body, &result_body)
+	unmErr := json.Unmarshal(body, &resultBody)
 
-	assert.NoError(unm_err)
-	assert.Equal(expected_header, result_header)
-	assert.Equal(expected_status, result_status)
-	assert.Equal(expected_body, result_body)
+	asrt.NoError(unmErr)
+	asrt.Equal(expectedHeader, resultHeader)
+	asrt.Equal(expectedStatus, resultStatus)
+	asrt.Equal(expectedBody, resultBody)
 }

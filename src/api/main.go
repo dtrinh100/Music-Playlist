@@ -16,23 +16,23 @@ import (
 */
 func main() {
 	// Note: MPDatabase name comes from docker-compose.yml
-	session, err := mgo.Dial("MPDatabase")
-	if err != nil {
-		panic(err)
+	session, dialErr := mgo.Dial("MPDatabase")
+	if dialErr != nil {
+		panic(dialErr)
 	}
 	defer session.Close()
 
-	sc := common.InitServer()
-	dbc := db.InitDB(session)
-	env := &common.Env{DB: dbc}
+	serverConf := common.InitServer()
+	dbConf := db.InitDB(session)
+	env := &common.Env{DB: dbConf}
 	mainHandler := router.InitializeRoutes(env)
 
 	server := &http.Server{
-		Addr:    sc.Address,
+		Addr:    serverConf.Address,
 		Handler: mainHandler,
 	}
 
-	if server_err := server.ListenAndServe(); server_err != nil {
-		log.Fatal("Server failed to start:", server_err)
+	if serverErr := server.ListenAndServe(); serverErr != nil {
+		log.Fatal("Server failed to start:", serverErr)
 	}
 }

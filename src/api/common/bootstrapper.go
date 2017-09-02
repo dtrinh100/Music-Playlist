@@ -6,21 +6,21 @@ import (
 )
 
 const (
-	serveraddress_envkey = "MP_SRVRADDR_ENV"
-	loglevel_envkey      = "MP_LOGLVL_ENV"
+	serverAddressKey = "MP_SRVRADDR_ENV"
+	logLvlKey        = "MP_LOGLVL_ENV"
 )
 
 /**
 	InitServer helps initialize the server's configuration.
 */
 func InitServer() *ServerConfig {
-	logLevelInt, lli_err := strconv.Atoi(os.Getenv(loglevel_envkey))
-	if lli_err != nil {
-		Fatal(lli_err, "Failed to convert \""+os.Getenv(loglevel_envkey)+"\" to int.")
+	logLevelInt, strConvErr := strconv.Atoi(os.Getenv(logLvlKey))
+	if strConvErr != nil {
+		Fatal(strConvErr, "Failed to convert \""+os.Getenv(logLvlKey)+"\" to int.")
 	}
 
 	return &ServerConfig{
-		Address:  os.Getenv(serveraddress_envkey),
+		Address:  os.Getenv(serverAddressKey),
 		LogLevel: logLevelInt,
 	}
 }

@@ -16,15 +16,13 @@ import (
 func Login(rw http.ResponseWriter, req *http.Request, env *common.Env) error {
 	var user model.User
 
-	dec_err := json.NewDecoder(req.Body).Decode(&user)
-	if dec_err != nil {
-		return JsonError{}.Set(dec_err, common.ErrMap{
-			"Internal Server Error": "Failed To Decode JSON"},
-			http.StatusInternalServerError)
+	decErr := json.NewDecoder(req.Body).Decode(&user)
+	if decErr != nil {
+		return decErr
 	}
 
 	user.Password = ""
-	common.JsonStdResponse(rw, user)
 
+	common.JSONStdResponse(rw, user)
 	return nil
 }

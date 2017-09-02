@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	dbname_envkey  = "MP_DBNAME_ENV"
-	usertable_name = "users"
+	dbNameKey        = "MP_DBNAME_ENV"
+	userTableNameKey = "users"
 )
 
 // table holds the DB-table's configuration.
@@ -25,10 +25,10 @@ type DB struct {
 // InitDB helps initialize the DB struct.
 func InitDB(session *mgo.Session) *DB {
 	return &DB{
-		Name:    os.Getenv(dbname_envkey),
+		Name:    os.Getenv(dbNameKey),
 		Session: session,
 		UserTable: table{
-			Name: usertable_name,
+			Name: userTableNameKey,
 		},
 	}
 }

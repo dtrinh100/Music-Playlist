@@ -12,25 +12,25 @@ import (
 	configuration settings for the server).
 */
 func TestInitServer(t *testing.T) {
-	assert := assert.New(t)
+	asrt := assert.New(t)
 
-	env_vars := map[string]string{
-		serveraddress_envkey: "0.0.0.0:8080",
-		loglevel_envkey:      "4",
+	envVars := map[string]string{
+		serverAddressKey: "0.0.0.0:8080",
+		logLvlKey:        "4",
 	}
 
-	for envkey, envval := range env_vars {
-		os.Setenv(envkey, envval)
+	for envKey, envVal := range envVars {
+		os.Setenv(envKey, envVal)
 	}
 
-		loglvl, loglvl_err := strconv.Atoi(env_vars[loglevel_envkey])
-		assert.NoError(loglvl_err)
+	loglvl, logLvlErr := strconv.Atoi(envVars[logLvlKey])
+	asrt.NoError(logLvlErr)
 
 	expected := &ServerConfig{
-		Address: env_vars[serveraddress_envkey],
+		Address:  envVars[serverAddressKey],
 		LogLevel: loglvl,
 	}
 	result := InitServer()
 
-	assert.Equal(expected, result)
+	asrt.Equal(expected, result)
 }

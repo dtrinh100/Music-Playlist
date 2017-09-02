@@ -6,39 +6,39 @@ import (
 )
 
 /**
-	Mp_aliceenv_fn is a signature-wrapper that will allow support for this type of signature
+	AliceEnvFn is a signature-wrapper that will allow support for this type of signature
 	to work as justinas/alice middleware while providing the '*common.Env' struct.
 **/
-type Mp_aliceenv_fn func(rw http.ResponseWriter, req *http.Request, next http.Handler, env *common.Env)
+type AliceEnvFn func(rw http.ResponseWriter, req *http.Request, next http.Handler, env *common.Env)
 
 /**
-	AliceMiddlewareHandler helps functions with the signature Mp_aliceenv_fn to be passed
+	AliceMiddlewareEnvHandler helps functions with the signature AliceEnvFn to be passed
 	into justinas/alice's functions.
  */
 type AliceMiddlewareEnvHandler struct {
 	*common.Env
-	AliceFn Mp_aliceenv_fn
+	AliceEnvFn AliceEnvFn
 }
 
 // Handle mimics the same signature that justina/alice's Constructor requires.
 func (ameh AliceMiddlewareEnvHandler) Handle(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		ameh.AliceFn(rw, req, h, ameh.Env)
+		ameh.AliceEnvFn(rw, req, h, ameh.Env)
 	})
 }
 
 /**
-	mp_alice_fn is a signature-wrapper that will allow support for this type of signature
+	AliceFn is a signature-wrapper that will allow support for this type of signature
 	to function as justinas/alice middleware.
 **/
-type Mp_alice_fn func(rw http.ResponseWriter, req *http.Request, next http.Handler)
+type AliceFn func(rw http.ResponseWriter, req *http.Request, next http.Handler)
 
 /**
-	AliceMiddlewareHandler helps functions with the signature Mp_alice_fn to be passed into
+	AliceMiddlewareHandler helps functions with the signature AliceFn to be passed into
 	justinas/alice's functions.
  */
 type AliceMiddlewareHandler struct {
-	AliceFn Mp_alice_fn
+	AliceFn AliceFn
 }
 
 // Handle mimics the same signature that justina/alice's Constructor requires.
