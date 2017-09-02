@@ -88,7 +88,7 @@ func TestLoginInvalid(t *testing.T) {
 	// Testing Expections: response.Body
 	expectedBody := common.Str2MapStr{
 		"errors": common.ErrMap{
-			"Internal Server Error": "Failed To Decode JSON",
+			"Internal Server Error": "Something Went Wrong In The API",
 		},
 	}
 
