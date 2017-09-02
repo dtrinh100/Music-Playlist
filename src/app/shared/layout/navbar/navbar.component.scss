@@ -26,7 +26,7 @@
 
   a:hover {
     color: $main-orange !important;
-    background-color: inherit;
+    background-color: inherit; 
   }
 
   .active > a {
@@ -60,6 +60,6 @@
 
   a:hover {
     color: $main-orange;
-    background-color: inherit;
+   background-color: inherit;
   }
 }

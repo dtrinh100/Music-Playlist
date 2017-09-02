@@ -1,0 +1,126 @@
+@import '../../styles/variables';
+.mp-registration-header {
+  margin-bottom: 1vh;
+  & h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    @media all and (min-width: $screen-sm) {
+      font-size: 3.968rem;
+    }
+  }
+}
+.mp-form-registration {
+  margin-left: 10vw;
+  @media all and (min-width: $screen-sm) {
+    margin-left: 1vw;
+  }
+  & label {
+    position: relative;
+    font-size: 2rem;
+  }
+
+  & input {
+    width: 70vw;
+    @media all and (min-width: $screen-sm) {
+      width: 30vw;
+    }
+    @media all and (min-width: $screen-lg) {
+      width: 25vw;
+    }
+  }
+  & button {
+    min-width: 8vw;
+    font-size: 2rem;
+  }
+}
+.mp-form-error {
+  margin-left: 5vw;
+  position: relative;
+  width: 70vw;
+  @media all and (min-width: $screen-sm) {
+    width: 30vw;
+  }
+  @media all and (min-width: $screen-lg) {
+    margin-left: 0;
+  }
+  color: $form-error;
+  border: 1px solid $form-error;
+  border-top-left-radius: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 0;
+  padding: 1em;
+  margin-bottom: 1em;
+  &::before {
+    content: ' ';
+    position: absolute;
+    height: 0;
+    width: 0;
+    left: -29px;
+    top: 10px;
+    border: 15px solid;
+    border-color: transparent $form-error transparent transparent;
+  }
+  &::after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -28px;
+    top: 10px;
+    border: 15px solid;
+    border-color: transparent #fff transparent transparent;
+  }
+
+  & .fa-exclamation-circle {
+    position: absolute;
+    top: 14px;
+    left: -36px;
+    font-size: 1.5em;
+    @media all and (min-width: $screen-sm) {
+      font-size: 2em;
+      top: 10px;
+      left: -42px;
+    }
+  }
+
+}
+
+.mp-form-error-message {
+  font-weight: bold;
+}
+
+.mp-input-block {
+  display: inline-block;
+}
+
+.mp-input-wrapper {
+  position: relative;
+
+  & .fa-exclamation-circle  {
+    position: absolute;
+    font-size: 1.2em;
+    color: $form-error;
+    top: -.5em;
+    right: -0.3em;
+}
+
+& .fa-check-circle  {
+  position: absolute;
+  font-size: 1.2em;
+  color: $form-valid;
+  top: -.5em;
+  right: -0.3em;
+}
+
+}
+
+.mp-form-outline-red {
+   outline: none;
+   border-color: $form-error;
+}
+
+.mp-form-outline-green {
+  outline: none;
+  border-color: $form-valid;
+}

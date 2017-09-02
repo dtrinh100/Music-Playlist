@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+    # =-=-=-=-= CADDY =-=-=-=-=
+    caddy:
+      build:
+        context: .
+        dockerfile: Dockerfile-prod
+      container_name: MPCaddy
+      ports:
+        - "2015:2015"
+      links:
+        - goapi
+      volumes:
+        - $HOME/.caddy:/root/.caddy
+    # =-=-=-=-= GOAPI =-=-=-=-=
+    goapi:
+      build:
+        context: ./src/api
+        dockerfile: Dockerfile-prod
+      container_name: MPGoapi
+      links:
+        - database
+      environment:
+        - MP_SRVRADDR_ENV=0.0.0.0:3000
+        - MP_DBNAME_ENV=musicplaylistdb
+        # TODO: change log-level (MP_LOGLVL_ENV) to an appropriate value for production.
+        - MP_LOGLVL_ENV=4
+    # =-=-=-=-= DATABASE =-=-=-=-=
+    # TODO: Add credentials (security)
+    database:
+        image: mongo
+        container_name: MPDatabase

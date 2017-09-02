@@ -1,28 +1,38 @@
 # MP
 
-The Music Project is a project that allows users to listen to a variety of music (in this case, just sample pieces of music that are royalty free) and upload their own music.  This project was created by David Trinh and Hector Lovo to help us improve our development skills, while learning new technologies. It utilizes the latest cutting edge technologies.
+The Music Project is a project that allows users to listen to a variety of music (in this case, just sample pieces of music that are royalty free) and upload their own music.  This project was created by David Trinh and Hector Lovo to help us improve our development skills, while learning new technologies. It utilizes the latest cutting edge technologies. Codes in this project may not have top quality,
+since we were limited on time, but we did strive to do our best with a small timeframe.
 
-## Development server
+## Technology Stack
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+We use the following technology:
 
-## Code scaffolding
+**Front-end:**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+ - HTML5
+ - CSS3/SASS
+ - Javascript/Typescript with the Angular 2 framework
 
-## Build
+**Back-end:**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+ - Golang with Gorilla
+ - MongoDB
 
-## Running unit tests
+**Misc:**
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+ - Docker - to have a development environment
+ - Caddy - super simple web server used to serve static content and reverse proxy our API
 
-## Running end-to-end tests
+## Running Our App
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+To run our app, you only need 2 things installed on your system:
 
-## API Server
+ - Docker
+ - Docker Compose
 
-API server will be located at `http://localhost:3000/`.
+Once you have installed docker and docker compose, run the following command:
+
+    docker-compose build && docker-compose up
+Note: You may need admin privileges to run these commands
+
+Once you have run the command, simply open up your web browser and go to [0.0.0.0:2015](0.0.0.0:2015)

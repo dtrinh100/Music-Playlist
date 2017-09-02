@@ -1,32 +1,47 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
+import { AppRoutingModule } from './app-routing.module';
 
+import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
-import { HomeModule } from './homepage/homepage.module';
+import { RegistrationComponent } from './registration/registration.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { Status404Component } from './status-404/status-404.component';
+
+import { RegistrationDirective } from './registration/registration.directive';
+
 import {
   SharedModule,
   NavbarComponent,
-  FooterComponent
-} from './shared'
-
-
-const rootRouting: ModuleWithProviders = RouterModule.forRoot([], { useHash: true });
+  FooterComponent,
+  UserService,
+  AuthService,
+  ApiService,
+  User
+} from './shared';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    RegistrationComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    HomepageComponent,
+    Status404Component,
+    RegistrationDirective,
+    LoginComponent
   ],
   imports: [
-    BrowserModule,
-    rootRouting,
-    SharedModule,
-    HomeModule
+    AppRoutingModule,
+    SharedModule
   ],
-  providers: [],
+  providers: [
+    ApiService,
+    AuthService,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

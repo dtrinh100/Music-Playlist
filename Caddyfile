@@ -1,0 +1,7 @@
+0.0.0.0 {
+  proxy /api goapi:3000
+  proxy / angular:4200 {
+    websocket
+    header_upstream Host {host}
+  }
+}

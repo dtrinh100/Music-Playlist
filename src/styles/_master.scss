@@ -1,5 +1,9 @@
-@import "_variables";
+@import "variables";
 
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// =-=-=-=-=-=-=-=-=-=-=-=-= Fonts =-=-=-=-=-=-=-=-=-=-=-=-=
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 @font-face {
   font-family: 'Pridi'; src: url('../assets/font/Pridi-Regular.ttf');
@@ -17,11 +21,54 @@
   font-family: 'Titillium'; font-weight: bold; src: url('../assets/font/TitilliumWeb-Bold.ttf');
 }
 
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// =-=-=-=-=-=-=-=-=-=-=-=-=- CSS -=-=-=-=-=-=-=-=-=-=-=-=-=
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+// Variables
+
+$footer-height: 31.0rem;
+
+
+// Styling
+
+html {
+  position: relative;
+  min-height: 100%;
+}
 
 body {
   font-family: Titillium, sans-serif;
+  margin-bottom: $footer-height * 1.52;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height * 1.52;
 }
 
 .mp-body-container {
   margin-top: $navbar-height;
+}
+
+/* Removes Chrome outline defaults */
+*:focus {
+  outline: none;
+}
+
+/* Removes the bootstrap default box shadows on input boxes */
+.input-override:focus {
+  box-shadow: none !important;
+}
+
+@media all and (min-width: $screen-sm) {
+  body {
+    margin-bottom: $footer-height;
+  }
+
+  .footer {
+    height: $footer-height;
+  }
 }

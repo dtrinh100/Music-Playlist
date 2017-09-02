@@ -15,6 +15,9 @@ $neutral-gray: #191919;
 $overlay-orange: rgba(255,83,13,0.41);
 $overlay-blue: rgba(31,47,76,0.71);
 
+$form-error: rgba(255,0,51, 1);
+$form-valid: #1D9E75;
+
 $font-size-normal: 2.8rem;
 $font-size-sub-header: 3.4rem;
 $font-size-main-header: 3.86rem;
@@ -232,7 +235,7 @@ $input-border-radius-large:      $border-radius-large !default;
 $input-border-radius-small:      $border-radius-small !default;
 
 //** Border color for inputs on focus
-$input-border-focus:             #66afe9 !default;
+$input-border-focus:             $gray !default;
 
 //** Placeholder text color
 $input-color-placeholder:        #999 !default;

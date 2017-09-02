@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+    # =-=-=-=-= ANGULAR =-=-=-=-=
+    angular:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: MPAngular
+      ports:
+        - "4200:4200"
+      volumes:
+        - .:/home/app/mp_app
+        - /home/app/mp_app/node_modules
+    # =-=-=-=-= GOAPI =-=-=-=-=
+    goapi:
+      build: ./src/api/
+      container_name: MPGoapi
+      links:
+        - database
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./src/api:/go/src/github.com/dtrinh100/Music-Playlist/src/api/
+      environment:
+        - MP_SRVRADDR_ENV=0.0.0.0:3000
+        - MP_DBNAME_ENV=musicplaylistdb
+        - MP_LOGLVL_ENV=4
+    # =-=-=-=-= CADDY =-=-=-=-=
+    caddy:
+      image: abiosoft/caddy
+      container_name: MPCaddy
+      ports:
+        - "2015:2015"
+      links:
+        - angular
+        - goapi
+      volumes:
+        - $HOME/.caddy:/root/.caddy
+        - ./Caddyfile:/etc/Caddyfile
+    # =-=-=-=-= DATABASE =-=-=-=-=
+    database:
+      image: mongo
+      container_name: MPDatabase
+      ports:
+        - "27017:27017"
