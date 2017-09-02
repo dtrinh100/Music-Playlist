@@ -5,6 +5,15 @@ import (
 	"encoding/json"
 )
 
+/**
+	GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
+*/
+func GenericJSONErrorResponse(rw http.ResponseWriter) {
+	JSONErrorResponse(rw, ErrMap{
+		"Internal Server Error": "Something Went Wrong In The API",
+	}, http.StatusInternalServerError)
+}
+
 // TODO: Look into if these functions can become middleware.
 
 /**

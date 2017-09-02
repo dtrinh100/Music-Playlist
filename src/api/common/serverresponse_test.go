@@ -11,17 +11,16 @@ import (
 )
 
 /**
-	MockMethodHelper utilizes JSONStdResponse & JSONErrorResponse so that
-	they may be tested indirectly.
+	MockMethodHelper utilizes JSONStdResponse & GenericJSONErrorResponse so that
+	they may be tested directly. JSONErrorResponse is also tested indirectly through
+	GenericJSONErrorResponse.
 */
 func MockMethodHelper(rw http.ResponseWriter, req *http.Request) {
 	var data map[string]string
 
 	decErr := json.NewDecoder(req.Body).Decode(&data)
 	if decErr != nil {
-		JSONErrorResponse(rw, ErrMap{
-			"Internal Server Error": "Failed to decode JSON",
-		}, http.StatusInternalServerError)
+		GenericJSONErrorResponse(rw)
 		return
 	}
 
@@ -74,8 +73,8 @@ func TestJSONStdResponse(t *testing.T) {
 }
 
 /**
-	TestJSONErrorResponse tests JSONErrorResponse through the MockMethodHelper method.
-	Testing for an invalid response, given invalid input.
+	TestJSONErrorResponse tests GenericJSONErrorResponse &, indirectly, JSONErrorResponse
+	through the MockMethodHelper method. Testing for an invalid response, given invalid input.
 
 	Testing Expectations:
 		response.Status = "500 Internal Server Error"
@@ -106,7 +105,7 @@ func TestJSONErrorResponse(t *testing.T) {
 	// Testing Expections: response.Body
 	expectedBody := Str2MapStr{
 		"errors": ErrMap{
-			"Internal Server Error": "Failed to decode JSON",
+			"Internal Server Error": "Something Went Wrong In The API",
 		},
 	}
 
