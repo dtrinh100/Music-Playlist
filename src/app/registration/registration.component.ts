@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { UserInterface } from '../shared/interface/userinterface.interface';
 import { User } from '../shared/models/user';
 
-import { RegistrationDirective } from './registration.directive';
+
 
 import { UserService } from '../shared/services';
 
@@ -19,8 +19,8 @@ import { UserService } from '../shared/services';
 })
 export class RegistrationComponent implements OnInit {
   user: FormGroup;
-  User: UserInterface; // The UserInterface is an interface used specifcally only for forms
-  UserModel: User; // The User type is used as a model for REST API calls, not to be confused with the type UserInterface
+  User: UserInterface;
+  UserModel: User; 
   initialUsername: string; // either an empty initial username or get one from the session storage
   inititalEmail: string;
   initialPassword: string;
