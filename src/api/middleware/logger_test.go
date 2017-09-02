@@ -27,22 +27,22 @@ func GetTestHandler() http.HandlerFunc {
 		Ensure that the log contains the string: '| [GET] "/" |'
 */
 func TestLoggerMiddlewareSlashPath(t *testing.T) {
-	assert := assert.New(t)
+	asrt := assert.New(t)
 
-	LoggerMiddlewareAH := AliceMiddlewareHandler{AliceFn: LoggerMiddleware}
+	loggerMiddlewareAH := AliceMiddlewareHandler{AliceFn: LoggerMiddleware}
 
-	server := httptest.NewServer(LoggerMiddlewareAH.Handle(GetTestHandler()))
+	server := httptest.NewServer(loggerMiddlewareAH.Handle(GetTestHandler()))
 	defer server.Close()
 
 	fn := func() *http.Response {
-		res, res_err := http.Get(server.URL)
-		assert.NoError(res_err)
-		return res
+		resp, respErr := http.Get(server.URL)
+		asrt.NoError(respErr)
+		return resp
 	}
 
-	_, str := captureOutputExpectResponse(fn)
-	fmt.Println(str)
-	assert.Contains(str, "| [GET] \"/\" |")
+	_, capturedStr := captureOutputExpectResponse(fn)
+
+	asrt.Contains(capturedStr, "| [GET] \"/\" |")
 }
 
 /**
@@ -52,7 +52,7 @@ func TestLoggerMiddlewareSlashPath(t *testing.T) {
 		Ensure that the log contains the string: '| [POST] "/api/users/1" |'
 */
 func TestLoggerMiddlewareLongPath(t *testing.T) {
-	assert := assert.New(t)
+	asrt := assert.New(t)
 
 	LoggerMiddlewareAH := AliceMiddlewareHandler{AliceFn: LoggerMiddleware}
 
@@ -60,12 +60,12 @@ func TestLoggerMiddlewareLongPath(t *testing.T) {
 	defer server.Close()
 
 	fn := func() *http.Response {
-		res, res_err := http.Post(server.URL + "/api/users/1", "application/json", nil)
-		assert.NoError(res_err)
-		return res
+		resp, respErr := http.Post(server.URL + "/api/users/1", "application/json", nil)
+		asrt.NoError(respErr)
+		return resp
 	}
 
-	_, str := captureOutputExpectResponse(fn)
-	fmt.Println(str)
-	assert.Contains(str, "| [POST] \"/api/users/1\" |")
+	_, capturedStr := captureOutputExpectResponse(fn)
+
+	asrt.Contains(capturedStr, "| [POST] \"/api/users/1\" |")
 }

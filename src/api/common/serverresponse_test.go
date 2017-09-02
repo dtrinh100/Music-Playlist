@@ -11,111 +11,111 @@ import (
 )
 
 /**
-	MockMethodHelper utilizes JsonStdResponse & HandleErrorWithMap so that
+	MockMethodHelper utilizes JSONStdResponse & JSONErrorResponse so that
 	they may be tested indirectly.
 */
 func MockMethodHelper(rw http.ResponseWriter, req *http.Request) {
 	var data map[string]string
 
-	dec_err := json.NewDecoder(req.Body).Decode(&data)
-	if dec_err != nil {
-		JsonErrorResponse(rw, ErrMap{
+	decErr := json.NewDecoder(req.Body).Decode(&data)
+	if decErr != nil {
+		JSONErrorResponse(rw, ErrMap{
 			"Internal Server Error": "Failed to decode JSON",
 		}, http.StatusInternalServerError)
 		return
 	}
 
-	JsonStdResponse(rw, data)
+	JSONStdResponse(rw, data)
 }
 
 /**
-	TestJsonStdResponse tests JsonStdResponse through the MockMethodHelper method.
+	TestJSONStdResponse tests JSONStdResponse through the MockMethodHelper method.
 	Testing for a valid response, given valid JSON input.
 
 	Testing Expectations:
 		response.Status = "200 OK"
 		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expected_body' below)
+		response.Body = (see variable 'expectedBody' below)
 */
-func TestJsonStdResponse(t *testing.T) {
-	assert := assert.New(t)
-	dataJson := `{
+func TestJSONStdResponse(t *testing.T) {
+	asrt := assert.New(t)
+	dataJSON := `{
 		"field_one": "val_one",
 		"field_two": "val_two"
 	}`
-	req := httptest.NewRequest("GET", "/fake/path", strings.NewReader(dataJson))
+	req := httptest.NewRequest("GET", "/fake/path", strings.NewReader(dataJSON))
 	req.Header.Set("Content-Type", "application/json")
 
-	w := httptest.NewRecorder()
+	rw := httptest.NewRecorder()
 
-	MockMethodHelper(w, req)
+	MockMethodHelper(rw, req)
 
-	resp := w.Result()
+	resp := rw.Result()
 
-	body, body_err := ioutil.ReadAll(resp.Body)
-	assert.NoError(body_err)
+	body, bodyErr := ioutil.ReadAll(resp.Body)
+	asrt.NoError(bodyErr)
 
-	expected_status := "200 OK"
-	result_status := resp.Status
+	expectedStatus := "200 OK"
+	resultStatus := resp.Status
 
-	expected_header := "application/json"
-	result_header := w.Header().Get("Content-Type")
+	expectedHeader := "application/json"
+	resultHeader := rw.Header().Get("Content-Type")
 
 	// Testing Expections: response.Body
-	expected_body := map[string]string{"field_one": "val_one", "field_two": "val_two"}
-	result_body := map[string]string{}
+	expectedBody := map[string]string{"field_one": "val_one", "field_two": "val_two"}
+	resultBody := map[string]string{}
 
-	unm_err := json.Unmarshal(body, &result_body)
+	unmErr := json.Unmarshal(body, &resultBody)
 
-	assert.NoError(unm_err)
-	assert.Equal(expected_header, result_header)
-	assert.Equal(expected_status, result_status)
-	assert.Equal(expected_body, result_body)
+	asrt.NoError(unmErr)
+	asrt.Equal(expectedHeader, resultHeader)
+	asrt.Equal(expectedStatus, resultStatus)
+	asrt.Equal(expectedBody, resultBody)
 }
 
 /**
-	TestHandleErrorWithMap tests HandleErrorWithMap through the MockMethodHelper method.
+	TestJSONErrorResponse tests JSONErrorResponse through the MockMethodHelper method.
 	Testing for an invalid response, given invalid input.
 
 	Testing Expectations:
 		response.Status = "500 Internal Server Error"
 		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expected_body' below)
+		response.Body = (see variable 'expectedBody' below)
 */
-func TestHandleErrorWithMap(t *testing.T) {
+func TestJSONErrorResponse(t *testing.T) {
 	assert := assert.New(t)
 	dataString := `not json`
 	req := httptest.NewRequest("GET", "/fake/path", strings.NewReader(dataString))
 	req.Header.Set("Content-Type", "text/plain")
 
-	w := httptest.NewRecorder()
+	rw := httptest.NewRecorder()
 
-	MockMethodHelper(w, req)
+	MockMethodHelper(rw, req)
 
-	resp := w.Result()
+	resp := rw.Result()
 
-	body, body_err := ioutil.ReadAll(resp.Body)
-	assert.NoError(body_err)
+	body, bodyErr := ioutil.ReadAll(resp.Body)
+	assert.NoError(bodyErr)
 
-	expected_status := "500 Internal Server Error"
-	result_status := resp.Status
+	expectedStatus := "500 Internal Server Error"
+	resultStatus := resp.Status
 
-	expected_header := "application/json"
-	result_header := w.Header().Get("Content-Type")
+	expectedHeader := "application/json"
+	resultHeader := rw.Header().Get("Content-Type")
 
 	// Testing Expections: response.Body
-	expected_body := Str2mapstr{
+	expectedBody := Str2MapStr{
 		"errors": ErrMap{
 			"Internal Server Error": "Failed to decode JSON",
 		},
 	}
 
-	result_body := Str2mapstr{}
+	resultBody := Str2MapStr{}
 
-	unm_err := json.Unmarshal(body, &result_body)
+	unmErr := json.Unmarshal(body, &resultBody)
 
-	assert.NoError(unm_err)
-	assert.Equal(expected_header, result_header)
-	assert.Equal(expected_status, result_status)
-	assert.Equal(expected_body, result_body)
+	assert.NoError(unmErr)
+	assert.Equal(expectedHeader, resultHeader)
+	assert.Equal(expectedStatus, resultStatus)
+	assert.Equal(expectedBody, resultBody)
 }

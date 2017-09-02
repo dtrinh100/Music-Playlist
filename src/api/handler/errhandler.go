@@ -25,18 +25,18 @@ func (se StatusError) Status() int {
 	return se.Code
 }
 
-// JsonError represents a StatusError with an ErrMap.
-type JsonError struct {
+// JSONError represents a StatusError with an ErrMap.
+type JSONError struct {
 	StatusError
 	ErrMap common.ErrMap
 }
 
 // Set helps write cleaner code by allowing values to be passed through it's parameters.
-func (je JsonError) Set(err error, err_map common.ErrMap, code int) JsonError {
+func (je JSONError) Set(err error, errMap common.ErrMap, code int) JSONError {
 	je.StatusError = StatusError{
 		Code: code,
 		Err:  err,
 	}
-	je.ErrMap = err_map
+	je.ErrMap = errMap
 	return je
 }

@@ -11,7 +11,7 @@ import (
 )
 
 // Alice is a helper-function that makes middleware-functions satisfy alice.Constructor.
-func Alice(fn mw.Mp_alice_fn) mw.AliceMiddlewareHandler {
+func Alice(fn mw.AliceFn) mw.AliceMiddlewareHandler {
 	return mw.AliceMiddlewareHandler{AliceFn: fn}
 }
 
@@ -19,15 +19,15 @@ func Alice(fn mw.Mp_alice_fn) mw.AliceMiddlewareHandler {
 	AliceEnv is a helper-function that makes middleware-functions satisfy alice.Constructor
 	and pass an Env struct.
  */
-func AliceEnv(fn mw.Mp_aliceenv_fn, env *common.Env) mw.AliceMiddlewareEnvHandler {
-	return mw.AliceMiddlewareEnvHandler{Env: env, AliceFn: fn}
+func AliceEnv(fn mw.AliceEnvFn, env *common.Env) mw.AliceMiddlewareEnvHandler {
+	return mw.AliceMiddlewareEnvHandler{Env: env, AliceEnvFn: fn}
 }
 
 // HandleFn is a helper-function that makes route-functions satisfy http.Handler.
-func HandleFn(fn handler.Mp_env_fn, env *common.Env) handler.Handler {
+func HandleFn(fn handler.HandlerEnvFn, env *common.Env) handler.Handler {
 	return handler.Handler{
 		Env: env,
-		H:   fn,
+		HEF:   fn,
 	}
 }
 

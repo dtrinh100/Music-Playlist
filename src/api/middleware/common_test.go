@@ -31,7 +31,7 @@ func captureOutputExpectResponse(f (func() *http.Response)) (*http.Response, str
 		string-result: "Printing should be directed to a buffer by captureOutputExpectResponse."
 */
 func TestCaptureOutputExpectResponse(t *testing.T) {
-	assert := assert.New(t)
+	asrt := assert.New(t)
 
 	expected := "Printing should be directed to a buffer by captureOutputExpectResponse."
 	fn := func() *http.Response {
@@ -40,5 +40,5 @@ func TestCaptureOutputExpectResponse(t *testing.T) {
 	}
 
 	_, result := captureOutputExpectResponse(fn)
-	assert.Contains(result, expected)
+	asrt.Contains(result, expected)
 }

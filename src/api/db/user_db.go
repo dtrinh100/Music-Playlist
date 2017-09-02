@@ -7,16 +7,16 @@ import (
 )
 
 // InsertUser inserts a user into the database
-func (db *DB) InsertUser(username string, hashedpassword []byte, email string) error {
+func (db *DB) InsertUser(username string, hashedPassword []byte, email string) error {
 	conn := db.Session.DB(db.Name).C(db.UserTable.Name)
-	err := conn.Insert(&model.User{
+	insertErr := conn.Insert(&model.User{
 		username,
 		"",
-		hashedpassword,
+		hashedPassword,
 		email})
-	if err != nil {
-		log.Print(err)
-		return err
+	if insertErr != nil {
+		log.Print(insertErr)
+		return insertErr
 	}
 
 	return nil
