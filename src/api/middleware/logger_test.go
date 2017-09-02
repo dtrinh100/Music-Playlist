@@ -5,8 +5,6 @@ import (
 	"testing"
 	"net/http/httptest"
 	"github.com/stretchr/testify/assert"
-
-	"fmt"
 )
 
 /**
