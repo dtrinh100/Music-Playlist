@@ -34,20 +34,18 @@ func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 			http.Error(rw, e.Error(), e.Status())
 		default:
 			log.Println("Custom Error-type needs to be handled in switch-statement.")
-			status := http.StatusInternalServerError
-			http.Error(rw, http.StatusText(status), status)
+			common.GenericJSONErrorResponse(rw)
 		}
 	}
 
-	err := h.HEF(rw, req, h.Env)
-	if err != nil {
-		switch e := err.(type) {
+	handlerErr := h.HEF(rw, req, h.Env)
+	if handlerErr != nil {
+		switch e := handlerErr.(type) {
 		case Error:
 			log.Printf("HTTP %d - %s", e.Status(), e)
-			handleErrorFn(err)
+			handleErrorFn(handlerErr)
 		default:
-			http.Error(rw, http.StatusText(http.StatusInternalServerError),
-				http.StatusInternalServerError)
+			common.GenericJSONErrorResponse(rw)
 		}
 	}
 }

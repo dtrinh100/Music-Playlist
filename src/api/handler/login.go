@@ -18,9 +18,7 @@ func Login(rw http.ResponseWriter, req *http.Request, env *common.Env) error {
 
 	decErr := json.NewDecoder(req.Body).Decode(&user)
 	if decErr != nil {
-		return JSONError{}.Set(decErr, common.ErrMap{
-			"Internal Server Error": "Failed To Decode JSON"},
-			http.StatusInternalServerError)
+		return decErr
 	}
 
 	user.Password = ""
