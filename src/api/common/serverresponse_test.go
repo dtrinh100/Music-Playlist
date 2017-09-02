@@ -83,7 +83,7 @@ func TestJSONStdResponse(t *testing.T) {
 		response.Body = (see variable 'expectedBody' below)
 */
 func TestJSONErrorResponse(t *testing.T) {
-	assert := assert.New(t)
+	asrt := assert.New(t)
 	dataString := `not json`
 	req := httptest.NewRequest("GET", "/fake/path", strings.NewReader(dataString))
 	req.Header.Set("Content-Type", "text/plain")
@@ -95,7 +95,7 @@ func TestJSONErrorResponse(t *testing.T) {
 	resp := rw.Result()
 
 	body, bodyErr := ioutil.ReadAll(resp.Body)
-	assert.NoError(bodyErr)
+	asrt.NoError(bodyErr)
 
 	expectedStatus := "500 Internal Server Error"
 	resultStatus := resp.Status
@@ -114,8 +114,8 @@ func TestJSONErrorResponse(t *testing.T) {
 
 	unmErr := json.Unmarshal(body, &resultBody)
 
-	assert.NoError(unmErr)
-	assert.Equal(expectedHeader, resultHeader)
-	assert.Equal(expectedStatus, resultStatus)
-	assert.Equal(expectedBody, resultBody)
+	asrt.NoError(unmErr)
+	asrt.Equal(expectedHeader, resultHeader)
+	asrt.Equal(expectedStatus, resultStatus)
+	asrt.Equal(expectedBody, resultBody)
 }
