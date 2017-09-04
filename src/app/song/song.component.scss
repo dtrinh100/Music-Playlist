@@ -1,19 +1,1 @@
 @import '../../styles/_variables';
-.mp-title {
-  $font-xs-mult: 1.3;
-  color: black;
-  font-weight: bold;
-  font-size: $font-size-main-header * $font-xs-mult;
-  margin-bottom: 6.0rem;
-}
-.mp-album-images {
-  margin: 2rem;
-  display: inline-block;
-}
-.mp-outer-block {
-  margin-bottom: 10em;
-  margin-left: 1em;
-  @media all and (min-width: $screen-md) {
-    margin-left: 10em;
-  }
-}
