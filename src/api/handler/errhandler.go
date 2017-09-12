@@ -9,34 +9,19 @@ type Error interface {
 	Status() int
 }
 
-// StatusError represents an error with an associated HTTP status code.
-type StatusError struct {
-	Code int
-	Err  error
-}
-
-// Error gets the error string of the error
-func (se StatusError) Error() string {
-	return se.Err.Error()
-}
-
-// Status gets the status code of the error
-func (se StatusError) Status() int {
-	return se.Code
-}
-
 // JSONError represents a StatusError with an ErrMap.
 type JSONError struct {
-	StatusError
+	Code int
+	Err  error
 	ErrMap common.ErrMap
 }
 
-// Set helps write cleaner code by allowing values to be passed through it's parameters.
-func (je JSONError) Set(err error, errMap common.ErrMap, code int) JSONError {
-	je.StatusError = StatusError{
-		Code: code,
-		Err:  err,
-	}
-	je.ErrMap = errMap
-	return je
+// Error gets the error string of the error
+func (je JSONError) Error() string {
+	return je.Err.Error()
+}
+
+// Status gets the status code of the error
+func (je JSONError) Status() int {
+	return je.Code
 }

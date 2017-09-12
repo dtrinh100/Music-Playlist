@@ -29,9 +29,6 @@ func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		switch e := err.(type) {
 		case JSONError:
 			common.JSONErrorResponse(rw, e.ErrMap, e.Status())
-			return
-		case StatusError:
-			http.Error(rw, e.Error(), e.Status())
 		default:
 			log.Println("Custom Error-type needs to be handled in switch-statement.")
 			common.GenericJSONErrorResponse(rw)

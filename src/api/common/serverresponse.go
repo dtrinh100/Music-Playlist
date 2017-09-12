@@ -26,7 +26,7 @@ func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
 
 	if respErr != nil {
 		// If you end up here, something really went wrong.
-		http.Error(rw, respErr.Error(), http.StatusInternalServerError)
+		http.Error(rw, "Error: Something Went Wrong In The API", http.StatusInternalServerError)
 		return
 	}
 
@@ -42,9 +42,7 @@ func JSONStdResponse(rw http.ResponseWriter, response interface{}) {
 	json, jsonErr := json.Marshal(response)
 
 	if jsonErr != nil {
-		JSONErrorResponse(rw, ErrMap{
-			"Internal Server Error": "Failed to Marshal JSON",
-		}, http.StatusInternalServerError)
+		GenericJSONErrorResponse(rw)
 		return
 	}
 

@@ -13,39 +13,56 @@ import (
 
 // PostUser creates the user account
 func PostUser(w http.ResponseWriter, req *http.Request, env *common.Env) error {
-
 	decoder := json.NewDecoder(req.Body) // reads in request body
 	var user model.User
 	decErr := decoder.Decode(&user) // puts the JSON data into the user structure defined in the model package
 	if decErr != nil {
-		return StatusError{500, decErr}
+		return decErr
 	}
 	if len(user.Username) < 2 || len(user.Username) > 30 {
-		return StatusError{400, errors.New("usernames need to be more than 2 characters and less than 30 characters")}
+		unKey := "Username"
+		errMap := common.ErrMap{unKey: "Username must be greater than 3 and less than 30 characters"}
+		return JSONError{
+			Code:   http.StatusBadRequest,
+			Err:    errors.New(errMap[unKey]),
+			ErrMap: errMap,
+		}
 	}
 	emailRe := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`) // Regular expression to check for valid email, this is more strict than the Angular built-in validation
 	if !emailRe.MatchString(user.Email) {
-		return StatusError{400, errors.New("invalid email address")}
+		emailKey := "Email"
+		errMap := common.ErrMap{emailKey: "Email format is invalid"}
+		return JSONError{
+			Code:   http.StatusBadRequest,
+			Err:    errors.New(errMap[emailKey]),
+			ErrMap: errMap,
+		}
 	}
 	if len(user.Password) < 8 {
-		return StatusError{400, errors.New("passwords need to be more at least 8 characters")}
+		pwKey := "Password"
+		errMap := common.ErrMap{pwKey: "Password must be greater than 7 characters"}
+		return JSONError{
+			Code:   http.StatusBadRequest,
+			Err:    errors.New(errMap[pwKey]),
+			ErrMap: errMap,
+		}
 	}
 
 	// encrypts the password of the user before storing it in the db
 	// recommended use a cost of 12 or more
 	hashedPassword, genErr := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
 	if genErr != nil {
-		return StatusError{500, genErr}
+		return genErr
 	}
 
 	insertErr := env.DB.InsertUser(user.Username, hashedPassword, user.Email)
 	if insertErr != nil {
-		return StatusError{500, insertErr}
+		return genErr
 	}
 
 	userData, unmErr := json.Marshal(user)
 	if unmErr != nil {
-		return StatusError{500, unmErr}
+		return genErr
 	}
 
 	defer req.Body.Close()
