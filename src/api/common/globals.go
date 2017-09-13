@@ -1,6 +1,9 @@
 package common
 
-import "github.com/dtrinh100/Music-Playlist/src/api/db"
+import (
+	"github.com/dtrinh100/Music-Playlist/src/api/db"
+	"crypto/rsa"
+)
 
 type Str2MapStr map[string](map[string]string)
 type ErrMap map[string]string
@@ -16,7 +19,14 @@ type ServerConfig struct {
 	LogLevel int
 }
 
+// RSAKeys holds the RSA key-pair info.
+type RSAKeys struct {
+	Public  *rsa.PublicKey
+	Private *rsa.PrivateKey
+}
+
 // Env holds the env (database, sessions, etc.) for usage by all handlers.
 type Env struct {
-	DB *db.DB
+	DB      *db.DB
+	RSAKeys RSAKeys
 }
