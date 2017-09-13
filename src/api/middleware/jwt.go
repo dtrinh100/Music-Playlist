@@ -7,7 +7,6 @@ import (
 
 	"time"
 	"net/http"
-	"fmt"
 	"context"
 	"crypto/rsa"
 	"io/ioutil"
@@ -29,7 +28,7 @@ const (
 	// TODO: change these paths to a private path in production
 	// NOTE: do NOT use these keys in production. These are for demo only.
 	privKeyPath = "./src/mp.rsa"     // openssl genrsa -out mp.rsa 1024
-	pubKeyPath  = "./src/mp.rsa.pub" // openssl rsa -in app.mp -pubout > mp.rsa.pub
+	pubKeyPath  = "./src/mp.rsa.pub" // openssl rsa -in mp.rsa -pubout > mp.rsa.pub
 )
 
 // TokenFunc helps JWTMiddleware get a copy of the JWT Public Key.
