@@ -7,6 +7,7 @@ import (
 	"github.com/dtrinh100/Music-Playlist/src/api/db"
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
 	"github.com/dtrinh100/Music-Playlist/src/api/router"
+	"github.com/dtrinh100/Music-Playlist/src/api/middleware"
 
 	"gopkg.in/mgo.v2"
 )
@@ -19,12 +20,14 @@ const dbURLAddress = "MPDatabase"
 	the route paths, & returns a handler.
 */
 func initAndGetHandler(session *mgo.Session) http.Handler {
+	pub, priv := middleware.InitRSAKeyPair()
+
 	dbConf := db.InitDB(session)
 	env := &common.Env{
 		DB: dbConf,
 		RSAKeys: common.RSAKeys{
-			Public:  nil,
-			Private: nil,
+			Public:  pub,
+			Private: priv,
 		},
 	}
 
