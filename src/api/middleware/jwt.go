@@ -81,34 +81,28 @@ func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler,
 		return
 	}
 
-	if tkn.Valid {
-		if claims.RefreshAt < time.Now().Unix() {
-			refreshCookie(rw, claims, env)
-		}
-
-		ctx := context.WithValue(req.Context(), mpClaimsKey, claims)
-		ctx = context.WithValue(ctx, JWTTokenString, tknString)
-
-		next.ServeHTTP(rw, req.WithContext(ctx))
-	} else {
+	if !tkn.Valid {
 		common.JSONErrorResponse(rw, common.ErrMap{
 			"Token": "Invalid JWT"}, http.StatusInternalServerError)
+		return
 	}
-}
 
-/**
-	refreshCookie refreshes the cookie in the middleware if the cookie is near
-	jwt-expiration time: jwt-refresh time < current time < jwt-expiration time.
-*/
-func refreshCookie(rw http.ResponseWriter, claims model.AppClaims, env *common.Env) {
+	if claims.RefreshAt < time.Now().Unix() {
 		updatedTokenStr, expirationTime, jwtErr := GetJWT(env.RSAKeys.Private, claims.UserEmail, jwtExpireMinutes)
 
-	if jwtErr != nil {
-		common.JSONErrorResponse(rw, common.ErrMap{
-			"Token": "Failed to sign"}, http.StatusInternalServerError)
+		if jwtErr != nil {
+			common.JSONErrorResponse(rw, common.ErrMap{
+				"Token": "Failed to sign"}, http.StatusInternalServerError)
+			return
+		}
+
+		SetSecuredCookie(rw, updatedTokenStr, expirationTime)
 	}
 
-	SetSecuredCookie(rw, updatedTokenStr, expirationTime)
+	ctx := context.WithValue(req.Context(), mpClaimsKey, claims)
+	ctx = context.WithValue(ctx, JWTTokenString, tknString)
+
+	next.ServeHTTP(rw, req.WithContext(ctx))
 }
 
 /**
