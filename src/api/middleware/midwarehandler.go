@@ -12,9 +12,9 @@ import (
 type AliceEnvFn func(rw http.ResponseWriter, req *http.Request, next http.Handler, env *common.Env)
 
 /**
-	AliceMiddlewareEnvHandler helps functions with the signature AliceEnvFn to be passed
-	into justinas/alice's functions.
- */
+AliceMiddlewareEnvHandler helps functions with the signature AliceEnvFn to be passed
+into justinas/alice's functions.
+*/
 type AliceMiddlewareEnvHandler struct {
 	*common.Env
 	AliceEnvFn AliceEnvFn
@@ -34,9 +34,9 @@ func (ameh AliceMiddlewareEnvHandler) Handle(h http.Handler) http.Handler {
 type AliceFn func(rw http.ResponseWriter, req *http.Request, next http.Handler)
 
 /**
-	AliceMiddlewareHandler helps functions with the signature AliceFn to be passed into
-	justinas/alice's functions.
- */
+AliceMiddlewareHandler helps functions with the signature AliceFn to be passed into
+justinas/alice's functions.
+*/
 type AliceMiddlewareHandler struct {
 	AliceFn AliceFn
 }

@@ -11,7 +11,7 @@ const (
 )
 
 /**
-	InitServer helps initialize the server's configuration.
+InitServer helps initialize the server's configuration.
 */
 func InitServer() *ServerConfig {
 	logLevelInt, strConvErr := strconv.Atoi(os.Getenv(logLvlKey))

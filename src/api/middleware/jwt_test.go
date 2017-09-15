@@ -1,29 +1,29 @@
 package middleware
 
 import (
-	"net/http"
-	"testing"
-	"net/http/httptest"
-	"encoding/json"
 	"crypto/rsa"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
 	"strconv"
+	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
 	"github.com/dtrinh100/Music-Playlist/src/api/model"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/stretchr/testify/assert"
 )
 
 const pubTestRelPath = "../src/mp.rsa.pub"
 const privTestRelPath = "../src/mp.rsa"
 
 /**
-	TestJWTMiddlewareWithInvalidJWTCookie tests the server's response if an invalid
-	cookie is given (e.g. no cookie). If no cookie is passed to the server, it
-	should be assumed that the user has not logged in yet.
-	Testing Expectations:
-		An error list with the following error:
-		{"Login": "User Needs To Log In"}
+TestJWTMiddlewareWithInvalidJWTCookie tests the server's response if an invalid
+cookie is given (e.g. no cookie). If no cookie is passed to the server, it
+should be assumed that the user has not logged in yet.
+Testing Expectations:
+	An error list with the following error:
+	{"Login": "User Needs To Log In"}
 */
 func TestJWTMiddlewareWithInvalidJWTCookie(t *testing.T) {
 	asrt := assert.New(t)
@@ -45,12 +45,12 @@ func TestJWTMiddlewareWithInvalidJWTCookie(t *testing.T) {
 }
 
 /**
-	TestJWTMiddlewareWithExpiredJWT tests the response if an expired JWT is given.
-	If an expired JWT is given, it should be assumed that the user's logged-in
-	session has expired and the user needs to log in once again.
-	Testing Expectations:
-		An error list with the following error:
-		{"Token": "Token Expired. Request A New One"}
+TestJWTMiddlewareWithExpiredJWT tests the response if an expired JWT is given.
+If an expired JWT is given, it should be assumed that the user's logged-in
+session has expired and the user needs to log in once again.
+Testing Expectations:
+	An error list with the following error:
+	{"Token": "Token Expired. Request A New One"}
 */
 func TestJWTMiddlewareWithExpiredJWT(t *testing.T) {
 	asrt := assert.New(t)
@@ -73,10 +73,10 @@ func TestJWTMiddlewareWithExpiredJWT(t *testing.T) {
 }
 
 /**
-	TestJWTMiddlewareWithInvalidJWT tests what happens if an malformed JWT is given.
-	Testing Expectations:
-		An error list with the following error:
-		{"Internal Server Error": "Something Went Wrong In The API"}
+TestJWTMiddlewareWithInvalidJWT tests what happens if an malformed JWT is given.
+Testing Expectations:
+	An error list with the following error:
+	{"Internal Server Error": "Something Went Wrong In The API"}
 */
 func TestJWTMiddlewareWithInvalidJWT(t *testing.T) {
 	asrt := assert.New(t)
@@ -99,12 +99,12 @@ func TestJWTMiddlewareWithInvalidJWT(t *testing.T) {
 }
 
 /**
-	TestJWTMiddlewareRefresh tests to see if the user is provided a new JWT once
-	theirs is about to expire. This occurs when the following is true:
-	jwt-refreshTime < now < jwt-expirationTime.
-	Testing Expectations:
-		Receive a new JWT in a cookie where the new JWT has an updated time for
-		the jwt -refreshTime & -expirationTime.
+TestJWTMiddlewareRefresh tests to see if the user is provided a new JWT once
+theirs is about to expire. This occurs when the following is true:
+jwt-refreshTime < now < jwt-expirationTime.
+Testing Expectations:
+	Receive a new JWT in a cookie where the new JWT has an updated time for
+	the jwt -refreshTime & -expirationTime.
 */
 func TestJWTMiddlewareRefresh(t *testing.T) {
 	asrt := assert.New(t)
@@ -155,11 +155,11 @@ func TestJWTMiddlewareRefresh(t *testing.T) {
 }
 
 /**
-	TestJWTMiddlewareWithValidJWT tests what happens when a cookie containing a valid JWT
-	is given.
-	Testing Expectations:
-		The call should reach the desired function and return a successful response:
-		{"Response": "Success"}
+TestJWTMiddlewareWithValidJWT tests what happens when a cookie containing a valid JWT
+is given.
+Testing Expectations:
+	The call should reach the desired function and return a successful response:
+	{"Response": "Success"}
 */
 func TestJWTMiddlewareWithValidJWT(t *testing.T) {
 	asrt := assert.New(t)
@@ -180,9 +180,9 @@ func TestJWTMiddlewareWithValidJWT(t *testing.T) {
 }
 
 /**
-	TestInitRSAKeyPairHelper tests whether the public/private RSA keys get loaded appropriately.
-	Testing Expectations:
-		Ensure that a *rsa.PublicKey & *rsa.PrivateKey are returned.
+TestInitRSAKeyPairHelper tests whether the public/private RSA keys get loaded appropriately.
+Testing Expectations:
+	Ensure that a *rsa.PublicKey & *rsa.PrivateKey are returned.
 */
 func TestInitRSAKeyPairHelper(t *testing.T) {
 	asrt := assert.New(t)
@@ -193,9 +193,9 @@ func TestInitRSAKeyPairHelper(t *testing.T) {
 }
 
 /**
-	TestInitRSAKeyPairHelper tests whether the public/private RSA keys get loaded appropriately.
-	Testing Expectations:
-		Ensure that signErr is nil.
+TestInitRSAKeyPairHelper tests whether the public/private RSA keys get loaded appropriately.
+Testing Expectations:
+	Ensure that signErr is nil.
 */
 func TestGetJWTValid(t *testing.T) {
 	asrt := assert.New(t)
@@ -206,9 +206,9 @@ func TestGetJWTValid(t *testing.T) {
 }
 
 /**
-	getServerResponseWithJWTInfo is a helper function that allows for
-	DRY/Clean -er test-code. It makes a simple call to GetTestHandler() while
-	using the JWTMiddleware.
+getServerResponseWithJWTInfo is a helper function that allows for
+DRY/Clean -er test-code. It makes a simple call to GetTestHandler() while
+using the JWTMiddleware.
 */
 func getServerResponseWithJWTInfo(rsKeys *common.RSAKeys, jwtStr string) *http.Response {
 	req := httptest.NewRequest("GET", "/", nil)

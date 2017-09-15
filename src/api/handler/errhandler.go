@@ -11,8 +11,8 @@ type Error interface {
 
 // JSONError represents a StatusError with an ErrMap.
 type JSONError struct {
-	Code int
-	Err  error
+	Code   int
+	Err    error
 	ErrMap common.ErrMap
 }
 

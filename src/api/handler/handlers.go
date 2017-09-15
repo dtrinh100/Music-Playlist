@@ -1,20 +1,20 @@
 package handler
 
 import (
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
 	"log"
 	"net/http"
-	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
 /**
-	HandlerEnvFn is a signature for a function that includes http.Handler + env
-	parameters & returns an error-type
- */
+HandlerEnvFn is a signature for a function that includes http.Handler + env
+parameters & returns an error-type
+*/
 type HandlerEnvFn func(rw http.ResponseWriter, req *http.Request, env *common.Env) error
 
 /**
-	Handler struct takes a configured Env and a function matching our
-	useful signature.
+Handler struct takes a configured Env and a function matching our
+useful signature.
 */
 type Handler struct {
 	*common.Env
@@ -22,7 +22,7 @@ type Handler struct {
 }
 
 /**
-	ServeHTTP allows our Handler type to satisfy http.Handler.
+ServeHTTP allows our Handler type to satisfy http.Handler.
 */
 func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	handleErrorFn := func(err error) {

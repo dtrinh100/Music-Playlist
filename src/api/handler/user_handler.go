@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"regexp"
 
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
 	"github.com/dtrinh100/Music-Playlist/src/api/model"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
 // PostUser creates the user account

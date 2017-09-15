@@ -1,12 +1,12 @@
 package common
 
 import (
-	"net/http"
 	"encoding/json"
+	"net/http"
 )
 
 /**
-	GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
+GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
 */
 func GenericJSONErrorResponse(rw http.ResponseWriter) {
 	JSONErrorResponse(rw, ErrMap{
@@ -17,7 +17,7 @@ func GenericJSONErrorResponse(rw http.ResponseWriter) {
 // TODO: Look into if these functions can become middleware.
 
 /**
-	JSONErrorResponse helps send json-formatted error-responses to the client.
+JSONErrorResponse helps send json-formatted error-responses to the client.
 */
 func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
 	resp, respErr := json.Marshal(ErrorList{
@@ -36,7 +36,7 @@ func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
 }
 
 /**
-	JSONStdResponse helps send json-formated standard-responses to the client.
+JSONStdResponse helps send json-formated standard-responses to the client.
 */
 func JSONStdResponse(rw http.ResponseWriter, response interface{}) {
 	json, jsonErr := json.Marshal(response)

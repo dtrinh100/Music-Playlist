@@ -1,19 +1,19 @@
 package common
 
 import (
-	"testing"
+	"encoding/json"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
 	"strings"
-	"io/ioutil"
-	"encoding/json"
-	"net/http"
+	"testing"
 )
 
 /**
-	MockMethodHelper utilizes JSONStdResponse & GenericJSONErrorResponse so that
-	they may be tested directly. JSONErrorResponse is also tested indirectly through
-	GenericJSONErrorResponse.
+MockMethodHelper utilizes JSONStdResponse & GenericJSONErrorResponse so that
+they may be tested directly. JSONErrorResponse is also tested indirectly through
+GenericJSONErrorResponse.
 */
 func MockMethodHelper(rw http.ResponseWriter, req *http.Request) {
 	var data map[string]string
@@ -28,13 +28,12 @@ func MockMethodHelper(rw http.ResponseWriter, req *http.Request) {
 }
 
 /**
-	TestJSONStdResponse tests JSONStdResponse through the MockMethodHelper method.
-	Testing for a valid response, given valid JSON input.
-
-	Testing Expectations:
-		response.Status = "200 OK"
-		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expectedBody' below)
+TestJSONStdResponse tests JSONStdResponse through the MockMethodHelper method.
+Testing for a valid response, given valid JSON input.
+Testing Expectations:
+	response.Status = "200 OK"
+	responseWriter.Header().Get("Content-Type") = "application/json"
+	response.Body = (see variable 'expectedBody' below)
 */
 func TestJSONStdResponse(t *testing.T) {
 	asrt := assert.New(t)
@@ -73,13 +72,12 @@ func TestJSONStdResponse(t *testing.T) {
 }
 
 /**
-	TestJSONErrorResponse tests GenericJSONErrorResponse &, indirectly, JSONErrorResponse
-	through the MockMethodHelper method. Testing for an invalid response, given invalid input.
-
-	Testing Expectations:
-		response.Status = "500 Internal Server Error"
-		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expectedBody' below)
+TestJSONErrorResponse tests GenericJSONErrorResponse &, indirectly, JSONErrorResponse
+through the MockMethodHelper method. Testing for an invalid response, given invalid input.
+Testing Expectations:
+	response.Status = "500 Internal Server Error"
+	responseWriter.Header().Get("Content-Type") = "application/json"
+	response.Body = (see variable 'expectedBody' below)
 */
 func TestJSONErrorResponse(t *testing.T) {
 	asrt := assert.New(t)

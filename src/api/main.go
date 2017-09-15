@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dtrinh100/Music-Playlist/src/api/db"
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
-	"github.com/dtrinh100/Music-Playlist/src/api/router"
+	"github.com/dtrinh100/Music-Playlist/src/api/db"
 	"github.com/dtrinh100/Music-Playlist/src/api/middleware"
+	"github.com/dtrinh100/Music-Playlist/src/api/router"
 
 	"gopkg.in/mgo.v2"
 )
@@ -16,8 +16,8 @@ import (
 const dbURLAddress = "MPDatabase"
 
 /**
-	initAndGetHandler initializes the JWT key pair, the DB, the Env,
-	the route paths, & returns a handler.
+initAndGetHandler initializes the JWT key pair, the DB, the Env,
+the route paths, & returns a handler.
 */
 func initAndGetHandler(session *mgo.Session) http.Handler {
 	pub, priv := middleware.InitRSAKeyPair()
@@ -35,7 +35,7 @@ func initAndGetHandler(session *mgo.Session) http.Handler {
 }
 
 /**
-	main is the entry-function of the API.
+main is the entry-function of the API.
 */
 func main() {
 	session, sessionErr := mgo.Dial(dbURLAddress)

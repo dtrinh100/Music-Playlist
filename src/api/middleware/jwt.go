@@ -1,17 +1,17 @@
 package middleware
 
 import (
+	"github.com/dgrijalva/jwt-go"
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
 	"github.com/dtrinh100/Music-Playlist/src/api/model"
-	"github.com/dgrijalva/jwt-go"
 
-	"time"
-	"net/http"
 	"context"
 	"crypto/rsa"
-	"io/ioutil"
-	"path/filepath"
 	"errors"
+	"io/ioutil"
+	"net/http"
+	"path/filepath"
+	"time"
 )
 
 const JWTTokenString = "jwtTokenString"
@@ -45,7 +45,7 @@ func (tf TokenFunc) Verify(tkn *jwt.Token) (interface{}, error) {
 }
 
 /**
-	JWTMiddleware helps manage JSON Web Tokens (JWT) and authorization to URL-paths.
+JWTMiddleware helps manage JSON Web Tokens (JWT) and authorization to URL-paths.
 */
 func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler, env *common.Env) {
 	tknCookie, cookieErr := req.Cookie(mpJWTCookieName)
@@ -106,14 +106,14 @@ func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler,
 }
 
 /**
-	InitRSAKeyPair uses initRSAKeyPairHelper to init public/private keys for JWT.
+InitRSAKeyPair uses initRSAKeyPairHelper to init public/private keys for JWT.
 */
 func InitRSAKeyPair() (*rsa.PublicKey, *rsa.PrivateKey) {
 	return initRSAKeyPairHelper(pubKeyPath, privKeyPath)
 }
 
 /**
-	initRSAKeyPairHelper initializes the public & private keys used for JWT.
+initRSAKeyPairHelper initializes the public & private keys used for JWT.
 */
 func initRSAKeyPairHelper(pubRelPath, privRelPath string) (*rsa.PublicKey, *rsa.PrivateKey) {
 	getDataFromFile := func(path string) []byte {
@@ -135,7 +135,7 @@ func initRSAKeyPairHelper(pubRelPath, privRelPath string) (*rsa.PublicKey, *rsa.
 }
 
 /**
-	GetJWT returns a valid JWT string
+GetJWT returns a valid JWT string
 */
 func GetJWT(rsaPrivateKey *rsa.PrivateKey, email string, minutes time.Duration) (string, time.Time, error) {
 	if minutes < 2 {
@@ -160,7 +160,7 @@ func getJWTHelper(rsaPrivateKey *rsa.PrivateKey, email string, expMins, refMins 
 		RefreshAt: nowTime.Add(refMins * time.Minute).Unix(),
 		UserEmail: email,
 	}
-	
+
 	// Create a signer for RSA 256
 	tkn := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 
@@ -170,7 +170,7 @@ func getJWTHelper(rsaPrivateKey *rsa.PrivateKey, email string, expMins, refMins 
 }
 
 /**
-	SetSecuredCookie helps set a cookie into 'http'
+SetSecuredCookie helps set a cookie into 'http'
 */
 func SetSecuredCookie(rw http.ResponseWriter, signedTokenStr string, tknExpiration time.Time) {
 	// More info: https://tools.ietf.org/html/rfc6265
