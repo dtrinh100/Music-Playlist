@@ -112,9 +112,16 @@ func refreshCookie(rw http.ResponseWriter, claims model.AppClaims, env *common.E
 }
 
 /**
-	InitRSAKeyPair initializes the public & private keys used for JWT.
+	InitRSAKeyPair uses initRSAKeyPairHelper to init public/private keys for JWT.
 */
 func InitRSAKeyPair() (*rsa.PublicKey, *rsa.PrivateKey) {
+	return initRSAKeyPairHelper(pubKeyPath, privKeyPath)
+}
+
+/**
+	initRSAKeyPairHelper initializes the public & private keys used for JWT.
+*/
+func initRSAKeyPairHelper(pubRelPath, privRelPath string) (*rsa.PublicKey, *rsa.PrivateKey) {
 	getDataFromFile := func(path string) []byte {
 		absPath, pathErr := filepath.Abs(path)
 		common.Fatal(pathErr, "Could not read file path "+path)
@@ -125,9 +132,9 @@ func InitRSAKeyPair() (*rsa.PublicKey, *rsa.PrivateKey) {
 		return fileBytes
 	}
 
-	publicKey, pubKeyErr := jwt.ParseRSAPublicKeyFromPEM(getDataFromFile(pubKeyPath))
+	publicKey, pubKeyErr := jwt.ParseRSAPublicKeyFromPEM(getDataFromFile(pubRelPath))
 	common.Fatal(pubKeyErr, "Could not parse public key")
-	privateKey, privKeyErr := jwt.ParseRSAPrivateKeyFromPEM(getDataFromFile(privKeyPath))
+	privateKey, privKeyErr := jwt.ParseRSAPrivateKeyFromPEM(getDataFromFile(privRelPath))
 	common.Fatal(privKeyErr, "Could not parse private key")
 
 	return publicKey, privateKey
