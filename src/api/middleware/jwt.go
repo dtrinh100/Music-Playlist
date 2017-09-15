@@ -20,9 +20,7 @@ const mpClaimsKey = "musicPlaylistClaimsKey"
 const mpJWTIssuer = "musicPlaylistIssuer"
 const mpJWTCookieName = "musicPlaylistJWTAuth"
 
-// NOTE: If you modify jwtExpireyMinutes, also modify jwtRefreshMinutes proportionally
-const jwtExpireyMinutes = 30 * time.Minute
-const jwtRefreshMinutes = 15 * time.Minute
+const jwtExpireMinutes = 30
 
 const (
 	// TODO: change these paths to a private path in production
@@ -103,7 +101,7 @@ func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler,
 	jwt-expiration time: jwt-refresh time < current time < jwt-expiration time.
 */
 func refreshCookie(rw http.ResponseWriter, claims model.AppClaims, env *common.Env) {
-	updatedTokenStr, expirationTime, jwtErr := GetJWT(env.RSAKeys.Private, claims.UserEmail)
+		updatedTokenStr, expirationTime, jwtErr := GetJWT(env.RSAKeys.Private, claims.UserEmail, jwtExpireMinutes)
 
 	if jwtErr != nil {
 		common.JSONErrorResponse(rw, common.ErrMap{
@@ -138,9 +136,18 @@ func InitRSAKeyPair() (*rsa.PublicKey, *rsa.PrivateKey) {
 /**
 	GetJWT returns a valid JWT string
 */
-func GetJWT(rsaPrivateKey *rsa.PrivateKey, email string) (string, time.Time, error) {
+func GetJWT(rsaPrivateKey *rsa.PrivateKey, email string, minutes time.Duration) (string, time.Time, error) {
+	if minutes < 2 {
+		common.Fatal(errors.New("JWT Expiration Time Duration Error"),
+			"JWT needs to have an expiration time >= 2 minutes")
+	}
+
+	return getJWTHelper(rsaPrivateKey, email, minutes, minutes/2)
+}
+
+func getJWTHelper(rsaPrivateKey *rsa.PrivateKey, email string, expMins, refMins time.Duration) (string, time.Time, error) {
 	nowTime := time.Now()
-	expirationTime := nowTime.Add(jwtExpireyMinutes)
+	expirationTime := nowTime.Add(expMins * time.Minute)
 
 	// Set claims
 	claims := &model.AppClaims{
@@ -149,7 +156,7 @@ func GetJWT(rsaPrivateKey *rsa.PrivateKey, email string) (string, time.Time, err
 			ExpiresAt: expirationTime.Unix(),
 			Issuer:    mpJWTIssuer,
 		},
-		RefreshAt: nowTime.Add(jwtRefreshMinutes).Unix(),
+		RefreshAt: nowTime.Add(refMins * time.Minute).Unix(),
 		UserEmail: email,
 	}
 	
