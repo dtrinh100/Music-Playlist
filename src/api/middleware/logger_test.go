@@ -5,6 +5,7 @@ import (
 	"testing"
 	"net/http/httptest"
 	"github.com/stretchr/testify/assert"
+	"github.com/dtrinh100/Music-Playlist/src/api/common"
 )
 
 /**
@@ -12,7 +13,7 @@ import (
 */
 func GetTestHandler() http.HandlerFunc {
 	fn := func(rw http.ResponseWriter, req *http.Request) {
-		// Do nothing
+		common.JSONStdResponse(rw, map[string]string{"Response": "Success"})
 	}
 
 	return http.HandlerFunc(fn)
