@@ -1,10 +1,10 @@
 package router
 
 import (
-	mw "github.com/dtrinh100/Music-Playlist/src/api/middleware"
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
-	gmux "github.com/gorilla/mux"
 	"github.com/dtrinh100/Music-Playlist/src/api/handler"
+	mw "github.com/dtrinh100/Music-Playlist/src/api/middleware"
+	gmux "github.com/gorilla/mux"
 	"github.com/justinas/alice"
 
 	"net/http"
@@ -16,9 +16,9 @@ func Alice(fn mw.AliceFn) mw.AliceMiddlewareHandler {
 }
 
 /**
-	AliceEnv is a helper-function that makes middleware-functions satisfy alice.Constructor
-	and pass an Env struct.
- */
+AliceEnv is a helper-function that makes middleware-functions satisfy alice.Constructor
+and pass an Env struct.
+*/
 func AliceEnv(fn mw.AliceEnvFn, env *common.Env) mw.AliceMiddlewareEnvHandler {
 	return mw.AliceMiddlewareEnvHandler{Env: env, AliceEnvFn: fn}
 }
@@ -27,12 +27,12 @@ func AliceEnv(fn mw.AliceEnvFn, env *common.Env) mw.AliceMiddlewareEnvHandler {
 func HandleFn(fn handler.HandlerEnvFn, env *common.Env) handler.Handler {
 	return handler.Handler{
 		Env: env,
-		HEF:   fn,
+		HEF: fn,
 	}
 }
 
 /**
-	InitializeRoutes sets-up all of the routes & middleware.
+InitializeRoutes sets-up all of the routes & middleware.
 */
 func InitializeRoutes(env *common.Env) http.Handler {
 	// Using Gorilla mux router instead of default one because it offers more flexibility

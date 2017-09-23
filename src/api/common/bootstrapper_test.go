@@ -1,15 +1,15 @@
 package common
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"strconv"
+	"testing"
 )
 
 /**
-	TestInitServer tests the initialization of ServerConfig (the
-	configuration settings for the server).
+TestInitServer tests the initialization of ServerConfig (the
+configuration settings for the server).
 */
 func TestInitServer(t *testing.T) {
 	asrt := assert.New(t)

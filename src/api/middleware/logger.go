@@ -1,13 +1,13 @@
 package middleware
 
 import (
-	"net/http"
 	"log"
+	"net/http"
 	"time"
 )
 
 /**
-	LoggerMiddleware is a function that logs server-request information to the terminal.
+LoggerMiddleware is a function that logs server-request information to the terminal.
 */
 func LoggerMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler) {
 	t1 := time.Now()

@@ -1,12 +1,12 @@
 package common
 
 import (
-	"net/http"
 	"encoding/json"
+	"net/http"
 )
 
 /**
-	GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
+GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
 */
 func GenericJSONErrorResponse(rw http.ResponseWriter) {
 	JSONErrorResponse(rw, ErrMap{
@@ -17,7 +17,7 @@ func GenericJSONErrorResponse(rw http.ResponseWriter) {
 // TODO: Look into if these functions can become middleware.
 
 /**
-	JSONErrorResponse helps send json-formatted error-responses to the client.
+JSONErrorResponse helps send json-formatted error-responses to the client.
 */
 func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
 	resp, respErr := json.Marshal(ErrorList{
@@ -26,7 +26,7 @@ func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
 
 	if respErr != nil {
 		// If you end up here, something really went wrong.
-		http.Error(rw, respErr.Error(), http.StatusInternalServerError)
+		http.Error(rw, "Error: Something Went Wrong In The API", http.StatusInternalServerError)
 		return
 	}
 
@@ -36,15 +36,13 @@ func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
 }
 
 /**
-	JSONStdResponse helps send json-formated standard-responses to the client.
+JSONStdResponse helps send json-formated standard-responses to the client.
 */
 func JSONStdResponse(rw http.ResponseWriter, response interface{}) {
 	json, jsonErr := json.Marshal(response)
 
 	if jsonErr != nil {
-		JSONErrorResponse(rw, ErrMap{
-			"Internal Server Error": "Failed to Marshal JSON",
-		}, http.StatusInternalServerError)
+		GenericJSONErrorResponse(rw)
 		return
 	}
 

@@ -1,23 +1,22 @@
 package handler
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
-	"net/http/httptest"
-	"io/ioutil"
-	"strings"
 	"encoding/json"
 	"github.com/dtrinh100/Music-Playlist/src/api/common"
+	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"net/http/httptest"
+	"strings"
+	"testing"
 )
 
 /**
-	TestLoginValid tests Login.
-	Testing for valid response, given valid input.
-
-	Testing Expectations:
-		response.Status = "200 OK"
-		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expectedBody' below)
+TestLoginValid tests Login.
+Testing for valid response, given valid input.
+Testing Expectations:
+	response.Status = "200 OK"
+	responseWriter.Header().Get("Content-Type") = "application/json"
+	response.Body = (see variable 'expectedBody' below)
 */
 func TestLoginValid(t *testing.T) {
 	asrt := assert.New(t)
@@ -56,13 +55,12 @@ func TestLoginValid(t *testing.T) {
 }
 
 /**
-	TestLoginInvalid tests Login.
-	Testing for invalid response, given invalid input.
-
-	Testing Expectations:
-		response.Status = "500 Internal Server Error"
-		responseWriter.Header().Get("Content-Type") = "application/json"
-		response.Body = (see variable 'expectedBody' below)
+TestLoginInvalid tests Login.
+Testing for invalid response, given invalid input.
+Testing Expectations:
+	response.Status = "500 Internal Server Error"
+	responseWriter.Header().Get("Content-Type") = "application/json"
+	response.Body = (see variable 'expectedBody' below)
 */
 func TestLoginInvalid(t *testing.T) {
 	asrt := assert.New(t)
