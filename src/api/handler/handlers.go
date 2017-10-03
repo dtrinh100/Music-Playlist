@@ -28,10 +28,10 @@ func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	handleErrorFn := func(err error) {
 		switch e := err.(type) {
 		case JSONError:
-			common.JSONErrorResponse(rw, e.ErrMap, e.Status())
+			common.JSONResponse(rw, e.DataMap, e.Status())
 		default:
 			log.Println("Custom Error-type needs to be handled in switch-statement.")
-			common.GenericJSONErrorResponse(rw)
+			common.JSONErrorResponse(rw)
 		}
 	}
 
@@ -42,7 +42,7 @@ func (h Handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 			log.Printf("HTTP %d - %s", e.Status(), e)
 			handleErrorFn(handlerErr)
 		default:
-			common.GenericJSONErrorResponse(rw)
+			common.JSONErrorResponse(rw)
 		}
 	}
 }

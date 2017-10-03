@@ -51,8 +51,8 @@ func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler,
 	tknCookie, cookieErr := req.Cookie(mpJWTCookieName)
 
 	if cookieErr != nil {
-		common.JSONErrorResponse(rw, common.ErrMap{
-			"Login": "User Needs To Log In"}, http.StatusUnauthorized)
+		errMap := common.ErrMap{"Login": "User Needs To Log In"}
+		common.JSONResponse(rw, common.ErrorList{Errors: errMap}, http.StatusUnauthorized)
 		return
 	}
 
@@ -69,21 +69,20 @@ func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler,
 			validationErr := jwtParseErr.(*jwt.ValidationError)
 			switch validationErr.Errors {
 			case jwt.ValidationErrorExpired:
-				common.JSONErrorResponse(rw, common.ErrMap{
-					"Token": "Token Expired. Request A New One"}, http.StatusUnauthorized)
+				errMap := common.ErrMap{"Token": "Token Expired. Request A New One"}
+				common.JSONResponse(rw, common.ErrorList{Errors: errMap}, http.StatusInternalServerError)
 			default:
-				common.GenericJSONErrorResponse(rw)
+				common.JSONErrorResponse(rw)
 			}
 		default:
-			common.GenericJSONErrorResponse(rw)
+			common.JSONErrorResponse(rw)
 		}
 
 		return
 	}
 
 	if !tkn.Valid {
-		common.JSONErrorResponse(rw, common.ErrMap{
-			"Token": "Invalid JWT"}, http.StatusInternalServerError)
+		common.JSONErrorResponse(rw)
 		return
 	}
 
@@ -91,8 +90,7 @@ func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler,
 		updatedTokenStr, expirationTime, jwtErr := GetJWT(env.RSAKeys.Private, claims.UserEmail, jwtExpireMinutes)
 
 		if jwtErr != nil {
-			common.JSONErrorResponse(rw, common.ErrMap{
-				"Token": "Failed to sign"}, http.StatusInternalServerError)
+			common.JSONErrorResponse(rw)
 			return
 		}
 

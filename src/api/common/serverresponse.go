@@ -6,23 +6,11 @@ import (
 )
 
 /**
-GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
+JSONResponse accepts some data-struct and converts it into JSON then sends it
+to the client.
 */
-func GenericJSONErrorResponse(rw http.ResponseWriter) {
-	JSONErrorResponse(rw, ErrMap{
-		"Internal Server Error": "Something Went Wrong In The API",
-	}, http.StatusInternalServerError)
-}
-
-// TODO: Look into if these functions can become middleware.
-
-/**
-JSONErrorResponse helps send json-formatted error-responses to the client.
-*/
-func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
-	resp, respErr := json.Marshal(ErrorList{
-		Errors: errMap,
-	})
+func JSONResponse(rw http.ResponseWriter, dataMap interface{}, status int) {
+	resp, respErr := json.Marshal(dataMap)
 
 	if respErr != nil {
 		// If you end up here, something really went wrong.
@@ -36,17 +24,16 @@ func JSONErrorResponse(rw http.ResponseWriter, errMap ErrMap, status int) {
 }
 
 /**
-JSONStdResponse helps send json-formated standard-responses to the client.
+GenericJSONErrorResponse sends a generic, json-formatted error-response to the client.
+*/
+func JSONErrorResponse(rw http.ResponseWriter) {
+	errMap := ErrMap{"Internal Server Error": "Something Went Wrong In The API"}
+	JSONResponse(rw, ErrorList{Errors: errMap}, http.StatusInternalServerError)
+}
+
+/**
+JSONStdResponse helps send json-formated 'standard' responses to the client.
 */
 func JSONStdResponse(rw http.ResponseWriter, response interface{}) {
-	json, jsonErr := json.Marshal(response)
-
-	if jsonErr != nil {
-		GenericJSONErrorResponse(rw)
-		return
-	}
-
-	rw.WriteHeader(http.StatusOK)
-	rw.Header().Set("Content-Type", "application/json")
-	rw.Write(json)
+	JSONResponse(rw, map[string]interface{}{"data": response}, http.StatusOK)
 }
