@@ -15,8 +15,8 @@ import (
 )
 
 const JWTTokenString = "jwtTokenString"
+const MPClaimsKey = "musicPlaylistClaimsKey"
 
-const mpClaimsKey = "musicPlaylistClaimsKey"
 const mpJWTIssuer = "musicPlaylistIssuer"
 const mpJWTCookieName = "musicPlaylistJWTAuth"
 
@@ -97,7 +97,7 @@ func JWTMiddleware(rw http.ResponseWriter, req *http.Request, next http.Handler,
 		SetSecuredCookie(rw, updatedTokenStr, expirationTime)
 	}
 
-	ctx := context.WithValue(req.Context(), mpClaimsKey, claims)
+	ctx := context.WithValue(req.Context(), MPClaimsKey, claims)
 	ctx = context.WithValue(ctx, JWTTokenString, tknString)
 
 	next.ServeHTTP(rw, req.WithContext(ctx))
