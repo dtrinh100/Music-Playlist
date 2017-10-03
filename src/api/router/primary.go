@@ -50,6 +50,7 @@ func InitializeRoutes(env *common.Env) http.Handler {
 	// Auth sub-router & routes
 	authRouter := apiRouter.PathPrefix("/auth").Subrouter()
 	authRouter = SetAuthRoutes(authRouter, env)
+	authRouter = SetAuthenticatedAuthRoutes(authRouter, env)
 
 	// Global middleware(s)
 	globalMiddlewares := []alice.Constructor{

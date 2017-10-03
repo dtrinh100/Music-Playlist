@@ -17,3 +17,19 @@ func SetAuthRoutes(router *mux.Router, env *common.Env) *mux.Router {
 
 	return router
 }
+
+/**
+SetAuthenticatedAuthRoutes sets-up the '/api/auth' authenticated-routes.
+*/
+func SetAuthenticatedAuthRoutes(router *mux.Router, env *common.Env) *mux.Router {
+	authMiddleware := alice.New(
+		AliceEnv(mw.JWTMiddleware, env).Handle,
+	)
+
+	router.Handle("/verify", authMiddleware.Then(
+		HandleFn(handler.Verify, env))).Methods("GET")
+	router.Handle("/logout", authMiddleware.Then(
+		HandleFn(handler.Logout, env))).Methods("GET")
+
+	return router
+}
