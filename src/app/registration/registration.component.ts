@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { UserInterface } from '../shared/interface/userinterface.interface';
 import { User } from '../shared/models/user';
-
-import { RegistrationDirective } from './registration.directive';
 
 import { UserService } from '../shared/services';
 import { AuthService } from '../shared/services/auth.service';
@@ -15,8 +13,8 @@ import { AuthService } from '../shared/services/auth.service';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss'],
-  providers: [UserService]
+  styleUrls: [ './registration.component.scss' ],
+  providers: [ UserService ]
 })
 export class RegistrationComponent implements OnInit {
   registrationForm: FormGroup;
@@ -64,25 +62,25 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit() {
 
-    if (sessionStorage.getItem("formUsername") === null) {
+    if (sessionStorage.getItem('formUsername') === null) {
       this.initialUsername = '';
     } else {
-      this.initialUsername = sessionStorage.getItem("formUsername");
+      this.initialUsername = sessionStorage.getItem('formUsername');
     }
-    if (sessionStorage.getItem("formEmail") === null) {
+    if (sessionStorage.getItem('formEmail') === null) {
       this.inititalEmail = '';
     } else {
-      this.inititalEmail = sessionStorage.getItem("formEmail");
+      this.inititalEmail = sessionStorage.getItem('formEmail');
     }
-    if (sessionStorage.getItem("formPassword") === null) {
+    if (sessionStorage.getItem('formPassword') === null) {
       this.initialPassword = '';
     } else {
-      this.initialPassword = sessionStorage.getItem("formPassword");
+      this.initialPassword = sessionStorage.getItem('formPassword');
     }
-    if (sessionStorage.getItem("formConfirm") === null) {
+    if (sessionStorage.getItem('formConfirm') === null) {
       this.initialConfirm = '';
     } else {
-      this.initialConfirm = sessionStorage.getItem("formConfirm");
+      this.initialConfirm = sessionStorage.getItem('formConfirm');
     }
 
 
@@ -90,17 +88,17 @@ export class RegistrationComponent implements OnInit {
       username: [ this.initialUsername, [ Validators.required, Validators.minLength(2), Validators.maxLength(30) ] ],
       email: [ this.inititalEmail, [ Validators.required, Validators.email ] ],
       account: this.fb.group({
-        password: [this.initialPassword, [Validators.required, Validators.minLength(8)]],
-        confirm: [this.initialConfirm, [Validators.required, this.validatePasswordConfirmation.bind(this)]]
+        password: [ this.initialPassword, [ Validators.required, Validators.minLength(8) ] ],
+        confirm: [ this.initialConfirm, [ Validators.required, this.validatePasswordConfirmation.bind(this) ] ]
       })
 
     });
 
     this.registrationForm.valueChanges.subscribe(value => {
-      sessionStorage.setItem("formUsername", value.username);
-      sessionStorage.setItem("formEmail", value.email);
-      sessionStorage.setItem("formPassword", value.account.password);
-      sessionStorage.setItem("formConfirm", value.account.confirm);
+      sessionStorage.setItem('formUsername', value.username);
+      sessionStorage.setItem('formEmail', value.email);
+      sessionStorage.setItem('formPassword', value.account.password);
+      sessionStorage.setItem('formConfirm', value.account.confirm);
       this.onValueChanged(value);
     });
 
@@ -124,14 +122,14 @@ export class RegistrationComponent implements OnInit {
         continue;
       }
       // clear previous error message (if any)
-      this.formErrors[field] = '';
+      this.formErrors[ field ] = '';
       let control = form.get(field);
-      if (field === "password" || field === "confirm") {
-        control = form.get("account").get(field); // takes into account the nested fields
+      if (field === 'password' || field === 'confirm') {
+        control = form.get('account').get(field); // takes into account the nested fields
       }
 
       if (control && control.dirty && !control.valid) {
-        const messages = this.validationMessages[field];
+        const messages = this.validationMessages[ field ];
         for (const key in control.errors) {
           if (!control.errors.hasOwnProperty(key)) {
             continue;
