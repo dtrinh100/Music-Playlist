@@ -5,7 +5,7 @@
 <img src={{song.imgURL}} alt={{song.alt}} width="300" height="300">
 </div>
 <div class="col-md-12">
-<button type="button" class="btn btn-primary mp-play"><span class="mp-play-text"><strong>Play</strong></span></button>
+<button type="button" (click)="play(song.musicURL)" class="btn btn-primary mp-play"><span class="mp-play-text"><strong>{{playMessage}}</strong></span></button>
 </div>
 </div>
 </div>
