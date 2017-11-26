@@ -1,6 +1,10 @@
 package interfaces
 
-import "github.com/dtrinh100/Music-Playlist/src/api/usecases"
+import (
+	"github.com/dtrinh100/Music-Playlist/src/api/usecases"
+	"github.com/dtrinh100/Music-Playlist/src/api/domain"
+	"net/http"
+)
 
 type DBHandler interface {
   Create(docs ...interface{}) error
@@ -11,18 +15,19 @@ type DBHandler interface {
 }
 
 type UserInteractor interface {
-  UpdatePasswordForEmail(userEmail, password string) error
-  UpdateFirstNameForEmail(userEmail, firstName string) error
-  UpdateLastNameForEmail(userEmail, lastName string) error
-  UpdatePicURLForEmail(userEmail, picURL string) error
-  // TODO: change contributions type to an array of songs?
-  UpdateContributionsForEmail(userEmail string, contributions []interface{}) error
-  // TODO: change playlist type to an array of songs?
-  UpdatePlaylistForEmail(userEmail string, playlist []interface{}) error
-  CreateNew(user *usecases.User) error
-  RemoveByEmail(userEmail string) error
-  GetByEmail(userEmail string) (*usecases.User, error)
-  GetAll() ([]usecases.User, error)
+	UpdatePasswordForEmail(userEmail, password string) usecases.MPError
+	UpdateFirstNameForEmail(userEmail, firstName string) usecases.MPError
+	UpdateLastNameForEmail(userEmail, lastName string) usecases.MPError
+	UpdatePicURLForEmail(userEmail, picURL string) usecases.MPError
+	UpdateContributionsForEmail(userEmail string, contributions []domain.Song) usecases.MPError
+	UpdatePlaylistForEmail(userEmail string, playlist []domain.Song) usecases.MPError
+	
+	CreateNew(user *usecases.User) usecases.MPError
+	RemoveByEmail(userEmail string) usecases.MPError
+	GetByEmail(userEmail string) (*usecases.User, usecases.MPError)
+	GetAll() ([]usecases.User, usecases.MPError)
+
+	ComparePassword(userEmail string, hashedPass []byte, clearTextPass string) usecases.MPError
 }
 
 type WebResponder interface {

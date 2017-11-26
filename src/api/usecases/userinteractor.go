@@ -1,60 +1,83 @@
 package usecases
 
-import "errors"
+import (
+	"github.com/dtrinh100/Music-Playlist/src/api/domain"
+)
 
 type UserInteractor struct {
   UserRepository UserRepository
   Logger         Logger
 }
 
-func (interactor *UserInteractor) UpdatePasswordForEmail(userEmail, password string) error {
-  return interactor.UserRepository.Update(userEmail, M{"password": password})
+func (interactor *UserInteractor) errorHandler(err error) MPError {
+	if err != nil {
+		interactor.Logger.Log("Error occurred: " + err.Error())
+		return &FaultError{AppFaultErr, err.Error()}
+	}
+
+	return nil
 }
 
-func (interactor *UserInteractor) UpdateFirstNameForEmail(userEmail, firstName string) error {
-  return interactor.UserRepository.Update(userEmail, M{"firstname": firstName})
+func (interactor *UserInteractor) UpdatePasswordForEmail(userEmail, password string) MPError {
+	err := interactor.UserRepository.Update(userEmail, M{"password": password})
+	return interactor.errorHandler(err)
 }
 
-func (interactor *UserInteractor) UpdateLastNameForEmail(userEmail, lastName string) error {
-  return interactor.UserRepository.Update(userEmail, M{"lastname": lastName})
+func (interactor *UserInteractor) UpdateFirstNameForEmail(userEmail, firstName string) MPError {
+	err := interactor.UserRepository.Update(userEmail, M{"firstname": firstName})
+	return interactor.errorHandler(err)
 }
 
-func (interactor *UserInteractor) UpdatePicURLForEmail(userEmail, picURL string) error {
-  return interactor.UserRepository.Update(userEmail, M{"picurl": picURL})
+func (interactor *UserInteractor) UpdateLastNameForEmail(userEmail, lastName string) MPError {
+	err := interactor.UserRepository.Update(userEmail, M{"lastname": lastName})
+	return interactor.errorHandler(err)
 }
 
-// TODO: change contributions type to an array of songs?
-// TODO: implement
-func (interactor *UserInteractor) UpdateContributionsForEmail(userEmail string, contributions []interface{}) error {
-  return nil
+func (interactor *UserInteractor) UpdatePicURLForEmail(userEmail, picURL string) MPError {
+	err := interactor.UserRepository.Update(userEmail, M{"picurl": picURL})
+	return interactor.errorHandler(err)
 }
 
-// TODO: change playlist type to an array of songs?
-// TODO: implement
-func (interactor *UserInteractor) UpdatePlaylistForEmail(userEmail string, playlist []interface{}) error {
-  return nil
+// TODO: implement & unit-test
+func (interactor *UserInteractor) UpdateContributionsForEmail(userEmail string, contributions []domain.Song) MPError {
+	return nil
 }
 
-func (interactor *UserInteractor) CreateNew(user *User) error {
-  if existingUser, oneErr := interactor.GetByEmail(user.Email); oneErr == nil && existingUser != nil {
-    existsErr := errors.New("User already exists")
-    interactor.Logger.Log(existsErr.Error() + ": " + user.Email)
-    return existsErr
-  }
-
-  interactor.Logger.Log("Creating user: " + user.Email)
-  return interactor.UserRepository.Create(user)
+// TODO: implement & unit-test
+func (interactor *UserInteractor) UpdatePlaylistForEmail(userEmail string, playlist []domain.Song) MPError {
+	return nil
 }
 
-func (interactor *UserInteractor) RemoveByEmail(userEmail string) error {
-  return interactor.UserRepository.Delete(userEmail)
+func (interactor *UserInteractor) CreateNew(user *User) MPError {
+	if existingUser, oneErr := interactor.GetByEmail(user.Email); oneErr == nil && existingUser != nil {
+		msg := "user already exists"
+		interactor.Logger.Log(msg + ": " + user.Email)
+		return &FaultError{UserFaultErr, msg}
+	}
+
+	interactor.Logger.Log("Attempting to create user: " + user.Email)
+	err := interactor.UserRepository.Create(user)
+	return interactor.errorHandler(err)
 }
 
-func (interactor *UserInteractor) GetByEmail(userEmail string) (*User, error) {
-  user, oneErr := interactor.UserRepository.One(userEmail)
-  return user, oneErr
+func (interactor *UserInteractor) RemoveByEmail(userEmail string) MPError {
+	err := interactor.UserRepository.Delete(userEmail)
+	return interactor.errorHandler(err)
 }
 
-func (interactor *UserInteractor) GetAll() ([]User, error) {
-  return interactor.UserRepository.All()
+func (interactor *UserInteractor) GetByEmail(userEmail string) (*User, MPError) {
+	interactor.Logger.Log("Getting user: " + userEmail)
+	user, oneErr := interactor.UserRepository.One(userEmail)
+
+	if oneErr != nil && oneErr.Error() == "not found" {
+		interactor.Logger.Log("User not found: " + userEmail)
+		return nil, &FaultError{UserFaultErr, oneErr.Error()}
+	}
+
+	return user, interactor.errorHandler(oneErr)
+}
+
+func (interactor *UserInteractor) GetAll() ([]User, MPError) {
+	users, allErr := interactor.UserRepository.All()
+	return users, interactor.errorHandler(allErr)
 }
