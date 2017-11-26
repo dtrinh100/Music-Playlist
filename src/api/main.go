@@ -15,9 +15,8 @@ func main() {
 	// WEBSERVICE
 
 	session := infrastructure.NewMongoSession("MPDatabase", "", "")
-	dbUserHandler := infrastructure.NewMongoHandler(session, "dbName", "usertable")
-
-	dbSongHandler := infrastructure.NewMongoHandler(session, "dbName", "songtable")
+	dbUserHandler := infrastructure.NewMongoHandler(session, "musicplaylistdb", "usertable")
+	dbSongHandler := infrastructure.NewMongoHandler(session, "musicplaylistdb", "songtable")
 
 	handlers := make(map[string]interfaces.DBHandler)
 	handlers["DBUserRepo"] = dbUserHandler
@@ -29,29 +28,35 @@ func main() {
 	userInteractor.UserRepository = interfaces.NewDBUserRepo(handlers)
 	userInteractor.Logger = logger
 
-	webserviceHandler := new(interfaces.WebserviceHandler)
-	webserviceHandler.UserInteractor = userInteractor
-	webserviceHandler.Logger = logger
+	jsonResponder := new(infrastructure.JSONWebResponder)
+
+	jwtHandler := interfaces.NewJWTHandler()
+
+	webserviceHandler := &interfaces.WebserviceHandler{
+		userInteractor,
+		jsonResponder,
+		jwtHandler,
+	}
 
 	// MIDDLEWARE
 
-	jwt := new(middleware.JWTHandler)
+	jwt := new(middleware.JWTMiddleware)
 	jwt.Logger = logger
-	weblogger := new(middleware.WebLoggerHandler)
+	jwt.Responder = jsonResponder
+	jwt.JWTHandler = jwtHandler
+
+	weblogger := new(middleware.WebLoggerMiddleware)
 	weblogger.Logger = logger
+	weblogger.Responder = jsonResponder
 
 	globalMiddlewares := []alice.Constructor{
 		weblogger.Handle,
-		jwt.Handle, // TODO: move this middleware to auth'ed routes later
 	}
 
 	// SERVER
 
 	router := gmux.NewRouter().StrictSlash(false)
-	userRouter := router.PathPrefix("/users").Subrouter()
-	userRouter.HandleFunc("/register", func(rw http.ResponseWriter, req *http.Request) {
-		webserviceHandler.RegisterUser(rw, req)
-	}).Methods("POST")
+	initRoutes(router, webserviceHandler, jwt)
 
 	server := &http.Server{
 		Addr:    os.Getenv("MP_SRVRADDR_ENV"),
@@ -61,4 +66,26 @@ func main() {
 	if serverErr := server.ListenAndServe(); serverErr != nil {
 		logger.Log("Server failed to boot: " + serverErr.Error())
 	}
+}
+
+func initRoutes(router *gmux.Router, webservice *interfaces.WebserviceHandler, jwt *middleware.JWTMiddleware) {
+	apiRouter := router.PathPrefix("/api").Subrouter()
+	// TODO: figure out if there's a RESTful way of doing authentication
+	apiRouter.HandleFunc("/register", func(rw http.ResponseWriter, req *http.Request) {
+		webservice.RegisterUser(rw, req)
+	}).Methods("POST")
+
+	apiRouter.HandleFunc("/login", func(rw http.ResponseWriter, req *http.Request) {
+		webservice.LoginUser(rw, req)
+	}).Methods("POST")
+
+	authRouter := apiRouter.PathPrefix("/auth").Subrouter()
+
+	authRouteFn := func(path string, fn func(http.ResponseWriter, *http.Request)) *gmux.Route {
+		return authRouter.Handle(path, alice.New(jwt.Handle).Then(http.HandlerFunc(fn)))
+	}
+
+	authRouteFn("/logout", func(rw http.ResponseWriter, req *http.Request) {
+		webservice.LogoutUser(rw, req)
+	}).Methods("POST")
 }
