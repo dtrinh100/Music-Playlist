@@ -81,3 +81,14 @@ func (interactor *UserInteractor) GetAll() ([]User, MPError) {
 	users, allErr := interactor.UserRepository.All()
 	return users, interactor.errorHandler(allErr)
 }
+
+func (interactor *UserInteractor) ComparePassword(userEmail string, hashedPass []byte, clearTextPass string) MPError {
+	compareErr := interactor.UserRepository.ComparePassword(hashedPass, []byte(clearTextPass))
+
+	if compareErr != nil && compareErr.Error() == "crypto/bcrypt: hashedPassword is not the hash of the given password" {
+		interactor.Logger.Log("Invalid credentials: " + userEmail)
+		return &FaultError{UserFaultErr, "invalid credentials"}
+	}
+
+	return interactor.errorHandler(compareErr)
+}

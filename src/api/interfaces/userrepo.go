@@ -67,6 +67,9 @@ func (repo *DBUserRepo) Delete(userEmail string) error {
 	return repo.dbHandler.Delete(usecases.M{"email": userEmail})
 }
 
+func (repo *DBUserRepo) ComparePassword(hashedPass, clearTextPass []byte) error {
+	return bcrypt.CompareHashAndPassword(hashedPass, clearTextPass)
+}
 
 func (repo *DBUserRepo) getHashedPass(pass string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)

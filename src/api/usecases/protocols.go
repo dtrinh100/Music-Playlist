@@ -17,6 +17,7 @@ type UserRepository interface {
 	Create(user *User) error
 	Update(userEmail string, changes M) error
 	Delete(userEmail string) error
+	ComparePassword(hashedPass, clearTextPass []byte) error
 }
 
 type MPError interface {
