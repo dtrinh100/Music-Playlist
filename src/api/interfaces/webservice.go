@@ -1,29 +1,104 @@
 package interfaces
 
 import (
-  "net/http"
-  "github.com/dtrinh100/Music-Playlist/src/api/usecases"
+	"net/http"
+	"github.com/dtrinh100/Music-Playlist/src/api/usecases"
+	"encoding/json"
+	"regexp"
+	"github.com/dtrinh100/Music-Playlist/src/api/domain"
 )
 
 type WebserviceHandler struct {
-  Logger         usecases.Logger
 	UserInteractor UserInteractor
+
 	Responder  WebResponder
+	JWTHandler JWTHandler
 }
 
-func (webhandler WebserviceHandler) RegisterUser(rw http.ResponseWriter, req *http.Request) {
-  // TODO: update to use JSON
-  newUser := usecases.User{
-    Username: req.FormValue("username"),
-    Password: req.FormValue("password"),
-    Email:    req.FormValue("email"),
-  }
+func (webhandler *WebserviceHandler) RegisterUser(rw http.ResponseWriter, req *http.Request) {
+	validateUserInfoFn := func(user *usecases.User) usecases.MPError {
+		respFn := func(msg string) usecases.MPError {
+			return &usecases.FaultError{usecases.UserFaultErr, msg}
+		}
 
-  if createErr := webhandler.UserInteractor.CreateNew(&newUser); createErr != nil {
-    // TODO: qualify createErr and return appropriate response
-    rw.Write([]byte("User Already Exists"))
-    return
-  }
+		// Validate username's length
+		if len(user.Username) < 2 || len(user.Username) > 30 {
+			return respFn("Username must be greater than 3 and less than 30 characters")
+		}
+		// Regular expression to check for valid email, this is more strict than the
+		// Angular built-in validation
+		if !regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`).MatchString(user.Email) {
+			return respFn("Email format is invalid")
+		}
+		// Validate password's length
+		if len(user.Password) < 8 {
+			return respFn("Password must be greater than 7 characters")
+		}
 
-  rw.Write([]byte("Registered successfully"))
+		return nil
+	}
+	var newUser usecases.User
+
+	if decodeErr := json.NewDecoder(req.Body).Decode(&newUser); decodeErr != nil {
+		webhandler.Responder.InternalServerError(rw)
+		return
+	}
+
+	if validateErr := validateUserInfoFn(&newUser); validateErr != nil {
+		webhandler.Responder.BadRequest(rw, validateErr)
+		return
+	}
+
+	if createErr := webhandler.UserInteractor.CreateNew(&newUser); createErr != nil {
+		switch createErr.Status() {
+		case usecases.UserFaultErr:
+			webhandler.Responder.BadRequest(rw, createErr)
+		default:
+			webhandler.Responder.InternalServerError(rw)
+		}
+		return
+	}
+
+	newUser.Contributions = []domain.Song{}
+	newUser.Playlist = []domain.Song{}
+
+	webhandler.JWTHandler.ValidateUserEmail(rw, newUser.Email)
+	webhandler.Responder.Success(rw, usecases.M{"user": newUser})
+}
+
+func (webhandler *WebserviceHandler) LoginUser(rw http.ResponseWriter, req *http.Request) {
+	var possibleUser usecases.User
+
+	if decodeErr := json.NewDecoder(req.Body).Decode(&possibleUser); decodeErr != nil {
+		webhandler.Responder.InternalServerError(rw)
+		return
+	}
+
+	existingUser, getErr := webhandler.UserInteractor.GetByEmail(possibleUser.Email)
+
+	if getErr != nil {
+		switch getErr.Status() {
+		case usecases.UserFaultErr:
+			webhandler.Responder.BadRequest(rw, getErr)
+		default:
+			webhandler.Responder.InternalServerError(rw)
+		}
+		return
+	}
+
+	compareErr := webhandler.UserInteractor.ComparePassword(existingUser.Email,
+		existingUser.HashedPassword, possibleUser.Password)
+	if compareErr != nil {
+		webhandler.Responder.BadRequest(rw, compareErr)
+		return
+	}
+
+	webhandler.JWTHandler.ValidateUserEmail(rw, existingUser.Email)
+	webhandler.Responder.Success(rw, usecases.M{"user": existingUser})
+}
+
+func (webhandler *WebserviceHandler) LogoutUser(rw http.ResponseWriter, req *http.Request) {
+	// TODO: blacklist JWT
+	webhandler.JWTHandler.InvalidateUserEmail(rw)
+	webhandler.Responder.NoContent(rw)
 }
