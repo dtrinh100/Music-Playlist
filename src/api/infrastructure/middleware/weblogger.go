@@ -6,18 +6,18 @@ import (
 	"fmt"
 )
 
-type WebLoggerHandler struct {
+type WebLoggerMiddleware struct {
 	MiddlewareHandler
 }
 
-func (handler *WebLoggerHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+func (middleware *WebLoggerMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	t1 := time.Now()
-	handler.next.ServeHTTP(rw, req)
+	middleware.next.ServeHTTP(rw, req)
 	msg := fmt.Sprintf("\t%s | [%s] %q | %v\n", req.Host, req.Method, req.URL.String(), time.Now().Sub(t1))
-	handler.Logger.Log(msg)
+	middleware.Logger.Log(msg)
 }
 
-func (handler *WebLoggerHandler) Handle(next http.Handler) http.Handler {
-	handler.next = next
-	return handler
+func (middleware *WebLoggerMiddleware) Handle(next http.Handler) http.Handler {
+	middleware.next = next
+	return middleware
 }
