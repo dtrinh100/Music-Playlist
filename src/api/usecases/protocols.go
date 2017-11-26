@@ -1,5 +1,10 @@
 package usecases
 
+const (
+	AppFaultErr = iota
+	UserFaultErr
+)
+
 type M map[string]interface{}
 
 type Logger interface {
@@ -12,4 +17,9 @@ type UserRepository interface {
 	Create(user *User) error
 	Update(userEmail string, changes M) error
 	Delete(userEmail string) error
+}
+
+type MPError interface {
+	Status() int
+	Error() string
 }
