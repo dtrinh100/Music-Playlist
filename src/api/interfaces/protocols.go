@@ -24,3 +24,20 @@ type UserInteractor interface {
   GetByEmail(userEmail string) (*usecases.User, error)
   GetAll() ([]usecases.User, error)
 }
+
+type WebResponder interface {
+	Success(http.ResponseWriter, usecases.M)
+	Created(http.ResponseWriter, usecases.M)
+	NoContent(http.ResponseWriter)
+
+	Redirection(http.ResponseWriter)
+
+	BadRequest(http.ResponseWriter, usecases.MPError)
+	Unauthorized(http.ResponseWriter)
+	Forbidden(http.ResponseWriter)
+	NotFound(http.ResponseWriter)
+	Gone(http.ResponseWriter)
+
+	InternalServerError(http.ResponseWriter)
+	ServiceUnavailable(http.ResponseWriter)
+}
