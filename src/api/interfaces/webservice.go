@@ -6,8 +6,9 @@ import (
 )
 
 type WebserviceHandler struct {
-  UserInteractor UserInteractor
   Logger         usecases.Logger
+	UserInteractor UserInteractor
+	Responder  WebResponder
 }
 
 func (webhandler WebserviceHandler) RegisterUser(rw http.ResponseWriter, req *http.Request) {
