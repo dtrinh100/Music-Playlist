@@ -3,6 +3,7 @@ package interfaces
 import (
 	"github.com/dtrinh100/Music-Playlist/src/api/usecases"
 	"golang.org/x/crypto/bcrypt"
+	"errors"
 )
 
 type DBRepo struct {
@@ -13,13 +14,18 @@ type DBRepo struct {
 type DBUserRepo DBRepo
 
 func (repo *DBUserRepo) Create(user *usecases.User) error {
-	hashedPass, hashErr := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	hashedPass, hashErr := repo.getHashedPass(user.Password)
 	if hashErr != nil {
 		return hashErr
 	}
 
 	user.HashedPassword = hashedPass
-	return repo.dbHandler.Create(*user)
+
+	if createErr := repo.dbHandler.Create(*user); createErr != nil {
+		return createErr
+	}
+
+	return nil
 }
 
 func (repo *DBUserRepo) One(userEmail string) (*usecases.User, error) {
@@ -37,11 +43,33 @@ func (repo *DBUserRepo) All() ([]usecases.User, error) {
 }
 
 func (repo *DBUserRepo) Update(userEmail string, changes usecases.M) error {
+	if changes["password"] != nil {
+		pass, strOk := changes["password"].(string)
+
+		if !strOk {
+			return errors.New("string conversion failed")
+		}
+
+		epass, hashErr := repo.getHashedPass(pass)
+
+		if hashErr != nil {
+			return errors.New("password hashing failed")
+		}
+
+		delete(changes, "password")
+		changes["hashedpassword"] = epass
+	}
+
 	return repo.dbHandler.Update(usecases.M{"email": userEmail}, changes)
 }
 
 func (repo *DBUserRepo) Delete(userEmail string) error {
 	return repo.dbHandler.Delete(usecases.M{"email": userEmail})
+}
+
+
+func (repo *DBUserRepo) getHashedPass(pass string) ([]byte, error) {
+	return bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
 }
 
 func NewDBUserRepo(dbHandlers map[string]DBHandler) *DBUserRepo {
