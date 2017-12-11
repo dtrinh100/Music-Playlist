@@ -66,11 +66,23 @@ func (interactor *UserInteractor) RemoveByEmail(userEmail string) MPError {
 }
 
 func (interactor *UserInteractor) GetByEmail(userEmail string) (*User, MPError) {
-	interactor.Logger.Log("Getting user: " + userEmail)
-	user, oneErr := interactor.UserRepository.One(userEmail)
+	interactor.Logger.Log("Getting user by email: " + userEmail)
+	user, oneErr := interactor.UserRepository.OneByEmail(userEmail)
 
 	if oneErr != nil && oneErr.Error() == "not found" {
-		interactor.Logger.Log("User not found: " + userEmail)
+		interactor.Logger.Log("User email not found: " + userEmail)
+		return nil, &FaultError{UserFaultErr, oneErr.Error()}
+	}
+
+	return user, interactor.errorHandler(oneErr)
+}
+
+func (interactor *UserInteractor) GetByUsername(username string) (*User, MPError) {
+	interactor.Logger.Log("Getting user by username: " + username)
+	user, oneErr := interactor.UserRepository.OneByUsername(username)
+
+	if oneErr != nil && oneErr.Error() == "not found" {
+		interactor.Logger.Log("Username not found: " + username)
 		return nil, &FaultError{UserFaultErr, oneErr.Error()}
 	}
 
@@ -82,11 +94,11 @@ func (interactor *UserInteractor) GetAll() ([]User, MPError) {
 	return users, interactor.errorHandler(allErr)
 }
 
-func (interactor *UserInteractor) ComparePassword(userEmail string, hashedPass []byte, clearTextPass string) MPError {
-	compareErr := interactor.UserRepository.ComparePassword(hashedPass, []byte(clearTextPass))
+func (interactor *UserInteractor) ComparePassword(user *User, clearTextPass string) MPError {
+	compareErr := interactor.UserRepository.ComparePassword(user.HashedPassword, []byte(clearTextPass))
 
 	if compareErr != nil && compareErr.Error() == "crypto/bcrypt: hashedPassword is not the hash of the given password" {
-		interactor.Logger.Log("Invalid credentials: " + userEmail)
+		interactor.Logger.Log("Invalid credentials: " + user.Email)
 		return &FaultError{UserFaultErr, "invalid credentials"}
 	}
 

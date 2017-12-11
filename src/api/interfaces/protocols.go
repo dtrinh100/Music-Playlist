@@ -25,9 +25,10 @@ type UserInteractor interface {
 	CreateNew(user *usecases.User) usecases.MPError
 	RemoveByEmail(userEmail string) usecases.MPError
 	GetByEmail(userEmail string) (*usecases.User, usecases.MPError)
+	GetByUsername(username string) (*usecases.User, usecases.MPError)
 	GetAll() ([]usecases.User, usecases.MPError)
 
-	ComparePassword(userEmail string, hashedPass []byte, clearTextPass string) usecases.MPError
+	ComparePassword(user *usecases.User, clearTextPass string) usecases.MPError
 }
 
 type WebResponder interface {
