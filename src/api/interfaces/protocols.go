@@ -32,6 +32,19 @@ type UserInteractor interface {
 	ComparePassword(user *usecases.User, clearTextPass string) usecases.MPError
 }
 
+type SongInteractor interface {
+	UpdateDislikes(songID int, dislikes int) usecases.MPError
+	UpdateLikes(songID int, likes int) usecases.MPError
+	UpdateName(songID int, songName string) usecases.MPError
+	UpdateState(songID int, state string) usecases.MPError
+	UpdateCountry(songID int, country string) usecases.MPError
+
+	All() ([]domain.Song, usecases.MPError)
+	GetByID(songID int) (*domain.Song, usecases.MPError)
+	Create(song *domain.Song) usecases.MPError
+	Delete(songID int) usecases.MPError
+}
+
 type WebResponder interface {
 	Success(http.ResponseWriter, usecases.M)
 	Created(http.ResponseWriter, usecases.M)

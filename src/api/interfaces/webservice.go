@@ -9,6 +9,7 @@ import (
 )
 
 type WebserviceHandler struct {
+	SongInteractor SongInteractor
 	UserInteractor UserInteractor
 
 	Responder  WebResponder
