@@ -13,32 +13,36 @@ type MongoHandler struct {
   dbTableName string
 }
 
+func (handler *MongoHandler) col() *mgo.Collection {
+	return handler.session.DB(handler.dbName).C(handler.dbTableName)
+}
+
 func (handler *MongoHandler) Create(docs ...interface{}) error {
-  return handler.session.DB(handler.dbName).C(handler.dbTableName).Insert(docs...)
+	return handler.col().Insert(docs...)
 }
 
 func (handler *MongoHandler) Update(selector usecases.M, update usecases.M) error {
-  return handler.session.DB(handler.dbName).C(handler.dbTableName).Update(selector, usecases.M{"$set": update})
+	return handler.col().Update(selector, usecases.M{"$set": update})
 }
 
 func (handler *MongoHandler) Delete(selector usecases.M) error {
-  return handler.session.DB(handler.dbName).C(handler.dbTableName).Remove(selector)
+	return handler.col().Remove(selector)
 }
 
 func (handler *MongoHandler) One(query usecases.M, result interface{}) error {
-  qry := handler.session.DB(handler.dbName).C(handler.dbTableName).Find(query)
-  if qry == nil {
-    return errors.New("failed to obtain a query for One()")
-  }
+	qry := handler.col().Find(query)
+	if qry == nil {
+		return errors.New("failed to obtain a query for One()")
+	}
 
   return qry.One(result)
 }
 
 func (handler *MongoHandler) All(results interface{}) error {
-  var qry *mgo.Query = handler.session.DB(handler.dbName).C(handler.dbTableName).Find(nil)
   if qry == nil {
     return errors.New("failed to obtain a query for All()")
   }
+	var qry *mgo.Query = handler.col().Find(nil)
 
   return qry.All(results)
 }
