@@ -5,9 +5,12 @@ import (
 )
 
 type Song struct {
+	ID        int           `json:"id" bson:"_id"`
 	Name      string        `json:"name" bson:"name"`
-	Duration  time.Duration `json:"duration" bson:"duration"`
 	AudioPath string        `json:"audiopath" bson:"audiopath"`
+	Country   string        `json:"country" bson:"country"`
+	State     string        `json:"state" bson:"state"`
+	Duration  time.Duration `json:"duration" bson:"duration"`
 	Likes     int           `json:"likes" bson:"likes"`
 	Dislikes  int           `json:"dislikes" bson:"dislikes"`
 }
