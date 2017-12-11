@@ -17,6 +17,17 @@ func (handler *MongoHandler) col() *mgo.Collection {
 	return handler.session.DB(handler.dbName).C(handler.dbTableName)
 }
 
+func (handler *MongoHandler) FindAndModify(query, update usecases.M, result interface{}) (interface{}, error) {
+	change := mgo.Change{
+		Update:    update,
+		ReturnNew: true,
+	}
+
+	_, changeErr := handler.col().Find(query).Apply(change, result)
+
+	return change, changeErr
+}
+
 func (handler *MongoHandler) Create(docs ...interface{}) error {
 	return handler.col().Insert(docs...)
 }
