@@ -11,6 +11,14 @@ type DBUserRepo struct {
 }
 
 func (repo *DBUserRepo) Create(user *usecases.User) error {
+	userID, seqErr := repo.getNextSequence("userid")
+
+	if seqErr != nil {
+		return seqErr
+	}
+
+	user.ID = userID
+
 	hashedPass, hashErr := repo.getHashedPass(user.Password)
 	if hashErr != nil {
 		return hashErr
