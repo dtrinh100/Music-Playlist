@@ -6,12 +6,9 @@ import (
 	"errors"
 )
 
-type DBRepo struct {
-	dbHandlers map[string]DBHandler
-	dbHandler  DBHandler
+type DBUserRepo struct {
+	DBRepo
 }
-
-type DBUserRepo DBRepo
 
 func (repo *DBUserRepo) Create(user *usecases.User) error {
 	hashedPass, hashErr := repo.getHashedPass(user.Password)
