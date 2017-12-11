@@ -12,7 +12,8 @@ type Logger interface {
 }
 
 type UserRepository interface {
-	One(userEmail string) (*User, error)
+	OneByEmail(userEmail string) (*User, error)
+	OneByUsername(username string) (*User, error)
 	All() ([]User, error)
 	Create(user *User) error
 	Update(userEmail string, changes M) error

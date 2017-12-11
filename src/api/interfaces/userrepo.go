@@ -28,9 +28,16 @@ func (repo *DBUserRepo) Create(user *usecases.User) error {
 	return nil
 }
 
-func (repo *DBUserRepo) One(userEmail string) (*usecases.User, error) {
+func (repo *DBUserRepo) OneByEmail(userEmail string) (*usecases.User, error) {
 	user := new(usecases.User)
 	oneErr := repo.dbHandler.One(usecases.M{"email": userEmail}, user)
+
+	return user, oneErr
+}
+
+func (repo *DBUserRepo) OneByUsername(username string) (*usecases.User, error) {
+	user := new(usecases.User)
+	oneErr := repo.dbHandler.One(usecases.M{"username": username}, user)
 
 	return user, oneErr
 }
