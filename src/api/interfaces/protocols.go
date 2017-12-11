@@ -7,11 +7,12 @@ import (
 )
 
 type DBHandler interface {
-  Create(docs ...interface{}) error
-  Update(selector usecases.M, update usecases.M) error
-  Delete(selector usecases.M) error
-  One(query usecases.M, result interface{}) error
-  All(results interface{}) error
+	FindAndModify(query, update usecases.M, result interface{}) (interface{}, error)
+	Create(docs ...interface{}) error
+	Update(selector usecases.M, update usecases.M) error
+	Delete(selector usecases.M) error
+	One(query usecases.M, result interface{}) error
+	All(results interface{}) error
 }
 
 type UserInteractor interface {
