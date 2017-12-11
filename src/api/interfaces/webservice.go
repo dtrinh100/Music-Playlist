@@ -86,10 +86,9 @@ func (webhandler *WebserviceHandler) LoginUser(rw http.ResponseWriter, req *http
 		return
 	}
 
-	compareErr := webhandler.UserInteractor.ComparePassword(existingUser.Email,
-		existingUser.HashedPassword, possibleUser.Password)
+	compareErr := webhandler.UserInteractor.ComparePassword(existingUser, possibleUser.Password)
 	if compareErr != nil {
-		webhandler.Responder.BadRequest(rw, compareErr)
+		webhandler.Responder.Unauthorized(rw)
 		return
 	}
 
