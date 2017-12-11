@@ -3,6 +3,7 @@ package usecases
 import "github.com/dtrinh100/Music-Playlist/src/api/domain"
 
 type User struct {
+	ID             int           `json:"id" bson:"_id"`
 	Username       string        `json:"username" bson:"username"`
 	Password       string        `json:"password,omitempty" bson:"-"`
 	HashedPassword []byte        `json:"-" bson:"hashedpassword"`
