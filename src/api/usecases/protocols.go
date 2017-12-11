@@ -21,6 +21,14 @@ type UserRepository interface {
 	ComparePassword(hashedPass, clearTextPass []byte) error
 }
 
+type SongRepository interface {
+	OneByID(songID int) (*domain.Song, error)
+	All() ([]domain.Song, error)
+	Create(song *domain.Song) error
+	Update(songID int, changes M) error
+	Delete(songID int) error
+}
+
 type MPError interface {
 	Status() int
 	Error() string
