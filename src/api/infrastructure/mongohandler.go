@@ -1,16 +1,16 @@
 package infrastructure
 
 import (
-  "gopkg.in/mgo.v2"
-  "time"
-  "errors"
-  "github.com/dtrinh100/Music-Playlist/src/api/usecases"
+	"gopkg.in/mgo.v2"
+	"time"
+	"errors"
+	"github.com/dtrinh100/Music-Playlist/src/api/usecases"
 )
 
 type MongoHandler struct {
-  session     *mgo.Session
-  dbName      string
-  dbTableName string
+	session     *mgo.Session
+	dbName      string
+	dbTableName string
 }
 
 func (handler *MongoHandler) col() *mgo.Collection {
@@ -35,37 +35,37 @@ func (handler *MongoHandler) One(query usecases.M, result interface{}) error {
 		return errors.New("failed to obtain a query for One()")
 	}
 
-  return qry.One(result)
+	return qry.One(result)
 }
 
 func (handler *MongoHandler) All(results interface{}) error {
-  if qry == nil {
-    return errors.New("failed to obtain a query for All()")
-  }
 	var qry *mgo.Query = handler.col().Find(nil)
+	if qry == nil {
+		return errors.New("failed to obtain a query for All()")
+	}
 
-  return qry.All(results)
+	return qry.All(results)
 }
 
 func NewMongoHandler(session *mgo.Session, dbName, dbTableName string) *MongoHandler {
-  mongoHandler := new(MongoHandler)
-  mongoHandler.session = session
-  mongoHandler.dbName = dbName
-  mongoHandler.dbTableName = dbTableName
+	mongoHandler := new(MongoHandler)
+	mongoHandler.session = session
+	mongoHandler.dbName = dbName
+	mongoHandler.dbTableName = dbTableName
 
-  return mongoHandler
+	return mongoHandler
 }
 
 func NewMongoSession(addrs, un, pw string) *mgo.Session {
-  session, sessionErr := mgo.DialWithInfo(&mgo.DialInfo{
-    Addrs:    []string{addrs},
-    Username: un,
-    Password: pw,
-    Timeout:  60 * time.Second,
-  })
+	session, sessionErr := mgo.DialWithInfo(&mgo.DialInfo{
+		Addrs:    []string{addrs},
+		Username: un,
+		Password: pw,
+		Timeout:  60 * time.Second,
+	})
 
-  if sessionErr != nil {
-    return nil // TODO: throw a fatal-error?
-  }
-  return session
+	if sessionErr != nil {
+		return nil // TODO: throw a fatal-error?
+	}
+	return session
 }
