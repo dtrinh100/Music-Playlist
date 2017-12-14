@@ -1,5 +1,7 @@
 package usecases
 
+import "github.com/dtrinh100/Music-Playlist/src/api/domain"
+
 const (
 	AppFaultErr = iota
 	UserFaultErr
