@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 
 const SCROLL_DELIM: Number = 100;
@@ -16,8 +17,7 @@ export class NavbarComponent implements OnInit {
   isMenuOpen: boolean;
   isScrolledDown: boolean;
 
-
-  constructor() {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -39,6 +39,13 @@ export class NavbarComponent implements OnInit {
   updateNavbarBasedOnScrollEvent(evt) {
     let currPos = (window.pageYOffset || evt.target.scrollTop) - (evt.target.clientTop || 0);
     this.isScrolledDown = (currPos > SCROLL_DELIM);
+  }
+
+  /**
+   logOut logs the user off of the API.
+   **/
+  logOut() {
+    this.authService.logout();
   }
 
 }
