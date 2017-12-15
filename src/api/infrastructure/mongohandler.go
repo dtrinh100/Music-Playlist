@@ -17,6 +17,17 @@ func (handler *MongoHandler) col() *mgo.Collection {
 	return handler.session.DB(handler.dbName).C(handler.dbTableName)
 }
 
+func (handler *MongoHandler) EnsureIndex(fieldName string) error {
+	dbIndex := mgo.Index{
+		Key: []string{fieldName},
+		Unique: true,
+		Background: true,
+		Sparse: false,
+	}
+
+	return handler.col().EnsureIndex(dbIndex)
+}
+
 func (handler *MongoHandler) FindAndModify(query, update usecases.M, result interface{}) (interface{}, error) {
 	change := mgo.Change{
 		Update:    update,

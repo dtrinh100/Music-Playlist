@@ -7,6 +7,7 @@ import (
 )
 
 type DBHandler interface {
+	EnsureIndex(fieldName string) error
 	FindAndModify(query, update usecases.M, result interface{}) (interface{}, error)
 	Create(docs ...interface{}) error
 	Update(selector usecases.M, update usecases.M) error
