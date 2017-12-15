@@ -46,4 +46,8 @@ export class ApiService {
       .catch(ApiService.formatErrors)
   }
 
+  patch(path: string, body: Object = {}): Observable<any> {
+    return this.http.patch(`${this.apiUrl}${path}`, body, {headers: ApiService.setHeaders()})
+  }
+
 }
