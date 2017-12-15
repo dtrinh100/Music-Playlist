@@ -2,7 +2,6 @@ package infrastructure
 
 import (
 	"gopkg.in/mgo.v2"
-	"time"
 	"errors"
 	"github.com/dtrinh100/Music-Playlist/src/api/usecases"
 )
@@ -67,27 +66,4 @@ func (handler *MongoHandler) All(results interface{}) error {
 	}
 
 	return qry.All(results)
-}
-
-func NewMongoHandler(session *mgo.Session, dbName, dbTableName string) *MongoHandler {
-	mongoHandler := new(MongoHandler)
-	mongoHandler.session = session
-	mongoHandler.dbName = dbName
-	mongoHandler.dbTableName = dbTableName
-
-	return mongoHandler
-}
-
-func NewMongoSession(addrs, un, pw string) *mgo.Session {
-	session, sessionErr := mgo.DialWithInfo(&mgo.DialInfo{
-		Addrs:    []string{addrs},
-		Username: un,
-		Password: pw,
-		Timeout:  60 * time.Second,
-	})
-
-	if sessionErr != nil {
-		return nil // TODO: throw a fatal-error?
-	}
-	return session
 }
