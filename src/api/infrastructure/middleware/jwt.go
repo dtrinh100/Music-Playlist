@@ -42,6 +42,7 @@ func (middleware *JWTMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Req
 	}
 
 	if claims.RefreshAt < time.Now().Unix() {
+		middleware.Logger.Log("Refreshing JWT for email: " + claims.UserEmail)
 		middleware.JWTHandler.ValidateUserEmail(rw, claims.UserEmail)
 	}
 
