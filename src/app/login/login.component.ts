@@ -66,7 +66,10 @@ export class LoginComponent implements OnInit {
     }
 
     for (const field in this.loginForm.controls) {
-      let control = this.loginForm.get(field);
+      if (!this.loginForm.controls.hasOwnProperty(field)) {
+        continue;
+      }
+      const control = this.loginForm.get(field);
 
       // Clear previous error messages
       this.formErrors[field] = '';
@@ -75,7 +78,10 @@ export class LoginComponent implements OnInit {
         let messages = this.validationMessages[field];
 
         for (const key in control.errors) {
-          this.formErrors[field] += messages[key] + ' ';
+          if (!control.errors.hasOwnProperty(key)) {
+            continue;
+          }
+          this.formErrors[ field ] += messages[ key ] + ' ';
         }
       }
     }
@@ -102,13 +108,14 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    let credentials = this.loginForm.value;
-    this.authService.login(credentials).subscribe((res: any) => {
-      // console.log(res);
+    const credentials = this.loginForm.value;
+    this.authService.login(credentials).subscribe(_ => {
       this.router.navigateByUrl('/');
-    }, (res: any) => {
-      this.loginForm.get('password').setValue('');
-      this.formErrors.password = res.json().data.errors.credentials;
+    }, (errResponse: Response) => {
+      if (errResponse.status === 401) {
+        this.loginForm.get('password').setValue('');
+        this.formErrors.password = 'Invalid credentials';
+      }
     });
   }
 

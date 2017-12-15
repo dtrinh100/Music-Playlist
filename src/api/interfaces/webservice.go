@@ -78,12 +78,7 @@ func (webhandler *WebserviceHandler) LoginUser(rw http.ResponseWriter, req *http
 	existingUser, getErr := webhandler.UserInteractor.GetByEmail(possibleUser.Email)
 
 	if getErr != nil {
-		switch getErr.Status() {
-		case usecases.UserFaultErr:
-			webhandler.Responder.BadRequest(rw, getErr)
-		default:
-			webhandler.Responder.InternalServerError(rw)
-		}
+		webhandler.Responder.Unauthorized(rw)
 		return
 	}
 
