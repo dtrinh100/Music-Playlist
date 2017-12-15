@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {ReplaySubject} from "rxjs/ReplaySubject";
-import {Observable} from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable } from 'rxjs/Observable';
 
-import {ApiService} from './api.service';
-import {User} from "../models/user";
+import { ApiService } from './api.service';
+import { User } from '../models';
 
 
 @Injectable()
@@ -22,16 +22,6 @@ export class AuthService {
 
     this.isAuthenticatedSubject = new ReplaySubject<boolean>(1);
     this.isAuthenticated = this.isAuthenticatedSubject.asObservable();
-  }
-
-  populate() {
-    this.apiService.get(`/auth/verify`)
-      .subscribe((res: Response) => {
-        const resBody: any = res.json();
-        this.setAuth(this.getValidUserFromJson(resBody.user));
-      }, _ => {
-        this.purgeAuth();
-      })
   }
 
   register(body: Object = {}): Observable<any> {
@@ -60,11 +50,21 @@ export class AuthService {
 
   logout() {
     this.apiService.post(`/auth/logout`, {})
-      .subscribe((res: Response) => {
+      .subscribe(_ => {
         this.purgeAuth();
       }, _ => {
         // keep logged in until session expires
       });
+  }
+
+  populate() {
+    this.apiService.get(`/auth/verify`)
+      .subscribe((res: Response) => {
+        const resBody: any = res.json();
+        this.setAuth(this.getValidUserFromJson(resBody.user));
+      }, _ => {
+        this.purgeAuth();
+      })
   }
 
   setAuth(user: User) {
@@ -82,7 +82,7 @@ export class AuthService {
   }
 
   getValidUserFromJson(userJsonData): User {
-    let user = new User();
+    const user = new User();
     (<any>Object).assign(user, userJsonData);
     return user;
   }

@@ -1,15 +1,15 @@
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {Subscription} from "rxjs/Subscription";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
-import {AuthService} from "../shared/services/auth.service";
+import { AuthService } from '../shared/services';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: [ './login.component.scss' ]
 })
 export class LoginComponent implements OnInit {
   hasSubmittedOnce: boolean;
@@ -39,13 +39,13 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.hasSubmittedOnce = false;
     this.loginForm = this.fb.group({
-      'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.required]]
+      'email': [ '', [ Validators.required, Validators.email ] ],
+      'password': [ '', [ Validators.required ] ]
     });
   }
 
   isValidEmail(isExclamation: boolean): boolean {
-    let emailForm = this.loginForm.get('email');
+    const emailForm = this.loginForm.get('email');
     if (isExclamation) {
       return emailForm.status === 'INVALID' && emailForm.dirty
     }
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
   }
 
   isValidPassword(isExclamation: boolean): boolean {
-    let passwordForm = this.loginForm.get('password');
+    const passwordForm = this.loginForm.get('password');
     if (isExclamation) {
       return passwordForm.status === 'INVALID' && passwordForm.dirty
     }
@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
   }
 
   onValueChanged() {
-    if (this.loginForm == undefined) {
+    if (this.loginForm === undefined) {
       return;
     }
 
@@ -72,10 +72,10 @@ export class LoginComponent implements OnInit {
       const control = this.loginForm.get(field);
 
       // Clear previous error messages
-      this.formErrors[field] = '';
+      this.formErrors[ field ] = '';
 
       if (control && !control.valid) {
-        let messages = this.validationMessages[field];
+        const messages = this.validationMessages[ field ];
 
         for (const key in control.errors) {
           if (!control.errors.hasOwnProperty(key)) {
@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
 
   isInvalidForm(): boolean {
     for (const field in this.formErrors) {
-      if (this.formErrors[field].length > 0) {
+      if (this.formErrors[ field ].length > 0) {
         return true;
       }
     }
