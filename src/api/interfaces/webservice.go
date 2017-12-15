@@ -97,6 +97,18 @@ func (webhandler *WebserviceHandler) LoginUser(rw http.ResponseWriter, req *http
 	webhandler.Responder.Success(rw, usecases.M{"user": existingUser})
 }
 
+func (webhandler *WebserviceHandler) VerifyUser(rw http.ResponseWriter, req *http.Request) {
+	authedEmail := req.Context().Value("mpEmailKey").(string)
+
+	user, userErr := webhandler.UserInteractor.GetByEmail(authedEmail)
+
+	if userErr != nil {
+		webhandler.Responder.Unauthorized(rw)
+	}
+
+	webhandler.Responder.Success(rw, usecases.M{"user": user})
+}
+
 func (webhandler *WebserviceHandler) LogoutUser(rw http.ResponseWriter, req *http.Request) {
 	// TODO: blacklist JWT
 	webhandler.JWTHandler.InvalidateUserEmail(rw)
