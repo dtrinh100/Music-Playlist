@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ShowAuthedDirective } from './directive'
 
 @NgModule({
   imports: [
@@ -14,16 +15,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     HttpModule,
     RouterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
-  declarations: [],
+  declarations: [
+    ShowAuthedDirective,
+  ],
   exports: [
+    // Modules
     CommonModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
     RouterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    // Directives
+    ShowAuthedDirective,
   ]
 })
-export class SharedModule {}
+export class SharedModule {
+}
