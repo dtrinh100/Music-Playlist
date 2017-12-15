@@ -21,3 +21,4 @@ func (middleware *WebLoggerMiddleware) Handle(next http.Handler) http.Handler {
 	middleware.next = next
 	return middleware
 }
+

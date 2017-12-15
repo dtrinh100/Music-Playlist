@@ -41,7 +41,8 @@ func (webhandler *WebserviceHandler) UpdateUser(rw http.ResponseWriter, req *htt
   username := gmux.Vars(req)["username"]
   authedEmail := req.Context().Value("mpEmailKey").(string)
 
-  if webhandler.isUnauthorized(rw, username, authedEmail) {
+  if webhandler.isUnauthorized2Mod(rw, username, authedEmail) {
+    webhandler.Responder.BadRequest(rw, &usecases.FaultError{usecases.UserFaultErr, "unauthorized"})
     return
   }
 
@@ -88,7 +89,8 @@ func (webhandler *WebserviceHandler) DeleteUser(rw http.ResponseWriter, req *htt
   username := gmux.Vars(req)["username"]
   authedEmail := req.Context().Value("mpEmailKey").(string)
 
-  if webhandler.isUnauthorized(rw, username, authedEmail) {
+  if webhandler.isUnauthorized2Mod(rw, username, authedEmail) {
+    webhandler.Responder.BadRequest(rw, &usecases.FaultError{usecases.UserFaultErr, "unauthorized"})
     return
   }
 
@@ -100,7 +102,7 @@ func (webhandler *WebserviceHandler) DeleteUser(rw http.ResponseWriter, req *htt
   webhandler.Responder.NoContent(rw)
 }
 
-func (webhandler *WebserviceHandler) isUnauthorized(rw http.ResponseWriter, username, authedEmail string) bool {
+func (webhandler *WebserviceHandler) isUnauthorized2Mod(rw http.ResponseWriter, username, authedEmail string) bool {
   requestedUser, userErr := webhandler.UserInteractor.GetByUsername(username)
 
   if userErr != nil {

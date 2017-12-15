@@ -47,7 +47,6 @@ func (middleware *JWTMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Req
 	}
 
 	ctx := context.WithValue(req.Context(), "mpEmailKey", claims.UserEmail)
-
 	middleware.next.ServeHTTP(rw, req.WithContext(ctx))
 }
 
