@@ -9,8 +9,6 @@ import {User} from "../models/user";
 
 @Injectable()
 export class AuthService {
-  private authUrl: string;
-
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
@@ -19,8 +17,6 @@ export class AuthService {
 
 
   constructor(private apiService: ApiService) {
-    this.authUrl = '/auth';
-
     this.currentUserSubject = new BehaviorSubject<User>(new User());
     this.currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
 
@@ -28,46 +24,46 @@ export class AuthService {
     this.isAuthenticated = this.isAuthenticatedSubject.asObservable();
   }
 
-
   populate() {
-    this.apiService.get(`${this.authUrl}/verify`)
-      .subscribe((res: any) => {
-        this.setAuth(this.getValidUserFromJson(res.data.user));
-      }, err => {
+    this.apiService.get(`/auth/verify`)
+      .subscribe((res: Response) => {
+        const resBody: any = res.json();
+        this.setAuth(this.getValidUserFromJson(resBody.user));
+      }, _ => {
         this.purgeAuth();
       })
   }
 
   register(body: Object = {}): Observable<any> {
-    return this.apiService.post(`${this.authUrl}/register`, body)
-      .map((res: any) => {
-        this.setAuth(this.getValidUserFromJson(res.data.user));
+    return this.apiService.post(`/register`, body)
+      .map((res: Response) => {
+        const resBody: any = res.json();
+        this.setAuth(this.getValidUserFromJson(resBody.user));
         return res;
       })
       .catch(err => {
-        this.purgeAuth();
         return Observable.throw(err);
       })
   }
 
   login(body: Object = {}): Observable<any> {
-    return this.apiService.post(`${this.authUrl}/login`, body)
-      .map((res: any) => {
-        this.setAuth(this.getValidUserFromJson(res.data.user));
+    return this.apiService.post(`/login`, body)
+      .map((res: Response) => {
+        const resBody: any = res.json();
+        this.setAuth(this.getValidUserFromJson(resBody.user));
         return res;
       })
       .catch(err => {
-        this.purgeAuth();
         return Observable.throw(err);
       })
   }
 
   logout() {
-    this.apiService.get(`${this.authUrl}/logout`)
-      .subscribe((res: any) => {
+    this.apiService.post(`/auth/logout`, {})
+      .subscribe((res: Response) => {
         this.purgeAuth();
-      }, (err: any) => {
-        this.purgeAuth();
+      }, _ => {
+        // keep logged in until session expires
       });
   }
 
