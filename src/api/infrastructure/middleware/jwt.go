@@ -17,6 +17,12 @@ func (middleware *JWTMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Req
 	_, claims, extractErr := middleware.JWTHandler.ExtractJWTFromRequest(req)
 
 	if extractErr != nil {
+		if extractErr.Error() == "http: named cookie not present" {
+			middleware.Logger.Log("No JWT cookie present")
+			middleware.Responder.Unauthorized(rw)
+			return
+		}
+
 		switch extractErr.(type) {
 		case *jwt.ValidationError:
 			switch extractErr.(*jwt.ValidationError).Errors {
