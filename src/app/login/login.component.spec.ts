@@ -249,7 +249,7 @@ describe('LoginComponent', () => {
       expect(passwordCtrl.value).toEqual('');
       expect(component.formErrors).toEqual({
         email: '',
-        password: 'Invalid Credentials'
+        password: 'Invalid credentials'
       })
     }));
 
