@@ -17,14 +17,18 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return this.apiService.get(`${this.usersUrl}`)
-      .map((res: any) => {
-        return res.users as User[];
+      .map((res: Response) => {
+        const jsonBody: any = res.json();
+        return jsonBody.users as User[];
       });
   }
 
   getUser(userName: string): Observable<User> {
     return this.apiService.get(`${this.usersUrl}/${userName}`)
-      .map((res: any) => res.user as User);
+      .map((res: any) => {
+        const jsonBody: any = res.json();
+        return jsonBody.user as User;
+      });
   }
 
   deleteUser(userName: string): Observable<void> {
@@ -33,7 +37,10 @@ export class UserService {
 
   updateUser(user: User): Observable<User> {
     return this.apiService.put(`${this.usersUrl}/${user.username}`, user)
-      .map((res: any) => res.user as User);
+      .map((res: any) => {
+        const jsonBody: any = res.json();
+        return jsonBody.user as User;
+      });
   }
 
 }
