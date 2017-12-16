@@ -96,10 +96,10 @@ describe('UserService', () => {
   });
 
 
-  it('should fetch a single user by an id key', done => {
+  it('should fetch a single user by a username key', done => {
     let userService: UserService;
     const mockResponse = {
-      data: {
+      user: {
         id: 1,
         username: "dtrinh100",
         firstname: "David",
@@ -116,7 +116,7 @@ describe('UserService', () => {
 
       mockBackend.connections.subscribe(
         (connection: MockConnection) => {
-          expect(connection.request.url).toBe('/api/users/1');
+          expect(connection.request.url).toBe('/api/auth/users/dtrinh100');
           connection.mockRespond(new Response(
             new ResponseOptions({
               body: JSON.stringify(mockResponse)
@@ -127,7 +127,7 @@ describe('UserService', () => {
 
       userService = getTestBed().get(UserService);
 
-      userService.getUser(1).subscribe(function (user) {
+      userService.getUser('dtrinh100').subscribe(function (user) {
         expect(user.id).toBe(1);
         done();
       });
@@ -137,41 +137,17 @@ describe('UserService', () => {
   });
 
 
-  it('should insert a new user', done => {
-
-    let userService: UserService;
-    const mockResponse = {
-      data: {
-        status: 201
-      }
-    };
-
-    getTestBed().compileComponents().then(() => {
-
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.method).toBe(RequestMethod.Post);
-
-        connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
-      });
-
-
-      userService = getTestBed().get(UserService);
-      userService.createUser("dtrinh100", "email@email.com", "password", "password").subscribe((data) => {
-        expect(data).toBeDefined();
-        expect(data.status).toBe(201);
-        done();
-      });
-
-
-    });
-  });
-
-  it('should update the user information',
-    async(inject([UserService], (userService) => {
+  it('should update the user information', async(inject([UserService], (userService) => {
 
       const mockResponse = {
-        data: {
-          status: 204
+        user: {
+          id: 1,
+          username: 'dtrinh100',
+          firstname: 'David',
+          lastname: 'Trinh',
+          picurl: 'www.example.com/pic',
+          contributions: [],
+          my_playlist: []
         }
       };
 
@@ -184,37 +160,37 @@ describe('UserService', () => {
 
 
         const userObj = {
-          username: "dtrinh100",
-          email: "test@email.com",
-          password: "password",
-          confirm: "password"
-        }
+          id: 1,
+          username: 'dtrinh100',
+          firstname: 'David',
+          lastname: 'Trinh',
+          picurl: 'www.example.com/pic',
+          contributions: [],
+          my_playlist: []
+        };
 
         userService.updateUser(userObj).subscribe(
           (data) => {
-            expect(data).toBeDefined();
-            expect(data.status).toBe(204);
+            expect(data).toEqual(userObj);
           });
 
       });
 
     })));
 
-  it('should delete an existing user',
+  fit('should delete an existing user',
     async(inject([UserService], (userService) => {
-      const mockResponse = {
-        data: null
-      };
+
 
       getTestBed().compileComponents().then(() => {
         mockBackend.connections.subscribe(connection => {
           expect(connection.request.method).toBe(RequestMethod.Delete);
-          connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
+          connection.mockRespond(new Response(new ResponseOptions({body: {}, status: 204})));
         });
 
-        userService.deleteUser(2).subscribe(
-          (data) => {
-            expect(data).toEqual(null);
+        userService.deleteUser('dtrinh100').subscribe(
+          (res: Response) => {
+            expect(res.status).toEqual(204);
           });
 
       });
