@@ -52,74 +52,74 @@ describe('RegistrationComponent', () => {
 
   it('should create a FormGroup', () => {
     component.ngOnInit();
-    expect(component.user instanceof FormGroup).toBe(true);
+    expect(component.registrationForm instanceof FormGroup).toBe(true);
   });
 
   it('should reject username that are less than 2 characters long', () => {
     component.ngOnInit();
-    component.user.controls["username"].setValue("n");
-    expect(component.user.get("username").status).toBe("INVALID");
+    component.registrationForm.controls["username"].setValue("n");
+    expect(component.registrationForm.get("username").status).toBe("INVALID");
   });
 
   it('should reject username that are more than 30 characters long', () => {
     component.ngOnInit();
-    component.user.controls["username"].setValue("nijijijijijijijijijijijijijijij");
-    expect(component.user.get("username").status).toBe("INVALID");
+    component.registrationForm.controls["username"].setValue("nijijijijijijijijijijijijijijij");
+    expect(component.registrationForm.get("username").status).toBe("INVALID");
   });
 
   it('should accept username that are between 2 and 30 characters long', () => {
     component.ngOnInit();
-    component.user.controls["username"].setValue("nijijijijijijijijijijijijijiji");
-    expect(component.user.get("username").status).toBe("VALID");
+    component.registrationForm.controls["username"].setValue("nijijijijijijijijijijijijijiji");
+    expect(component.registrationForm.get("username").status).toBe("VALID");
   });
 
   it('should reject email that are not valid', () => {
     component.ngOnInit();
-    component.user.controls["email"].setValue("fakerEmail");
-    expect(component.user.get("email").status).toBe("INVALID");
+    component.registrationForm.controls["email"].setValue("fakerEmail");
+    expect(component.registrationForm.get("email").status).toBe("INVALID");
   });
 
   it('should accept email that are valid', () => {
     component.ngOnInit();
-    component.user.controls["email"].setValue("joe.doe@gmail.com");
-    expect(component.user.get("email").status).toBe("VALID");
+    component.registrationForm.controls["email"].setValue("joe.doe@gmail.com");
+    expect(component.registrationForm.get("email").status).toBe("VALID");
   });
 
   it('should reject password that are less than 8 characters in length', () => {
     component.ngOnInit();
-    component.user.get("account").get("password").setValue("pas");
-    expect(component.user.get("account").get("password").status).toBe("INVALID");
+    component.registrationForm.get("account").get("password").setValue("pas");
+    expect(component.registrationForm.get("account").get("password").status).toBe("INVALID");
   });
 
   it('should accept password that are at least 8 characters in length', () => {
     component.ngOnInit();
-    component.user.get("account").get("password").setValue("password");
-    expect(component.user.get("account").get("password").status).toBe("VALID");
+    component.registrationForm.get("account").get("password").setValue("password");
+    expect(component.registrationForm.get("account").get("password").status).toBe("VALID");
   });
 
   it('should reject password confirmation that are not the same as the original password', () => {
     component.ngOnInit();
-    component.user.get("account").get("password").setValue("password");
-    component.user.get("account").get("confirm").setValue("password2");
-    expect(component.user.get("account").get("confirm").status).toBe("INVALID");
+    component.registrationForm.get("account").get("password").setValue("password");
+    component.registrationForm.get("account").get("confirm").setValue("password2");
+    expect(component.registrationForm.get("account").get("confirm").status).toBe("INVALID");
   });
 
   it('should accept password confirmation that are the same as the original password', () => {
     component.ngOnInit();
-    component.user.get("account").get("password").setValue("password");
-    component.user.get("account").get("confirm").setValue("password");
-    expect(component.user.get("account").get("confirm").status).toBe("VALID");
+    component.registrationForm.get("account").get("password").setValue("password");
+    component.registrationForm.get("account").get("confirm").setValue("password");
+    expect(component.registrationForm.get("account").get("confirm").status).toBe("VALID");
   });
 
   it('should expect the userService to be called once upon onSubmit()', () => {
     component.ngOnInit();
 
-    component.user.controls["username"].setValue("nijijijijijijijijijijijijijijij");
-    component.user.controls["email"].setValue("joe.doe@gmail.com");
-    component.user.get("account").get("password").setValue("password");
-    component.user.get("account").get("confirm").setValue("password");
+    component.registrationForm.controls["username"].setValue("nijijijijijijijijijijijijijijij");
+    component.registrationForm.controls["email"].setValue("joe.doe@gmail.com");
+    component.registrationForm.get("account").get("password").setValue("password");
+    component.registrationForm.get("account").get("confirm").setValue("password");
 
-    component.onSubmit(component.user);
+    component.onSubmit(component.registrationForm);
     expect(spy.calls.count()).toBe(1, 'stubbed method was called once');
 
   });
@@ -127,12 +127,12 @@ describe('RegistrationComponent', () => {
   it('should expect the userService to be called with specific parameters upon onSubmit()', () => {
     component.ngOnInit();
 
-    component.user.controls["username"].setValue("nijijijijijijijijijijijijijijij");
-    component.user.controls["email"].setValue("joe.doe@gmail.com");
-    component.user.get("account").get("password").setValue("password");
-    component.user.get("account").get("confirm").setValue("password");
+    component.registrationForm.controls["username"].setValue("nijijijijijijijijijijijijijijij");
+    component.registrationForm.controls["email"].setValue("joe.doe@gmail.com");
+    component.registrationForm.get("account").get("password").setValue("password");
+    component.registrationForm.get("account").get("confirm").setValue("password");
 
-    component.onSubmit(component.user);
+    component.onSubmit(component.registrationForm);
     expect((spy)).toHaveBeenCalledWith("nijijijijijijijijijijijijijijij", "joe.doe@gmail.com", "password", "password");
   });
 
