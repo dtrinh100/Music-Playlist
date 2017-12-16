@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import {
   trigger,
   state,
@@ -30,10 +30,7 @@ const MUSICAL_NOTE_ANIMATION = [
     trigger('searchVisibleState', TEXT_ANIMATION__COMMON),
     trigger('listenVisibleState', TEXT_ANIMATION__COMMON),
     trigger('uploadVisibleState', TEXT_ANIMATION__COMMON),
-  ],
-  host: {
-    '(window:scroll)': 'updateElementsBasedOnScrollEvent($event)'
-  }
+  ]
 })
 export class HomepageComponent implements OnInit {
   @ViewChild('musicalNote') musicalNoteEle;
@@ -73,10 +70,10 @@ export class HomepageComponent implements OnInit {
    and slides-in into view. Once an element becomes visible, it'll be categorized
    as 'always-visible.'
    **/
-  updateElementsBasedOnScrollEvent(evt) {
+  @HostListener('window:scroll', [ '$event' ]) updateElementsBasedOnScrollEvent(evt) {
     for (let eleKey in this.elementDict) {
-      if (this.elementDict.hasOwnProperty(eleKey) && this.elementDict[eleKey].isVisible != "true") {
-        this.elementDict[eleKey].isVisible = this.isVisible(this.elementDict[eleKey].viewChild);
+      if (this.elementDict.hasOwnProperty(eleKey) && this.elementDict[ eleKey ].isVisible != 'true') {
+        this.elementDict[ eleKey ].isVisible = this.isVisible(this.elementDict[ eleKey ].viewChild);
       }
     }
   }
