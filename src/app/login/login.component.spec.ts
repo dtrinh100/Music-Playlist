@@ -1,14 +1,14 @@
-import {BaseRequestOptions, HttpModule, Http, Response, ResponseOptions, ResponseType} from '@angular/http';
-import {async, ComponentFixture, fakeAsync, inject, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from "@angular/router/testing";
-import {MockBackend} from "@angular/http/testing";
-import {ReactiveFormsModule} from '@angular/forms';
-import {Subscription} from "rxjs/Subscription";
+import { BaseRequestOptions, HttpModule, Http, Response, ResponseOptions, ResponseType } from '@angular/http';
+import { async, ComponentFixture, fakeAsync, inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MockBackend } from '@angular/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 
-import {UserService} from '../shared/services';
-import {AuthService} from "../shared/services/auth.service";
-import {ApiService} from '../shared/services';
-import {LoginComponent} from './login.component';
+import { UserService } from '../shared/services';
+import { AuthService } from '../shared/services/auth.service';
+import { ApiService } from '../shared/services';
+import { LoginComponent } from './login.component';
 
 
 describe('LoginComponent', () => {
@@ -23,8 +23,8 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginComponent],
-      imports: [HttpModule, ReactiveFormsModule, RouterTestingModule],
+      declarations: [ LoginComponent ],
+      imports: [ HttpModule, ReactiveFormsModule, RouterTestingModule ],
       providers: [
         ApiService,
         UserService,
@@ -34,7 +34,7 @@ describe('LoginComponent', () => {
         {
           provide: Http,
           useFactory: (backend, options) => new Http(backend, options),
-          deps: [MockBackend, BaseRequestOptions]
+          deps: [ MockBackend, BaseRequestOptions ]
         }
       ]
     })
@@ -214,7 +214,7 @@ describe('LoginComponent', () => {
   // TODO: Make DRY
   // This function helps make tests easier to read
   function mockInjectAsync(expectTests: (service, backend) => void) {
-    return inject([AuthService, MockBackend], fakeAsync((service: AuthService, backend: MockBackend) => {
+    return inject([ AuthService, MockBackend ], fakeAsync((service: AuthService, backend: MockBackend) => {
       expectTests(service, backend);
     }));
   }
