@@ -45,9 +45,9 @@ describe('UserService', () => {
     let userService: UserService;
 
     const mockResponse = {
-      data: [
-        { id: 1, username: "dtrinh100", first_name: "David", last_name: "Trinh", pic_url: "www.example.com/pic", contributions: [], my_playlist: [] },
-        { id: 2, username: "hlovo", first_name: "Hector", last_name: "Lovo", pic_url: "www.example.com/pic", contributions: [], my_playlist: [] },
+      users: [
+        { id: 1, username: "dtrinh100", firstname: "David", lastname: "Trinh", picurl: "www.example.com/pic", contributions: [], my_playlist: [] },
+        { id: 2, username: "hlovo", firstname: "Hector", lastname: "Lovo", picurl: "www.example.com/pic", contributions: [], my_playlist: [] },
       ]
     };
 
@@ -72,14 +72,14 @@ describe('UserService', () => {
         expect(users[0].username).toEqual('dtrinh100');
         expect(users[1].username).toEqual('hlovo');
 
-        expect(users[0]["first_name"]).toEqual('David');
-        expect(users[1]["first_name"]).toEqual('Hector');
+        expect(users[0]["firstname"]).toEqual('David');
+        expect(users[1]["firstname"]).toEqual('Hector');
 
-        expect(users[0]["last_name"]).toEqual('Trinh');
-        expect(users[1]["last_name"]).toEqual('Lovo');
+        expect(users[0]["lastname"]).toEqual('Trinh');
+        expect(users[1]["lastname"]).toEqual('Lovo');
 
-        expect(users[0]["pic_url"]).toEqual('www.example.com/pic');
-        expect(users[1]["pic_url"]).toEqual('www.example.com/pic');
+        expect(users[0]["picurl"]).toEqual('www.example.com/pic');
+        expect(users[1]["picurl"]).toEqual('www.example.com/pic');
 
         expect(users[0]["contributions"].length).toEqual(0);
         expect(users[1]["contributions"].length).toEqual(0);
@@ -102,9 +102,9 @@ describe('UserService', () => {
       data: {
         id: 1,
         username: "dtrinh100",
-        first_name: "David",
-        last_name: "Trinh",
-        pic_url: "www.example.com/pic",
+        firstname: "David",
+        lastname: "Trinh",
+        picurl: "www.example.com/pic",
         contributions: [],
         my_playlist: []
       }
