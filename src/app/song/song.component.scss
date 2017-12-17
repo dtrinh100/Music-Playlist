@@ -1,0 +1,25 @@
+@import '../../styles/_variables';
+
+.mp-song-container {
+  margin-top: 7rem;
+}
+
+.mp-play {
+  width: 25rem;
+  height: 5rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
+}
+
+.mp-play-text {
+  font-size: 1.7em;
+}
+
+.mp-song-title {
+  font-size: 1.7em;
+  font-weight: bold;
+}
+
+.mp-song-credit {
+  margin-top: 1rem;
+}

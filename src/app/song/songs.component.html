@@ -1,0 +1,20 @@
+<div class="row mp-top-body">
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      <h1 class="mp-title">Songs List</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="mp-outer-block">
+      <div *ngFor="let song of songs" class="mp-album-images">
+       <a routerLink="/songs/{{song.id}}">
+         <img src={{song.imgurl}} alt={{song.alttext}} height="200" width="200">
+       </a>
+     </div>
+   </div>
+    </div>
+  </div>
+
+</div>
