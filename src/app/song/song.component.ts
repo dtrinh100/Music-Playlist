@@ -31,9 +31,9 @@ export class SongComponent implements OnInit, OnDestroy {
           id: this.id,
           name: data.name,
           imgURL: data.imgurl,
-          alt: data.alt,
+          alt: data.alttext,
           description: data.description,
-          credit: data.credit
+          credit: data.artist
         }
       });
     });

@@ -1,9 +1,14 @@
 export class Song {
   id: number;
   name: string;
-  credit: string;
-  alt: string;
-  imgurl: string;
-  audiopath: string;
+  artist: string;
   description: string;
+  audiopath: string;
+  imgurl: string;
+  alttext: string;
+  country: string;
+  state: string;
+  duration: string;
+  likes: number;
+  dislikes: number;
 }

@@ -17,7 +17,7 @@ export class SongsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.songService.getSongs().subscribe(data => {
-      this.images = data;
+      this.songs = data;
     });
   }
 

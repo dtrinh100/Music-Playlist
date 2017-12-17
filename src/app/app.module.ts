@@ -9,6 +9,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { SongsComponent } from './song/songs.component';
 import { SongComponent } from './song/song.component';
+
 import { Status404Component } from './status-404/status-404.component';
 
 import { RegistrationDirective } from './registration/registration.directive';
@@ -20,6 +21,7 @@ import {
   UserService,
   AuthService,
   ApiService,
+  SongService,
   User
 } from './shared';
 
@@ -45,7 +47,8 @@ import {
   providers: [
     ApiService,
     AuthService,
-    UserService
+    UserService,
+    SongService
   ],
   bootstrap: [AppComponent]
 })
