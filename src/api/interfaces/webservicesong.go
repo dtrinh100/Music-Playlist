@@ -85,6 +85,16 @@ func (webhandler *WebserviceHandler) UpdateSong(rw http.ResponseWriter, req *htt
 			webhandler.SongInteractor.UpdateCountry(songid, val)
 		case "state":
 			webhandler.SongInteractor.UpdateState(songid, val)
+		case "artist":
+			webhandler.SongInteractor.UpdateArtist(songid, val)
+		case "description":
+			webhandler.SongInteractor.UpdateDescription(songid, val)
+		case "audiopath":
+			webhandler.SongInteractor.UpdateAudioPath(songid, val)
+		case "imgurl":
+			webhandler.SongInteractor.UpdateImageURL(songid, val)
+		case "alttext":
+			webhandler.SongInteractor.UpdateAltText(songid, val)
 		default:
 			badRequestFn("cannot update - " + key)
 			return
