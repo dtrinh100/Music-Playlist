@@ -46,13 +46,38 @@ func (interactor *SongInteractor) UpdateName(songID int, songName string) MPErro
 	return interactor.errorHandler(err)
 }
 
-func (interactor *SongInteractor) UpdateState(songID int, state string) MPError {
-	err := interactor.SongRepository.Update(songID, M{"state": state})
+func (interactor *SongInteractor) UpdateArtist(songID int, artist string) MPError {
+	err := interactor.SongRepository.Update(songID, M{"artist": artist})
+	return interactor.errorHandler(err)
+}
+
+func (interactor *SongInteractor) UpdateDescription(songID int, description string) MPError {
+	err := interactor.SongRepository.Update(songID, M{"description": description})
+	return interactor.errorHandler(err)
+}
+
+func (interactor *SongInteractor) UpdateAudioPath(songID int, audiopath string) MPError {
+	err := interactor.SongRepository.Update(songID, M{"audiopath": audiopath})
+	return interactor.errorHandler(err)
+}
+
+func (interactor *SongInteractor) UpdateImageURL(songID int, imgurl string) MPError {
+	err := interactor.SongRepository.Update(songID, M{"imgurl": imgurl})
+	return interactor.errorHandler(err)
+}
+
+func (interactor *SongInteractor) UpdateAltText(songID int, alttext string) MPError {
+	err := interactor.SongRepository.Update(songID, M{"alttext": alttext})
 	return interactor.errorHandler(err)
 }
 
 func (interactor *SongInteractor) UpdateCountry(songID int, country string) MPError {
 	err := interactor.SongRepository.Update(songID, M{"country": country})
+	return interactor.errorHandler(err)
+}
+
+func (interactor *SongInteractor) UpdateState(songID int, state string) MPError {
+	err := interactor.SongRepository.Update(songID, M{"state": state})
 	return interactor.errorHandler(err)
 }
 

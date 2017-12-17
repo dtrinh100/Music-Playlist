@@ -39,6 +39,11 @@ type SongInteractor interface {
 	UpdateName(songID int, songName string) usecases.MPError
 	UpdateState(songID int, state string) usecases.MPError
 	UpdateCountry(songID int, country string) usecases.MPError
+	UpdateArtist(songID int, artist string) usecases.MPError
+	UpdateDescription(songID int, description string) usecases.MPError
+	UpdateAudioPath(songID int, audiopath string) usecases.MPError
+	UpdateImageURL(songID int, imgurl string) usecases.MPError
+	UpdateAltText(songID int, alttext string) usecases.MPError
 
 	All() ([]domain.Song, usecases.MPError)
 	GetByID(songID int) (*domain.Song, usecases.MPError)
