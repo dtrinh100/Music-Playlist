@@ -1,55 +1,56 @@
 package main
 
 import (
-	"log"
+	"github.com/dtrinh100/Music-Playlist/src/api/infrastructure/middleware"
+	"github.com/dtrinh100/Music-Playlist/src/api/infrastructure"
+	"github.com/dtrinh100/Music-Playlist/src/api/interfaces"
 	"net/http"
-
-	"github.com/dtrinh100/Music-Playlist/src/api/common"
-	"github.com/dtrinh100/Music-Playlist/src/api/db"
-	"github.com/dtrinh100/Music-Playlist/src/api/middleware"
-	"github.com/dtrinh100/Music-Playlist/src/api/router"
-
-	"gopkg.in/mgo.v2"
+	"github.com/justinas/alice"
+	"os"
 )
 
-// Note: 'MPDatabase' name comes from docker-compose.yml
-const dbURLAddress = "MPDatabase"
+func main() {
+	// WEBSERVICE
 
-/**
-initAndGetHandler initializes the JWT key pair, the DB, the Env,
-the route paths, & returns a handler.
-*/
-func initAndGetHandler(session *mgo.Session) http.Handler {
-	pub, priv := middleware.InitRSAKeyPair()
+	handlers := infrastructure.GetAndInitDBHandlersForDBName(os.Getenv("MP_DBNAME_ENV"))
+	logger := new(infrastructure.Logger)
+	userInteractor := infrastructure.GetAndInitUserInteractor(logger, handlers)
+	songInteractor := infrastructure.GetAndInitSongInteractor(logger, handlers)
+	jwtHandler := interfaces.NewJWTHandler()
+	jsonResponder := new(infrastructure.JSONWebResponder)
 
-	dbConf := db.InitDB(session)
-	env := &common.Env{
-		DB: dbConf,
-		RSAKeys: common.RSAKeys{
-			Public:  pub,
-			Private: priv,
-		},
+	webserviceHandler := &interfaces.WebserviceHandler{
+		SongInteractor: songInteractor,
+		UserInteractor: userInteractor,
+		Responder:      jsonResponder,
+		JWTHandler:     jwtHandler,
 	}
 
-	return router.InitializeRoutes(env)
-}
+	// MIDDLEWARE
 
-/**
-main is the entry-function of the API.
-*/
-func main() {
-	session, sessionErr := mgo.Dial(dbURLAddress)
-	common.Fatal(sessionErr, "Failed to obtain a DB session")
-	defer session.Close()
+	weblogger := new(middleware.WebLoggerMiddleware)
+	weblogger.Logger = logger
+	weblogger.Responder = jsonResponder
 
-	serverConf := common.InitServer()
+	globalMiddlewares := []alice.Constructor{weblogger.Handle}
+
+	jwt := new(middleware.JWTMiddleware)
+	jwt.Logger = logger
+	jwt.Responder = jsonResponder
+	jwt.JWTHandler = jwtHandler
+
+	// SERVER
+
+	router := infrastructure.GetRouterWithRoutes(webserviceHandler, jwt)
 
 	server := &http.Server{
-		Addr:    serverConf.Address,
-		Handler: initAndGetHandler(session),
+		Addr:    os.Getenv("MP_SRVRADDR_ENV"),
+		Handler: alice.New(globalMiddlewares...).Then(router),
 	}
 
 	if serverErr := server.ListenAndServe(); serverErr != nil {
-		log.Fatal("Server failed to start:", serverErr)
+		logger.Log("Server failed to boot: " + serverErr.Error())
 	}
 }
+
+

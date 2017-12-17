@@ -1,6 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { ModuleWithProviders, NgModule } from '@angular/core';
-import { RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { LoginComponent } from './login/login.component';

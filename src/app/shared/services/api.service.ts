@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, Response, URLSearchParams} from '@angular/http';
+import {Headers, Http, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 
 import 'rxjs/add/operator/map';
@@ -10,7 +10,8 @@ import 'rxjs/add/operator/catch';
 export class ApiService {
   private apiUrl = '/api';
 
-  constructor(private http: Http) {
+  private static formatErrors(error: any) {
+    return Observable.throw(error);
   }
 
   private static setHeaders(): Headers {
@@ -22,32 +23,31 @@ export class ApiService {
     return new Headers(headersConfig);
   }
 
-  private static formatErrors(error: any) {
-    return Observable.throw(error);
+  constructor(private http: Http) {
   }
 
   get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {
     return this.http.get(`${this.apiUrl}${path}`, {headers: ApiService.setHeaders(), search: params})
       .catch(ApiService.formatErrors)
-      .map((res: Response) => res.json());
   }
 
   post(path: string, body: Object = {}): Observable<any> {
     return this.http.post(`${this.apiUrl}${path}`, body, {headers: ApiService.setHeaders()})
       .catch(ApiService.formatErrors)
-      .map((res: Response) => res.json());
   }
 
   put(path: string, body: Object = {}): Observable<any> {
     return this.http.put(`${this.apiUrl}${path}`, body, {headers: ApiService.setHeaders()})
       .catch(ApiService.formatErrors)
-      .map((res: Response) => res.json());
   }
 
   delete(path): Observable<any> {
     return this.http.delete(`${this.apiUrl}${path}`, {headers: ApiService.setHeaders()})
       .catch(ApiService.formatErrors)
-      .map((res: Response) => res.json());
+  }
+
+  patch(path: string, body: Object = {}): Observable<any> {
+    return this.http.patch(`${this.apiUrl}${path}`, body, {headers: ApiService.setHeaders()})
   }
 
 }
