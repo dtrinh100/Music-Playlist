@@ -9,7 +9,9 @@
     <div class="col-xs-12">
       <div class="mp-outer-block">
       <div *ngFor="let song of songs" class="mp-album-images">
-       <a routerLink="/songs/{{song.id}}"><img src={{song.imgurl}} alt={{song.alttext}} height="300" width="300"></a>
+       <a routerLink="/songs/{{song.id}}">
+         <img src={{song.imgurl}} alt={{song.alttext}} height="200" width="200">
+       </a>
      </div>
    </div>
     </div>
