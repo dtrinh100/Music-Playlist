@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
+import 'rxjs/add/operator/mergeMap';
+
+import {ApiService} from '../shared/services';
+
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.component.html',
@@ -11,38 +15,13 @@ export class SongsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.images = [
-      {
-        "id": 1,
-        "url": "../../assets/img/album_art.png",
-        "alt": "Album Art Picture"
-      },
-      {
-        "id": 2,
-        "url": "../../assets/img/album_art.png",
-        "alt": "Album Art Picture"
-      },
-      {
-        "id": 3,
-        "url": "../../assets/img/album_art.png",
-        "alt": "Album Art Picture"
-      },
-      {
-        "id": 4,
-        "url": "../../assets/img/album_art.png",
-        "alt": "Album Art Picture"
-      },
-      {
-        "id": 5,
-        "url": "../../assets/img/album_art.png",
-        "alt": "Album Art Picture"
-      },
-      {
-        "id": 6,
-        "url": "../../assets/img/album_art.png",
-        "alt": "Album Art Picture"
-      },
-    ];
+    this.apiService.get("/songs/" + this.id).subscribe(data => {
+      this.images = data;
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
 }
