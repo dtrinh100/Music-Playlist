@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/mergeMap';
 
-import {ApiService} from '../shared/services';
+import { SongService } from '../shared/services/song.service';
 
 @Component({
   selector: 'app-song',
   templateUrl: './song.component.html',
   styleUrls: ['./song.component.scss']
 })
-export class SongComponent implements OnInit {
+export class SongComponent implements OnInit, OnDestroy {
 
   private song;
   private id: number;
@@ -18,14 +18,14 @@ export class SongComponent implements OnInit {
   private isPlaying: boolean;
   private playMessage: string;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private songService: SongService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.playMessage = "Play";
     this.isPlaying = false;
     this.sub = this.route.params.subscribe(params => {
       this.id = +params["id"];
-      this.apiService.get("/songs/" + this.id).subscribe(data => {
+      this.songService.getSong(this.id).subscribe(data => {
         this.audio = new Audio(data.audiopath);
         this.song = {
           id: this.id,

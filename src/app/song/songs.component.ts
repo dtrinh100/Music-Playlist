@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import 'rxjs/add/operator/mergeMap';
 
-import {ApiService} from '../shared/services';
+import { SongService } from '../shared/services/song.service';
 
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.component.html',
   styleUrls: ['./songs.component.scss']
 })
-export class SongsComponent implements OnInit {
+export class SongsComponent implements OnInit, OnDestroy {
   private images;
   private sub: any;
 
-  constructor() { }
+  constructor(private songService: SongService) { }
 
   ngOnInit() {
-    this.sub = this.apiService.get("/songs/" + this.id).subscribe(data => {
+    this.sub = this.songService.getSongs().subscribe(data => {
       this.images = data;
     });
   }
