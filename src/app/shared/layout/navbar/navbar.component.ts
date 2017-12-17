@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 
 const SCROLL_DELIM: Number = 100;
@@ -7,17 +8,13 @@ const SCROLL_DELIM: Number = 100;
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
-  host: {
-    '(window:scroll)': 'updateNavbarBasedOnScrollEvent($event)'
-  }
+  styleUrls: [ './navbar.component.scss' ],
 })
 export class NavbarComponent implements OnInit {
   isMenuOpen: boolean;
   isScrolledDown: boolean;
 
-
-  constructor() {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -36,9 +33,16 @@ export class NavbarComponent implements OnInit {
    This function is called When the user scrolls around. If the user is
    scrolled to the top, the navbar is gray. Otherwise, it's blue.
    **/
-  updateNavbarBasedOnScrollEvent(evt) {
-    let currPos = (window.pageYOffset || evt.target.scrollTop) - (evt.target.clientTop || 0);
+  @HostListener('window:scroll', ['$event']) updateNavbarBasedOnScrollEvent(evt) {
+    const currPos = (window.pageYOffset || evt.target.scrollTop) - (evt.target.clientTop || 0);
     this.isScrolledDown = (currPos > SCROLL_DELIM);
+  }
+
+  /**
+   logOut logs the user off of the API.
+   **/
+  logOut() {
+    this.authService.logout();
   }
 
 }

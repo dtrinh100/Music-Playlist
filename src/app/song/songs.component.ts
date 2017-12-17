@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import 'rxjs/add/operator/mergeMap';
+import { Song } from '../shared/models/song';
 
-import { SongService } from '../shared/services/song.service';
+import { SongService } from '../shared/services';
 
 @Component({
   selector: 'app-songs',
@@ -10,19 +11,19 @@ import { SongService } from '../shared/services/song.service';
   styleUrls: ['./songs.component.scss']
 })
 export class SongsComponent implements OnInit, OnDestroy {
-  private images;
-  private sub: any;
+  private songs;
+  private getSongsSubscription: any;
 
   constructor(private songService: SongService) { }
 
   ngOnInit() {
-    this.sub = this.songService.getSongs().subscribe(data => {
-      this.songs = data;
+    this.getSongsSubscription = this.songService.getSongs().subscribe((songs: Song[]) => {
+      this.songs = songs;
     });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.getSongsSubscription.unsubscribe();
   }
 
 }

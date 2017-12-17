@@ -1,30 +1,30 @@
-import {BaseRequestOptions, HttpModule, Http, Response, ResponseOptions, ResponseType} from '@angular/http';
-import {async, ComponentFixture, fakeAsync, inject, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from "@angular/router/testing";
-import {MockBackend} from "@angular/http/testing";
-import {ReactiveFormsModule} from '@angular/forms';
-import {Subscription} from "rxjs/Subscription";
+import { BaseRequestOptions, HttpModule, Http, Response, ResponseOptions, ResponseType } from '@angular/http';
+import { async, ComponentFixture, fakeAsync, inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MockBackend } from '@angular/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 
-import {UserService} from '../shared/services';
-import {AuthService} from "../shared/services/auth.service";
-import {ApiService} from '../shared/services';
-import {LoginComponent} from './login.component';
+import { UserService } from '../shared/services';
+import { AuthService } from '../shared/services/auth.service';
+import { ApiService } from '../shared/services';
+import { LoginComponent } from './login.component';
 
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let errorResponse = {
+  const errorResponse = {
     data: {errors: {credentials: 'Invalid Credentials'}}
   };
-  let successResponse = {
+  const successResponse = {
     data: {errors: {credentials: 'Success'}}
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginComponent],
-      imports: [HttpModule, ReactiveFormsModule, RouterTestingModule],
+      declarations: [ LoginComponent ],
+      imports: [ HttpModule, ReactiveFormsModule, RouterTestingModule ],
       providers: [
         ApiService,
         UserService,
@@ -34,7 +34,7 @@ describe('LoginComponent', () => {
         {
           provide: Http,
           useFactory: (backend, options) => new Http(backend, options),
-          deps: [MockBackend, BaseRequestOptions]
+          deps: [ MockBackend, BaseRequestOptions ]
         }
       ]
     })
@@ -64,19 +64,19 @@ describe('LoginComponent', () => {
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
   it('should expect form to have an email & password field', () => {
-    let form = component.loginForm;
+    const form = component.loginForm;
     expect(form.contains('email')).toBeTruthy();
     expect(form.contains('password')).toBeTruthy();
   });
 
   it('should accept valid email address', () => {
-    let emailControl = component.loginForm.get('email');
+    const emailControl = component.loginForm.get('email');
     emailControl.setValue('user@email.com');
     expect(emailControl.status).toEqual('VALID')
   });
 
   it('should reject invalid email addresses', () => {
-    let emailCtrl = component.loginForm.get('email');
+    const emailCtrl = component.loginForm.get('email');
     emailCtrl.setValue('user@email.');
     expect(emailCtrl.status).toEqual('INVALID');
     emailCtrl.setValue('');
@@ -84,7 +84,7 @@ describe('LoginComponent', () => {
   });
 
   it('should reject invalid password', () => {
-    let passCtrl = component.loginForm.get('password');
+    const passCtrl = component.loginForm.get('password');
     passCtrl.setValue('');
     expect(passCtrl.status).toEqual('INVALID');
   });
@@ -94,7 +94,7 @@ describe('LoginComponent', () => {
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
   it('should return true on isExclamation = true & false if isExclamation = false; on invalid data', () => {
-    let emailCtrl = component.loginForm.get('email');
+    const emailCtrl = component.loginForm.get('email');
     emailCtrl.setValue('');
     emailCtrl.markAsDirty();
     expect(component.isValidEmail(true)).toBeTruthy();
@@ -102,7 +102,7 @@ describe('LoginComponent', () => {
   });
 
   it('should return false on isExclamation = true & true if isExclamation = false; on valid data ', () => {
-    let emailCtrl = component.loginForm.get('email');
+    const emailCtrl = component.loginForm.get('email');
     emailCtrl.setValue('user@email.com');
     emailCtrl.markAsDirty();
     expect(component.isValidEmail(true)).toBeFalsy();
@@ -114,7 +114,7 @@ describe('LoginComponent', () => {
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
   it('should return true on isExclamation = true & false if isExclamation = false; on invalid data', () => {
-    let passwordCtrl = component.loginForm.get('password');
+    const passwordCtrl = component.loginForm.get('password');
     passwordCtrl.setValue('');
     passwordCtrl.markAsDirty();
     expect(component.isValidPassword(true)).toBeTruthy();
@@ -122,7 +122,7 @@ describe('LoginComponent', () => {
   });
 
   it('should return false on isExclamation = true & true if isExclamation = false; on valid data ', () => {
-    let passwordCtrl = component.loginForm.get('password');
+    const passwordCtrl = component.loginForm.get('password');
     passwordCtrl.setValue('pass');
     passwordCtrl.markAsDirty();
     expect(component.isValidPassword(true)).toBeFalsy();
@@ -142,8 +142,8 @@ describe('LoginComponent', () => {
   });
 
   it('should expect \'incorrect email format\' error', () => {
-    let emailCtrl = component.loginForm.get('email');
-    let passwordCtrl = component.loginForm.get('password');
+    const emailCtrl = component.loginForm.get('email');
+    const passwordCtrl = component.loginForm.get('password');
 
     emailCtrl.setValue('user@email.');
     passwordCtrl.setValue('password');
@@ -160,8 +160,8 @@ describe('LoginComponent', () => {
   // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
   it('should expect no errors, so, isInvalidForm returns false', () => {
-    let emailCtrl = component.loginForm.get('email');
-    let passwordCtrl = component.loginForm.get('password');
+    const emailCtrl = component.loginForm.get('email');
+    const passwordCtrl = component.loginForm.get('password');
     emailCtrl.setValue('user@email.com');
     passwordCtrl.setValue('password');
 
@@ -170,8 +170,8 @@ describe('LoginComponent', () => {
   });
 
   it('should expect email error, so, isInvalidForm returns true', () => {
-    let emailCtrl = component.loginForm.get('email');
-    let passwordCtrl = component.loginForm.get('password');
+    const emailCtrl = component.loginForm.get('email');
+    const passwordCtrl = component.loginForm.get('password');
     emailCtrl.setValue('user@email.');
     passwordCtrl.setValue('password');
 
@@ -180,8 +180,8 @@ describe('LoginComponent', () => {
   });
 
   it('should expect password error, so, isInvalidForm returns true', () => {
-    let emailCtrl = component.loginForm.get('email');
-    let passwordCtrl = component.loginForm.get('password');
+    const emailCtrl = component.loginForm.get('email');
+    const passwordCtrl = component.loginForm.get('password');
     emailCtrl.setValue('user@email.com');
     passwordCtrl.setValue('');
 
@@ -200,13 +200,13 @@ describe('LoginComponent', () => {
   });
 
   it('should expect onValueChanged to have been called', () => {
-    let s = spyOn(component, 'onValueChanged');
+    const s = spyOn(component, 'onValueChanged');
     component.submitForm();
     expect(s.calls.count()).toEqual(1);
   });
 
   it('should expect isInvalidForm to have been called', () => {
-    let s = spyOn(component, 'isInvalidForm');
+    const s = spyOn(component, 'isInvalidForm');
     component.submitForm();
     expect(s.calls.count()).toEqual(1);
   });
@@ -214,7 +214,7 @@ describe('LoginComponent', () => {
   // TODO: Make DRY
   // This function helps make tests easier to read
   function mockInjectAsync(expectTests: (service, backend) => void) {
-    return inject([AuthService, MockBackend], fakeAsync((service: AuthService, backend: MockBackend) => {
+    return inject([ AuthService, MockBackend ], fakeAsync((service: AuthService, backend: MockBackend) => {
       expectTests(service, backend);
     }));
   }
@@ -222,7 +222,7 @@ describe('LoginComponent', () => {
   // TODO: Make DRY
   // This function helps test standard/error server-responses
   function mockBackendHelper(mockBackend, bodyStr = {}, statusNum = 200, responseType = ResponseType.Default): Subscription {
-    let mockResponse = new Response(new ResponseOptions({
+    const mockResponse = new Response(new ResponseOptions({
       body: JSON.stringify(bodyStr),
       status: statusNum,
       type: responseType
@@ -239,8 +239,8 @@ describe('LoginComponent', () => {
 
   it('should expect password input-field to clear & \'Invalid Credentials\' password error w/ wrong credentials',
     mockInjectAsync((_, mockBackend) => {
-      let emailCtrl = component.loginForm.get('email');
-      let passwordCtrl = component.loginForm.get('password');
+      const emailCtrl = component.loginForm.get('email');
+      const passwordCtrl = component.loginForm.get('password');
       emailCtrl.setValue('user@email.com');
       passwordCtrl.setValue('wrong_password');
 
@@ -249,14 +249,14 @@ describe('LoginComponent', () => {
       expect(passwordCtrl.value).toEqual('');
       expect(component.formErrors).toEqual({
         email: '',
-        password: 'Invalid Credentials'
+        password: 'Invalid credentials'
       })
     }));
 
   it('should expect response \'Success\' & a redirect to / w/ correct credentials', mockInjectAsync((s, b) => {
-      let navigateSpy = spyOn((<any>component).router, 'navigateByUrl');
-      let emailCtrl = component.loginForm.get('email');
-      let passwordCtrl = component.loginForm.get('password');
+      const navigateSpy = spyOn((<any>component).router, 'navigateByUrl');
+      const emailCtrl = component.loginForm.get('email');
+      const passwordCtrl = component.loginForm.get('password');
       emailCtrl.setValue('user@email.com');
       passwordCtrl.setValue('password');
 

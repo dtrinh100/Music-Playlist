@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/mergeMap';
+import { Song } from '../shared/models/song';
 
-import { SongService } from '../shared/services/song.service';
+import { SongService } from '../shared/services';
 
 @Component({
   selector: 'app-song',
@@ -10,38 +11,33 @@ import { SongService } from '../shared/services/song.service';
   styleUrls: ['./song.component.scss']
 })
 export class SongComponent implements OnInit, OnDestroy {
-
   private song;
   private id: number;
   private sub: any;
   private audio: any;
   private isPlaying: boolean;
   private playMessage: string;
+  private isSongAvailable: boolean;
 
   constructor(private songService: SongService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.playMessage = "Play";
     this.isPlaying = false;
+    this.isSongAvailable = false;
+
     this.sub = this.route.params.subscribe(params => {
       this.id = +params["id"];
-      this.songService.getSong(this.id).subscribe(data => {
-        this.audio = new Audio(data.audiopath);
-        this.song = {
-          id: this.id,
-          name: data.name,
-          imgURL: data.imgurl,
-          alt: data.alttext,
-          description: data.description,
-          credit: data.artist
-        }
+      this.songService.getSong(this.id).subscribe((song: Song) => {
+        this.isSongAvailable = true;
+        this.audio = new Audio(song.audiopath);
+        this.song = song;
       });
     });
   }
 
   // Plays the selected song
   play() {
-
     if (this.isPlaying === true) {
       this.audio.play();
       this.playMessage = "Stop";

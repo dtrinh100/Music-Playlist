@@ -14,8 +14,10 @@
     <div id="navbar" class="collapse navbar-collapse navbar-right" [ngClass]="{ 'in': isMenuOpen }">
       <ul class="nav navbar-nav">
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ 'exact': true }"><a [routerLink]="['/']">Home</a></li>
-        <li [routerLinkActive]="['active']"><a [routerLink]="['/login']">Login</a></li>
-        <li [routerLinkActive]="['active']"><a [routerLink]="['/register']">Register</a></li>
+        <li [routerLinkActive]="['active']" *appShowAuthed="false"><a [routerLink]="['/login']">Login</a></li>
+        <li [routerLinkActive]="['active']" *appShowAuthed="false"><a [routerLink]="['/register']">Register</a></li>
+        <li [routerLinkActive]="['active']" *appShowAuthed="true"><a [routerLink]="['/songs']">Songs</a></li>
+        <li [routerLinkActive]="['active']" *appShowAuthed="true"><a href="javascript:void(0);" (click)="logOut()">Logout</a></li>
       </ul>
     </div>
   </div>
