@@ -33,7 +33,7 @@ export class SongComponent implements OnInit, OnDestroy {
           imgURL: data.imgurl,
           alt: data.alttext,
           description: data.description,
-          credit: data.artist
+          artist: data.artist
         }
       });
     });

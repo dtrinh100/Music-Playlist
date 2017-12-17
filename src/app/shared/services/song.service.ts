@@ -15,7 +15,7 @@ export class SongService {
   }
 
   getSongs(): Observable<Song[]> {
-    this.apiService.get(`${this.songsUrl}`)
+    return this.apiService.get(`${this.songsUrl}`)
       .map((res: Response) => {
         const resBody: any = res.json();
         return resBody.songs as Song[];

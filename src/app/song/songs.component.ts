@@ -10,7 +10,7 @@ import { SongService } from '../shared/services/song.service';
   styleUrls: ['./songs.component.scss']
 })
 export class SongsComponent implements OnInit, OnDestroy {
-  private images;
+  private songs;
   private sub: any;
 
   constructor(private songService: SongService) { }
