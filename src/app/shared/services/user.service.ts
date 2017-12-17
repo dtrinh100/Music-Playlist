@@ -1,55 +1,46 @@
-import { Injectable }    from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from './api.service';
-import { User } from '../models/user'
+import { User } from '../models'
 
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class UserService {
-  private usersUrl = '/users';
+  private usersUrl = '/auth/users';
 
   constructor(private apiService: ApiService) {
   }
 
-  // TODO: Take special note: All of the following funcs have been adapted to use Observable
-
   getUsers(): Observable<User[]> {
     return this.apiService.get(`${this.usersUrl}`)
-      .map((res: any) => res.data as User[]);
+      .map((res: Response) => {
+        const jsonBody: any = res.json();
+        return jsonBody.users as User[];
+      });
   }
 
-  getUser(id: number): Observable<User> {
-    return this.apiService.get(`${this.usersUrl}/${id}`)
-      .map((res: any) => res.data as User);
+  getUser(userName: string): Observable<User> {
+    return this.apiService.get(`${this.usersUrl}/${userName}`)
+      .map((res: any) => {
+        const jsonBody: any = res.json();
+        return jsonBody.user as User;
+      });
   }
 
-  createUser(username: string, email: string, password: string, confirm: string): Observable<Response> {
-    return this.apiService.post(
-      this.usersUrl,
-      JSON.stringify({
-        username: username,
-        email: email,
-        password: password,
-        confirm: confirm
-      })
-    ).map((res: any) => res.data as Response);
+  deleteUser(userName: string): Observable<void> {
+    return this.apiService.delete(`${this.usersUrl}/${userName}`);
   }
 
-  deleteUser(id: number): Observable<void> {
-    return this.apiService.delete(`${this.usersUrl}\${id}`)
-      .map(_ => null);
+  updateUser(user: User): Observable<User> {
+    return this.apiService.put(`${this.usersUrl}/${user.username}`, user)
+      .map((res: any) => {
+        const jsonBody: any = res.json();
+        return jsonBody.user as User;
+      });
   }
 
-  updateUser(user: User): Observable<Response> {
-    return this.apiService.put(`${this.usersUrl}/${user.id}`, JSON.stringify(user))
-      .map((res: any) => res.data as Response);
-  }
-
- //  private handleError(error: any): Promise<any> {
- //    console.error('An error occurred', error); // we won't be really handling errors in this app
- //    return Promise.reject(error.message || error);
- //  }
 }

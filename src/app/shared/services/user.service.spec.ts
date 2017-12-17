@@ -17,9 +17,8 @@ describe('UserService', () => {
   let mockBackend: MockBackend;
 
   beforeEach(() => {
-
     TestBed.configureTestingModule({
-      imports: [HttpModule],
+      imports: [ HttpModule ],
       providers: [
         UserService,
         ApiService,
@@ -27,27 +26,39 @@ describe('UserService', () => {
         BaseRequestOptions,
         {
           provide: Http,
-          deps: [MockBackend, BaseRequestOptions],
+          deps: [ MockBackend, BaseRequestOptions ],
           useFactory:
-          (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          }
-
+            (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
+              return new Http(backend, defaultOptions);
+            }
         }
       ]
     });
     mockBackend = getTestBed().get(MockBackend);
-
   });
 
   it('should get users', (done: DoneFn) => {
-
     let userService: UserService;
-
     const mockResponse = {
-      data: [
-        { id: 1, username: "dtrinh100", first_name: "David", last_name: "Trinh", pic_url: "www.example.com/pic", contributions: [], my_playlist: [] },
-        { id: 2, username: "hlovo", first_name: "Hector", last_name: "Lovo", pic_url: "www.example.com/pic", contributions: [], my_playlist: [] },
+      users: [
+        {
+          id: 1,
+          username: 'dtrinh100',
+          firstname: 'David',
+          lastname: 'Trinh',
+          picurl: 'www.example.com/pic',
+          contributions: [],
+          my_playlist: []
+        },
+        {
+          id: 2,
+          username: 'hlovo',
+          firstname: 'Hector',
+          lastname: 'Lovo',
+          picurl: 'www.example.com/pic',
+          contributions: [],
+          my_playlist: []
+        },
       ]
     };
 
@@ -56,78 +67,63 @@ describe('UserService', () => {
         (connection: MockConnection) => {
           connection.mockRespond(new Response(
             new ResponseOptions({
-              body: JSON.stringify(mockResponse)
-            }
+                body: JSON.stringify(mockResponse)
+              }
             )));
         });
 
       userService = getTestBed().get(UserService);
-      expect(userService).toBeDefined();
-
-
-
-
       userService.getUsers().subscribe((users) => {
         expect(users.length).toBe(2);
-        expect(users[0].username).toEqual('dtrinh100');
-        expect(users[1].username).toEqual('hlovo');
+        expect(users[ 0 ].username).toEqual('dtrinh100');
+        expect(users[ 1 ].username).toEqual('hlovo');
 
-        expect(users[0]["first_name"]).toEqual('David');
-        expect(users[1]["first_name"]).toEqual('Hector');
+        expect(users[ 0 ][ 'firstname' ]).toEqual('David');
+        expect(users[ 1 ][ 'firstname' ]).toEqual('Hector');
 
-        expect(users[0]["last_name"]).toEqual('Trinh');
-        expect(users[1]["last_name"]).toEqual('Lovo');
+        expect(users[ 0 ][ 'lastname' ]).toEqual('Trinh');
+        expect(users[ 1 ][ 'lastname' ]).toEqual('Lovo');
 
-        expect(users[0]["pic_url"]).toEqual('www.example.com/pic');
-        expect(users[1]["pic_url"]).toEqual('www.example.com/pic');
+        expect(users[ 0 ][ 'picurl' ]).toEqual('www.example.com/pic');
+        expect(users[ 1 ][ 'picurl' ]).toEqual('www.example.com/pic');
 
-        expect(users[0]["contributions"].length).toEqual(0);
-        expect(users[1]["contributions"].length).toEqual(0);
+        expect(users[ 0 ][ 'contributions' ].length).toEqual(0);
+        expect(users[ 1 ][ 'contributions' ].length).toEqual(0);
 
-        expect(users[0]["my_playlist"].length).toEqual(0);
-        expect(users[1]["my_playlist"].length).toEqual(0);
+        expect(users[ 0 ][ 'my_playlist' ].length).toEqual(0);
+        expect(users[ 1 ][ 'my_playlist' ].length).toEqual(0);
         done();
-
       });
-
     });
-
-
   });
 
-
-  it('should fetch a single user by an id key', done => {
+  it('should fetch a single user by a username key', done => {
     let userService: UserService;
     const mockResponse = {
-      data: {
+      user: {
         id: 1,
-        username: "dtrinh100",
-        first_name: "David",
-        last_name: "Trinh",
-        pic_url: "www.example.com/pic",
+        username: 'dtrinh100',
+        firstname: 'David',
+        lastname: 'Trinh',
+        picurl: 'www.example.com/pic',
         contributions: [],
         my_playlist: []
       }
     };
 
     getTestBed().compileComponents().then(() => {
-
-
-
       mockBackend.connections.subscribe(
         (connection: MockConnection) => {
-          expect(connection.request.url).toBe('/api/users/1');
+          expect(connection.request.url).toBe('/api/auth/users/dtrinh100');
           connection.mockRespond(new Response(
             new ResponseOptions({
-              body: JSON.stringify(mockResponse)
-            }
+                body: JSON.stringify(mockResponse)
+              }
             )));
         });
 
-
       userService = getTestBed().get(UserService);
-
-      userService.getUser(1).subscribe(function (user) {
+      userService.getUser('dtrinh100').subscribe(function (user) {
         expect(user.id).toBe(1);
         done();
       });
@@ -136,88 +132,54 @@ describe('UserService', () => {
 
   });
 
-
-  it('should insert a new user', done => {
-
-    let userService: UserService;
+  it('should update the user information', async(inject([ UserService ], (userService) => {
     const mockResponse = {
-      data: {
-        status: 201
+      user: {
+        id: 1,
+        username: 'dtrinh100',
+        firstname: 'David',
+        lastname: 'Trinh',
+        picurl: 'www.example.com/pic',
+        contributions: [],
+        my_playlist: []
       }
     };
 
     getTestBed().compileComponents().then(() => {
-
       mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.method).toBe(RequestMethod.Post);
-
+        expect(connection.request.method).toBe(RequestMethod.Put);
         connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
       });
 
+      const userObj = {
+        id: 1,
+        username: 'dtrinh100',
+        firstname: 'David',
+        lastname: 'Trinh',
+        picurl: 'www.example.com/pic',
+        contributions: [],
+        my_playlist: []
+      };
 
-      userService = getTestBed().get(UserService);
-      userService.createUser("dtrinh100", "email@email.com", "password", "password").subscribe((data) => {
-        expect(data).toBeDefined();
-        expect(data.status).toBe(201);
-        done();
-      });
-
-
+      userService.updateUser(userObj).subscribe(
+        (data) => {
+          expect(data).toEqual(userObj);
+        });
     });
-  });
+  })));
 
-  it('should update the user information',
-    async(inject([UserService], (userService) => {
-
-      const mockResponse = {
-        data: {
-          status: 204
-        }
-      };
-
-      getTestBed().compileComponents().then(() => {
-        mockBackend.connections.subscribe((connection: MockConnection) => {
-          expect(connection.request.method).toBe(RequestMethod.Put);
-
-          connection.mockRespond(new Response(new ResponseOptions({ body: mockResponse })));
-        });
-
-
-        const userObj = {
-          username: "dtrinh100",
-          email: "test@email.com",
-          password: "password",
-          confirm: "password"
-        }
-
-        userService.updateUser(userObj).subscribe(
-          (data) => {
-            expect(data).toBeDefined();
-            expect(data.status).toBe(204);
-          });
-
+  it('should delete an existing user', async(inject([ UserService ], (userService) => {
+    getTestBed().compileComponents().then(() => {
+      mockBackend.connections.subscribe(connection => {
+        expect(connection.request.method).toBe(RequestMethod.Delete);
+        connection.mockRespond(new Response(new ResponseOptions({body: {}, status: 204})));
       });
 
-    })));
-
-  it('should delete an existing user',
-    async(inject([UserService], (userService) => {
-      const mockResponse = {
-        data: null
-      };
-
-      getTestBed().compileComponents().then(() => {
-        mockBackend.connections.subscribe(connection => {
-          expect(connection.request.method).toBe(RequestMethod.Delete);
-          connection.mockRespond(new Response(new ResponseOptions({body: mockResponse})));
+      userService.deleteUser('dtrinh100').subscribe(
+        (res: Response) => {
+          expect(res.status).toEqual(204);
         });
-
-        userService.deleteUser(2).subscribe(
-          (data) => {
-            expect(data).toEqual(null);
-          });
-
-      });
-    })));
+    });
+  })));
 
 });

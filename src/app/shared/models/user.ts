@@ -2,13 +2,12 @@
 export class User {
   id: number;
   username: string;
-  first_name: string;
-  last_name: string;
-  pic_url: string;
+  firstname: string;
+  lastname: string;
+  picurl: string;
   contributions: string[];
-  my_playlist: string[];
+  playlist: string[];
   email: string;
   password: string;
   confirm: string;
-
 }

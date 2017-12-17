@@ -1,15 +1,15 @@
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {Subscription} from "rxjs/Subscription";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
-import {AuthService} from "../shared/services/auth.service";
+import { AuthService } from '../shared/services';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: [ './login.component.scss' ]
 })
 export class LoginComponent implements OnInit {
   hasSubmittedOnce: boolean;
@@ -39,13 +39,13 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.hasSubmittedOnce = false;
     this.loginForm = this.fb.group({
-      'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.required]]
+      'email': [ '', [ Validators.required, Validators.email ] ],
+      'password': [ '', [ Validators.required ] ]
     });
   }
 
   isValidEmail(isExclamation: boolean): boolean {
-    let emailForm = this.loginForm.get('email');
+    const emailForm = this.loginForm.get('email');
     if (isExclamation) {
       return emailForm.status === 'INVALID' && emailForm.dirty
     }
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
   }
 
   isValidPassword(isExclamation: boolean): boolean {
-    let passwordForm = this.loginForm.get('password');
+    const passwordForm = this.loginForm.get('password');
     if (isExclamation) {
       return passwordForm.status === 'INVALID' && passwordForm.dirty
     }
@@ -61,21 +61,27 @@ export class LoginComponent implements OnInit {
   }
 
   onValueChanged() {
-    if (this.loginForm == undefined) {
+    if (this.loginForm === undefined) {
       return;
     }
 
     for (const field in this.loginForm.controls) {
-      let control = this.loginForm.get(field);
+      if (!this.loginForm.controls.hasOwnProperty(field)) {
+        continue;
+      }
+      const control = this.loginForm.get(field);
 
       // Clear previous error messages
-      this.formErrors[field] = '';
+      this.formErrors[ field ] = '';
 
       if (control && !control.valid) {
-        let messages = this.validationMessages[field];
+        const messages = this.validationMessages[ field ];
 
         for (const key in control.errors) {
-          this.formErrors[field] += messages[key] + ' ';
+          if (!control.errors.hasOwnProperty(key)) {
+            continue;
+          }
+          this.formErrors[ field ] += messages[ key ] + ' ';
         }
       }
     }
@@ -83,7 +89,7 @@ export class LoginComponent implements OnInit {
 
   isInvalidForm(): boolean {
     for (const field in this.formErrors) {
-      if (this.formErrors[field].length > 0) {
+      if (this.formErrors[ field ].length > 0) {
         return true;
       }
     }
@@ -102,13 +108,14 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    let credentials = this.loginForm.value;
-    this.authService.login(credentials).subscribe((res: any) => {
-      // console.log(res);
+    const credentials = this.loginForm.value;
+    this.authService.login(credentials).subscribe(_ => {
       this.router.navigateByUrl('/');
-    }, (res: any) => {
-      this.loginForm.get('password').setValue('');
-      this.formErrors.password = res.json().data.errors.credentials;
+    }, (errResponse: Response) => {
+      if (errResponse.status === 401) {
+        this.loginForm.get('password').setValue('');
+        this.formErrors.password = 'Invalid credentials';
+      }
     });
   }
 

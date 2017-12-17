@@ -1,38 +1,56 @@
 package main
 
 import (
-	"log"
+	"github.com/dtrinh100/Music-Playlist/src/api/infrastructure/middleware"
+	"github.com/dtrinh100/Music-Playlist/src/api/infrastructure"
+	"github.com/dtrinh100/Music-Playlist/src/api/interfaces"
 	"net/http"
-
-	"github.com/dtrinh100/Music-Playlist/src/api/db"
-	"github.com/dtrinh100/Music-Playlist/src/api/common"
-	"github.com/dtrinh100/Music-Playlist/src/api/router"
-
-	"gopkg.in/mgo.v2"
+	"github.com/justinas/alice"
+	"os"
 )
 
-/**
-	main is the entry-function of the api.
-*/
 func main() {
-	// Note: MPDatabase name comes from docker-compose.yml
-	session, dialErr := mgo.Dial("MPDatabase")
-	if dialErr != nil {
-		panic(dialErr)
-	}
-	defer session.Close()
+	// WEBSERVICE
 
-	serverConf := common.InitServer()
-	dbConf := db.InitDB(session)
-	env := &common.Env{DB: dbConf}
-	mainHandler := router.InitializeRoutes(env)
+	handlers := infrastructure.GetAndInitDBHandlersForDBName(os.Getenv("MP_DBNAME_ENV"))
+	logger := new(infrastructure.Logger)
+	userInteractor := infrastructure.GetAndInitUserInteractor(logger, handlers)
+	songInteractor := infrastructure.GetAndInitSongInteractor(logger, handlers)
+	jwtHandler := interfaces.NewJWTHandler()
+	jsonResponder := new(infrastructure.JSONWebResponder)
+
+	webserviceHandler := &interfaces.WebserviceHandler{
+		SongInteractor: songInteractor,
+		UserInteractor: userInteractor,
+		Responder:      jsonResponder,
+		JWTHandler:     jwtHandler,
+	}
+
+	// MIDDLEWARE
+
+	weblogger := new(middleware.WebLoggerMiddleware)
+	weblogger.Logger = logger
+	weblogger.Responder = jsonResponder
+
+	globalMiddlewares := []alice.Constructor{weblogger.Handle}
+
+	jwt := new(middleware.JWTMiddleware)
+	jwt.Logger = logger
+	jwt.Responder = jsonResponder
+	jwt.JWTHandler = jwtHandler
+
+	// SERVER
+
+	router := infrastructure.GetRouterWithRoutes(webserviceHandler, jwt)
 
 	server := &http.Server{
-		Addr:    serverConf.Address,
-		Handler: mainHandler,
+		Addr:    os.Getenv("MP_SRVRADDR_ENV"),
+		Handler: alice.New(globalMiddlewares...).Then(router),
 	}
 
 	if serverErr := server.ListenAndServe(); serverErr != nil {
-		log.Fatal("Server failed to start:", serverErr)
+		logger.Log("Server failed to boot: " + serverErr.Error())
 	}
 }
+
+
