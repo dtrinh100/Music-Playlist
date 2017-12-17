@@ -26,11 +26,11 @@ export class SongComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params["id"];
       this.apiService.get("/songs/" + this.id).subscribe(data => {
-        this.audio = new Audio(data.audioPath);
+        this.audio = new Audio(data.audiopath);
         this.song = {
           id: this.id,
           name: data.name,
-          imgURL: data.imgURL,
+          imgURL: data.imgurl,
           alt: data.alt,
           description: data.description,
           credit: data.credit

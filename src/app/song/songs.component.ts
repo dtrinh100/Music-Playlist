@@ -11,11 +11,12 @@ import {ApiService} from '../shared/services';
 })
 export class SongsComponent implements OnInit {
   private images;
+  private sub: any;
 
   constructor() { }
 
   ngOnInit() {
-    this.apiService.get("/songs/" + this.id).subscribe(data => {
+    this.sub = this.apiService.get("/songs/" + this.id).subscribe(data => {
       this.images = data;
     });
   }
