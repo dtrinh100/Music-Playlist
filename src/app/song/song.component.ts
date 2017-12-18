@@ -52,6 +52,10 @@ export class SongComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    if (this.audio) {
+      this.audio.pause();
+      this.audio = null;
+    }
   }
 
 }
