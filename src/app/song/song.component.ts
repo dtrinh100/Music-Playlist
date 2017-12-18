@@ -39,7 +39,7 @@ export class SongComponent implements OnInit, OnDestroy {
 
   // Plays the selected song
   play() {
-    if (this.isPlaying === true) {
+    if (!this.isPlaying) {
       this.audio.play();
       this.playMessage = 'Stop';
     } else {
@@ -48,7 +48,6 @@ export class SongComponent implements OnInit, OnDestroy {
       this.playMessage = 'Play';
     }
     this.isPlaying = !this.isPlaying;
-
   }
 
   ngOnDestroy() {
