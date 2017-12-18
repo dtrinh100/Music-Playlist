@@ -4,9 +4,21 @@
       <div class="col-md-12">
         <img src={{song.imgurl}} alt={{song.alttext}} width="300" height="300">
       </div>
-      <div class="col-md-12">
+    </div>
+    <div class="row">
+      <div class="col-xs-3 col-sm-2 col-md-3">
         <button type="button" (click)="play()" class="btn btn-primary mp-play">
-          <span class="mp-play-text"><strong>{{playMessage}}</strong></span>
+          <span class="mp-play-text"><strong><i class="fa fa-play" aria-hidden="true"></i></strong></span>
+        </button>
+      </div>
+      <div class="col-xs-3 col-sm-2 col-md-3">
+        <button type="button" (click)="pause()" class="btn btn-primary mp-play">
+          <span class="mp-play-text"><strong><i class="fa fa-pause" aria-hidden="true"></i></strong></span>
+        </button>
+      </div>
+      <div class="col-xs-3 col-sm-2 col-md-3">
+        <button type="button" (click)="stop()" class="btn btn-primary mp-play">
+          <span class="mp-play-text"><strong><i class="fa fa-stop" aria-hidden="true"></i></strong></span>
         </button>
       </div>
     </div>
