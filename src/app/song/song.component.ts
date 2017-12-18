@@ -16,14 +16,12 @@ export class SongComponent implements OnInit, OnDestroy {
   private sub: any;
   private audio: any;
   private isPlaying: boolean;
-  private playMessage: string;
   private isSongAvailable: boolean;
 
   constructor(private songService: SongService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.playMessage = 'Play';
     this.isPlaying = false;
     this.isSongAvailable = false;
 
@@ -41,13 +39,24 @@ export class SongComponent implements OnInit, OnDestroy {
   play() {
     if (!this.isPlaying) {
       this.audio.play();
-      this.playMessage = 'Stop';
-    } else {
-      this.audio.pause();
-      this.audio.currentTime = 0;
-      this.playMessage = 'Play';
+      this.isPlaying = true;
     }
-    this.isPlaying = !this.isPlaying;
+  }
+
+  // Pauses song
+  pause() {
+    if (this.isPlaying) {
+      this.audio.pause();
+      this.isPlaying = false;
+    }
+  }
+
+  // Stops song
+  stop() {
+    if (this.isPlaying) {
+      this.pause();
+      this.audio.currentTime = 0;
+    }
   }
 
   ngOnDestroy() {
