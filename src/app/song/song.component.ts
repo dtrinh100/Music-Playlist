@@ -19,16 +19,15 @@ export class SongComponent implements OnInit, OnDestroy {
   private playMessage: string;
   private isSongAvailable: boolean;
 
-  constructor(private songService: SongService, private route: ActivatedRoute) {
-  }
+  constructor(private songService: SongService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.playMessage = 'Play';
+    this.playMessage = "Play";
     this.isPlaying = false;
     this.isSongAvailable = false;
 
     this.sub = this.route.params.subscribe(params => {
-      this.id = +params['id'];
+      this.id = +params["id"];
       this.songService.getSong(this.id).subscribe((song: Song) => {
         this.isSongAvailable = true;
         this.audio = new Audio(song.audiopath);
@@ -39,23 +38,20 @@ export class SongComponent implements OnInit, OnDestroy {
 
   // Plays the selected song
   play() {
-    if (!this.isPlaying) {
+    if (this.isPlaying === true) {
       this.audio.play();
-      this.playMessage = 'Stop';
+      this.playMessage = "Stop";
     } else {
       this.audio.pause();
       this.audio.currentTime = 0;
-      this.playMessage = 'Play';
+      this.playMessage = "Play";
     }
     this.isPlaying = !this.isPlaying;
+
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    if (this.audio) {
-      this.audio.pause();
-      this.audio = null;
-    }
   }
 
 }

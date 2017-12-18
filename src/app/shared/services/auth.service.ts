@@ -24,7 +24,7 @@ export class AuthService {
     this.isAuthenticated = this.isAuthenticatedSubject.asObservable();
   }
 
-  register(body: Object = {}): Observable<Response> {
+  register(body: Object = {}): Observable<any> {
     return this.apiService.post(`/register`, body)
       .map((res: Response) => {
         const resBody: any = res.json();
@@ -36,7 +36,7 @@ export class AuthService {
       })
   }
 
-  login(body: Object = {}): Observable<Response> {
+  login(body: Object = {}): Observable<any> {
     return this.apiService.post(`/login`, body)
       .map((res: Response) => {
         const resBody: any = res.json();
@@ -48,11 +48,12 @@ export class AuthService {
       })
   }
 
-  logout(): Observable<Response> {
-    return this.apiService.post(`/auth/logout`, {})
-      .map((res: Response) => {
+  logout() {
+    this.apiService.post(`/auth/logout`, {})
+      .subscribe(_ => {
         this.purgeAuth();
-        return res;
+      }, _ => {
+        // keep logged in until session expires
       });
   }
 
