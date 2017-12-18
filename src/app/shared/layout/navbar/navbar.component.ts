@@ -1,6 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services';
+import { AuthService } from '../../services/auth.service';
 
 
 const SCROLL_DELIM: Number = 100;
@@ -15,8 +14,7 @@ export class NavbarComponent implements OnInit {
   isMenuOpen: boolean;
   isScrolledDown: boolean;
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -44,9 +42,7 @@ export class NavbarComponent implements OnInit {
    logOut logs the user off of the API.
    **/
   logOut() {
-    this.authService.logout().subscribe(_ => {
-      this.router.navigateByUrl('/');
-    })
+    this.authService.logout();
   }
 
 }
